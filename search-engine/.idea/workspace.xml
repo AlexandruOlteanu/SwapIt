@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9814cdd4-f19f-4328-ade8-250c46a366ba" name="Changes" comment="feature/swapIt-001 -&gt; Created initial environment + register and login test">
+      <change afterPath="$PROJECT_DIR$/../configuration-data/chat-local.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../configuration-data/product-local.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../configuration-data/searchEngine-local.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bff/bff-service/src/main/java/com/swapit/bff/security/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../bff/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../bff/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../configuration-data/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../configuration-data/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../user/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../user/user-service/src/main/java/com/swapit/user/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/../user/user-service/src/main/java/com/swapit/user/security/SecurityConfiguration.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2YXtcIFixSprpKN3ZE8h6JT1da8" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.SwapitApplicationTests.contextLoads.executor": "Run",
+    "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
+    "Maven.bff [clean,install].executor": "Run",
+    "Maven.chat [clean,install].executor": "Run",
+    "Maven.user [clean,install].executor": "Run",
+    "Maven.user [clean].executor": "Run",
+    "Maven.user [compile].executor": "Run",
+    "Maven.user [install].executor": "Run",
+    "Maven.user [validate].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.BffApplication.executor": "Run",
+    "Spring Boot.ChatApplication.executor": "Run",
+    "Spring Boot.SwapItApplication.executor": "Run",
+    "Spring Boot.UserApplication.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "develop",
+    "jdk.selected.JAVA_MODULE": "openjdk-21",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/alexadruo13/Programare/SwapIt/search-engine",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/user-service/src/main/java/com/swapit/user" />
+      <recent name="$PROJECT_DIR$/user-client/src/main" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/user-service/src" />
+      <recent name="$PROJECT_DIR$/user-service/src/main" />
+      <recent name="$PROJECT_DIR$/user-service/src/main/java/com/swapit/user" />
+      <recent name="$PROJECT_DIR$/user-client/src/main/java/com/swapit/user/service" />
+      <recent name="$PROJECT_DIR$/user-api/src/main/java/com/swapit/user/api" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.ChatApplication">
+    <configuration name="chat [clean,install]" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="cmdOptions" />
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list>
+                <option value="clean" />
+                <option value="install" />
+              </list>
+            </option>
+            <option name="multimoduleDir" />
+            <option name="pomFileName" />
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="projectsCmdOptionValues">
+              <list />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="$PROJECT_DIR$" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method v="2" />
+    </configuration>
+    <configuration name="ChatApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="chat-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.swapit.chat.ChatApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Maven.chat [clean,install]" />
+      <item itemvalue="Spring Boot.ChatApplication" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-e47b9c39" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9814cdd4-f19f-4328-ade8-250c46a366ba" name="Changes" comment="" />
+      <created>1700683830484</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700683830484</updated>
+      <workItem from="1700683831517" duration="1334000" />
+      <workItem from="1700910592751" duration="1134000" />
+      <workItem from="1700912253662" duration="7012000" />
+      <workItem from="1700937883245" duration="8581000" />
+      <workItem from="1700989984810" duration="2183000" />
+      <workItem from="1701206783363" duration="18000" />
+      <workItem from="1708774941948" duration="3160000" />
+      <workItem from="1708778976961" duration="4202000" />
+      <workItem from="1708783242949" duration="1779000" />
+      <workItem from="1708802252784" duration="18000" />
+      <workItem from="1708805536940" duration="2536000" />
+      <workItem from="1708857748352" duration="12000" />
+      <workItem from="1708859432955" duration="12925000" />
+      <workItem from="1708885840858" duration="1067000" />
+      <workItem from="1708886918455" duration="192000" />
+      <workItem from="1708887115640" duration="389000" />
+      <workItem from="1708888173239" duration="83000" />
+      <workItem from="1708888584198" duration="31000" />
+    </task>
+    <task id="LOCAL-00001" summary="feature/swapIt-001 -&gt; Created initial environment + register and login test">
+      <option name="closed" value="true" />
+      <created>1700917454798</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1700917454798</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feature/swapIt-001 -&gt; Created initial environment + register and login test" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature/swapIt-001 -&gt; Created initial environment + register and login test" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/chat-service/src/main/java/com/swapit/chat/service/impl/ExternalOperationsServiceImpl.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
