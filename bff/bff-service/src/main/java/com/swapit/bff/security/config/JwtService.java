@@ -1,4 +1,4 @@
-package com.swapit.user.security.config;
+package com.swapit.bff.security.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

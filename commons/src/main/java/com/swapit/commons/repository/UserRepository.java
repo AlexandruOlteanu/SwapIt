@@ -1,6 +1,6 @@
-package com.swapit.user.repository;
+package com.swapit.commons.repository;
 
-import com.swapit.user.domain.User;
+import com.swapit.commons.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

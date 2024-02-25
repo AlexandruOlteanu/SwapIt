@@ -1,4 +1,4 @@
-package com.swapit.user.security;
+package com.swapit.bff.security;
 
 public enum Role {
     USER,

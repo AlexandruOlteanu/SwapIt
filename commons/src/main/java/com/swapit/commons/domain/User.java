@@ -1,6 +1,6 @@
-package com.swapit.user.domain;
+package com.swapit.commons.domain;
 
-import com.swapit.user.security.Role;
+import com.swapit.commons.util.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +21,12 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
+    private Integer userId;
+
     @Column(name = "username")
     private String username;
 

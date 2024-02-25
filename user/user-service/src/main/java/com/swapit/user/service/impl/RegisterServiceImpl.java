@@ -1,11 +1,11 @@
-package com.swapit.user.impl;
+package com.swapit.user.service.impl;
 
+import com.swapit.commons.domain.User;
+import com.swapit.commons.repository.UserRepository;
+import com.swapit.commons.util.Role;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.RegisterResponse;
-import com.swapit.user.domain.User;
-import com.swapit.user.repository.UserRepository;
-import com.swapit.user.security.Role;
-import com.swapit.user.security.config.JwtService;
+import com.swapit.user.security.JwtService;
 import com.swapit.user.service.RegisterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
