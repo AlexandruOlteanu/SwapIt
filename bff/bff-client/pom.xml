@@ -1,22 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.swapit</groupId>
-        <artifactId>user</artifactId>
+        <artifactId>bff</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>user-api</artifactId>
-    <name>user-api</name>
+    <artifactId>bff-client</artifactId>
+    <name>bff-client</name>
+    <url>http://maven.apache.org</url>
 
     <dependencies>
         <dependency>
             <groupId>com.swapit</groupId>
-            <artifactId>commons</artifactId>
-            <version>${commons.version}</version>
+            <artifactId>bff-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
-    <url>http://maven.apache.org</url>
 </project>

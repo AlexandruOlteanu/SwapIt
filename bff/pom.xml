@@ -8,29 +8,41 @@
 		<version>3.1.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>com.swapit</groupId>
-	<artifactId>user</artifactId>
+	<artifactId>bff</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>user</name>
+    <name>bff</name>
 	<description>User microservice responsible for registration/authentication and profile update</description>
     <modules>
-		<module>user-api</module>
-		<module>user-client</module>
-		<module>user-service</module>
+		<module>bff-api</module>
+		<module>bff-client</module>
+		<module>bff-service</module>
 	</modules>
+
     <properties>
 		<java.version>21</java.version>
 
+		<user.version>0.0.1-SNAPSHOT</user.version>
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
+
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.swapit</groupId>
+			<artifactId>user-api</artifactId>
+			<version>${user.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.swapit</groupId>
 			<artifactId>commons</artifactId>
 			<version>${commons.version}</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -58,7 +70,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.swapit.user.UserApplication</mainClass> <!-- Replace with your main class -->
+							<mainClass>com.swapit.bff.BffApplication</mainClass> <!-- Replace with your main class -->
 						</manifest>
 					</archive>
 				</configuration>

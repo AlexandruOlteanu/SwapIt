@@ -1,4 +1,4 @@
-package com.swapit.user.api.service;
+package com.swapit.bff.api.service;
 
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
@@ -7,14 +7,17 @@ import com.swapit.user.api.domain.response.RegisterResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
-public interface UserService {
+public interface BffService {
 
     String MEDIA_TYPE_APPLICATION_JSON = "application/json";
-    String BASE_URL = "/api/v1/swapIt/user/";
+    String BASE_URL = "/api/v1/swapIt/bff/";
     String AUTHENTICATION = "auth/";
     String LOGIN = "login";
     String REGISTER = "register";
