@@ -48,6 +48,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<classifier>exec</classifier>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -61,13 +62,6 @@
 							<mainClass>com.swapit.user.UserApplication</mainClass> <!-- Replace with your main class -->
 						</manifest>
 					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<classifier>exec</classifier>
 				</configuration>
 			</plugin>
 		</plugins>
