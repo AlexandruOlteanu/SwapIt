@@ -1,5 +1,6 @@
 package com.swapit.bff.api.service;
 
+import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
@@ -21,11 +22,15 @@ public interface BffService {
     String AUTHENTICATION = "auth/";
     String LOGIN = "login";
     String REGISTER = "register";
+    String PRODUCT_CREATION = "productCreation";
 
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
 
-    @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws Exception;
+
+    @PutMapping(value = BASE_URL + PRODUCT_CREATION, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void productCreation(@Valid @RequestBody ProductCreationRequest request);
 
 }

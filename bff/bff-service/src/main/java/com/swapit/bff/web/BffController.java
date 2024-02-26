@@ -2,6 +2,7 @@ package com.swapit.bff.web;
 
 import com.swapit.bff.api.service.BffService;
 import com.swapit.bff.service.ExternalOperationsService;
+import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
@@ -26,6 +27,11 @@ public class BffController implements BffService {
     @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         return ResponseEntity.ok(externalOperationsService.register(request));
+    }
+
+    @Override
+    public void productCreation(ProductCreationRequest request) {
+        externalOperationsService.productCreation(request);
     }
 
 }
