@@ -24,18 +24,11 @@
     <properties>
 		<java.version>21</java.version>
 
-		<user.version>0.0.1-SNAPSHOT</user.version>
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
 
 	</properties>
 
 	<dependencies>
-
-		<dependency>
-			<groupId>com.swapit</groupId>
-			<artifactId>user-api</artifactId>
-			<version>${user.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.swapit</groupId>

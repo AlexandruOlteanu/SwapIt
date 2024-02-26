@@ -22,7 +22,7 @@ public interface UserService {
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
 
-    @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws Exception;
 
 }

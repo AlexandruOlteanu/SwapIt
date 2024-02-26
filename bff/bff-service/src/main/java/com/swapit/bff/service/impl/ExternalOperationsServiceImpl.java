@@ -2,6 +2,7 @@ package com.swapit.bff.service.impl;
 
 import com.swapit.bff.service.ExternalOperationsService;
 import com.swapit.bff.service.UrlGeneratorService;
+import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
@@ -40,6 +41,18 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         log.info(url);
         try {
             return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), RegisterResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in User Register {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void productCreation(ProductCreationRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.PRODUCT_CREATION);
+        log.info(url);
+        try {
+            restTemplate.put(url, new HttpEntity<>(request));
         } catch (Exception e) {
             log.error("Exception in User Register {}", e.getMessage(), e);
             throw e;
