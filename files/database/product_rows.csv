@@ -1,0 +1,4 @@
+product_id,user_id,created_at,title,description,price,category,subcategory
+2,3,2024-02-26 16:16:55.576742+00,Ursulet de plus,Este un urs mare si pufos,489.9,Jucarii,Animale De Plus
+10,3,2024-02-26 16:49:17.41878+00,Pusca cu bile,Pusca copii 8-12 ani,93.99,Jucarii,Arme de jucarie
+13,5,2024-02-26 21:20:36.626806+00,Cub Rubik,Tool de dezvoltare al inteligentei copiilor,30.67,Jucarii,Diverse

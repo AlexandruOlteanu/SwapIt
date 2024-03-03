@@ -14,7 +14,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>user</name>
+	<name>commons</name>
 	<description> SwapIt common library for database interaction and common dependency</description>
 	<properties>
 		<java.version>21</java.version>
