@@ -2,6 +2,7 @@ package com.swapit.bff.web;
 
 import com.swapit.bff.api.service.BffService;
 import com.swapit.bff.service.ExternalOperationsService;
+import com.swapit.chat.api.domain.request.PrivateChatMessage;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
@@ -32,6 +33,11 @@ public class BffController implements BffService {
     @Override
     public void productCreation(ProductCreationRequest request) {
         externalOperationsService.productCreation(request);
+    }
+
+    @Override
+    public void sendPrivateMessage(PrivateChatMessage request) {
+        externalOperationsService.sendPrivateMessage(request);
     }
 
 }

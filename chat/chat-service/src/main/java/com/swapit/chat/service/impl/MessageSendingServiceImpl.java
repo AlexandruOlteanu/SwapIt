@@ -48,8 +48,7 @@ public class MessageSendingServiceImpl implements MessageSendingService {
         Conversation conversation;
         ZonedDateTime updatedLastAction = ZonedDateTime.now();
         if (conversationId == null) {
-            conversationId = conversationRepository.findPrivateConversationId(senderId.get(), receiverId.get())
-                    .orElse(null);
+            conversationId = conversationRepository.findPrivateConversationId(senderId.get(), receiverId.get()).orElse(null);
         }
         if (conversationId == null) {
             conversation = conversationRepository.save(Conversation.builder()
