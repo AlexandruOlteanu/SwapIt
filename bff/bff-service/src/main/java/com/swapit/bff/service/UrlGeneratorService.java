@@ -1,7 +1,9 @@
 package com.swapit.bff.service;
 
+import com.swapit.bff.service.impl.UrlGeneratorServiceImpl;
+
 public interface UrlGeneratorService {
 
-    String getServiceURL(String api);
+    String getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier api);
 
 }

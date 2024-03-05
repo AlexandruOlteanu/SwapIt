@@ -1,5 +1,6 @@
 package com.swapit.bff.api.service;
 
+import com.swapit.chat.api.domain.request.PrivateChatMessage;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
@@ -23,6 +24,7 @@ public interface BffService {
     String LOGIN = "login";
     String REGISTER = "register";
     String PRODUCT_CREATION = "productCreation";
+    String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
 
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
@@ -32,5 +34,8 @@ public interface BffService {
 
     @PutMapping(value = BASE_URL + PRODUCT_CREATION, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void productCreation(@Valid @RequestBody ProductCreationRequest request);
+
+    @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request) throws Exception;
 
 }

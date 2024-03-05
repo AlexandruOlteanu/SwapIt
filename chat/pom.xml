@@ -27,6 +27,10 @@
 		<user.version>0.0.1-SNAPSHOT</user.version>
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
 
+
+		<!-- External Libraries	-->
+		<pusher.version>1.0.0</pusher.version>
+
 	</properties>
 
 	<dependencies>
@@ -39,7 +43,7 @@
 		<dependency>
 			<groupId>com.pusher</groupId>
 			<artifactId>pusher-http-java</artifactId>
-			<version>1.0.0</version>
+			<version>${pusher.version}</version>
 		</dependency>
 
 		<dependency>

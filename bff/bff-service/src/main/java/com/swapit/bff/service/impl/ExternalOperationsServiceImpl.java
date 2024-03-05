@@ -2,6 +2,7 @@ package com.swapit.bff.service.impl;
 
 import com.swapit.bff.service.ExternalOperationsService;
 import com.swapit.bff.service.UrlGeneratorService;
+import com.swapit.chat.api.domain.request.PrivateChatMessage;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
@@ -25,7 +26,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     private final UrlGeneratorService urlGeneratorService;
     @Override
     public LoginResponse login(LoginRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.USER_LOGIN);
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.USER_LOGIN);
         log.info(url);
         try {
             return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), LoginResponse.class).getBody();
@@ -37,7 +38,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
 
     @Override
     public RegisterResponse register(RegisterRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.USER_REGISTER);
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.USER_REGISTER);
         log.info(url);
         try {
             return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), RegisterResponse.class).getBody();
@@ -49,10 +50,22 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
 
     @Override
     public void productCreation(ProductCreationRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.PRODUCT_CREATION);
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.PRODUCT_CREATION);
         log.info(url);
         try {
-            restTemplate.put(url, new HttpEntity<>(request));
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class);
+        } catch (Exception e) {
+            log.error("Exception in Product Creation {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void sendPrivateMessage(PrivateChatMessage request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEND_PRIVATE_MESSAGE);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
         } catch (Exception e) {
             log.error("Exception in User Register {}", e.getMessage(), e);
             throw e;
