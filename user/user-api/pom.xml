@@ -10,13 +10,5 @@
     <artifactId>user-api</artifactId>
     <name>user-api</name>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.swapit</groupId>
-            <artifactId>commons</artifactId>
-            <version>${commons.version}</version>
-        </dependency>
-    </dependencies>
-
     <url>http://maven.apache.org</url>
 </project>

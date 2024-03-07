@@ -18,11 +18,20 @@ public interface UserService {
     String AUTHENTICATION = "auth/";
     String LOGIN = "login";
     String REGISTER = "register";
+    String GET_USER_ID_BY_USERNAME_OR_EMAIL = "getUserIdByUsernameOrEmail";
 
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
 
     @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws Exception;
+
+
+
+    // Internal Requests
+    @GetMapping(value = BASE_URL + GET_USER_ID_BY_USERNAME_OR_EMAIL)
+    Integer getUserIdByUsernameOrEmail(@RequestParam(value = "username", required = false) String username,
+                                       @RequestParam(value = "email", required = false) String email) throws Exception;
+
 
 }

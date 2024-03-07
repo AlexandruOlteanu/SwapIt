@@ -1,8 +1,9 @@
 package com.swapit.bff.service.impl;
 
 import com.swapit.bff.service.ExternalOperationsService;
-import com.swapit.bff.service.UrlGeneratorService;
 import com.swapit.chat.api.domain.request.PrivateChatMessage;
+import com.swapit.commons.service.UrlGeneratorService;
+import com.swapit.commons.service.impl.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;

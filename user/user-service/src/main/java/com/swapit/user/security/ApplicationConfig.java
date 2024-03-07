@@ -1,6 +1,6 @@
 package com.swapit.user.security;
 
-import com.swapit.commons.repository.UserRepository;
+import com.swapit.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
