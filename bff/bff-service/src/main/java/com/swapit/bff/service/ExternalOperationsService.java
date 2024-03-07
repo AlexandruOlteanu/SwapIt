@@ -14,4 +14,6 @@ public interface ExternalOperationsService {
     void productCreation(ProductCreationRequest request);
     void sendPrivateMessage(PrivateChatMessage request);
 
+
+
 }
