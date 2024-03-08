@@ -22,7 +22,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String sendPrivateMessageUri;
 
     // USER URI
-    @Value("${user.getUserIdByUsername.route}")
+    @Value("${user.getUserIdByUsernameOrEmail.route}")
     private String getUserIdByUsernameOrEmailUri;
 
     @Override
