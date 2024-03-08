@@ -1,0 +1,10 @@
+specification_id,product_id,key,value
+1,2,inaltime,1.45 m
+2,2,culoare,maro
+3,2,greutate,12 Kg
+13,10,capacitate,15 bile
+14,10,culoare,neagra
+15,10,greutate,1.2 Kg
+16,13,greutate,0.1 kg
+17,13,culoare,multicolor
+18,13,dificultate,3x3
