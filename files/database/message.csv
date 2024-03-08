@@ -1,0 +1,7 @@
+message_id,conversation_id,sent_at,sent_by,type,value
+1,4,2024-03-03 20:41:21.874301 +00:00,7,TEXT,"Hello, Vlad, sunt Alina"
+2,4,2024-03-03 21:15:08.734102 +00:00,4,TEXT,"Buna, sigur, esti interesata de produs?"
+8,6,2024-03-03 21:50:23.608373 +00:00,6,TEXT,"Buna, Alina"
+9,6,2024-03-03 22:02:41.209945 +00:00,6,TEXT,Pari draguta
+10,6,2024-03-03 22:05:24.599573 +00:00,6,TEXT,Am mers la teatru
+11,6,2024-03-03 22:11:09.992170 +00:00,6,TEXT,Si voiam sa vad ce faci
