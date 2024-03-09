@@ -6,13 +6,11 @@ import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UserDetailsResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Validated
@@ -25,6 +23,7 @@ public interface BffService {
     String REGISTER = "register";
     String PRODUCT_CREATION = "productCreation";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
+    String USER_DETAILS = "getUserDetails";
 
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
@@ -37,5 +36,9 @@ public interface BffService {
 
     @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request) throws Exception;
+
+    @GetMapping(value = BASE_URL + USER_DETAILS)
+    ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "username") String username);
+
 
 }

@@ -8,6 +8,7 @@ import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UserDetailsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,11 @@ public class BffController implements BffService {
     @Override
     public void sendPrivateMessage(PrivateChatMessage request) {
         externalOperationsService.sendPrivateMessage(request);
+    }
+
+    @Override
+    public ResponseEntity<UserDetailsResponse> getUserDetails(String username) {
+        return ResponseEntity.ok(externalOperationsService.getUserDetails(username));
     }
 
 }

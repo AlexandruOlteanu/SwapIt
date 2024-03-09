@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 public class UrlGeneratorServiceImpl implements UrlGeneratorService {
 
     public enum UrlIdentifier {
-        USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_ID_BY_USERNAME_EMAIL
+        USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_ID_BY_USERNAME_EMAIL,
+        GET_USER_DETAILS
     }
 
     // BFF URI
@@ -20,6 +21,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String productCreationUri;
     @Value("${chat.send.private.message.route}")
     private String sendPrivateMessageUri;
+    @Value("${user.getUserDetails.route}")
+    private String getUserDetailsUri;
 
     // USER URI
     @Value("${user.getUserIdByUsernameOrEmail.route}")
@@ -33,6 +36,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case PRODUCT_CREATION -> productCreationUri;
             case SEND_PRIVATE_MESSAGE -> sendPrivateMessageUri;
             case GET_USER_ID_BY_USERNAME_EMAIL -> getUserIdByUsernameOrEmailUri;
+            case GET_USER_DETAILS -> getUserDetailsUri;
         };
     }
 }

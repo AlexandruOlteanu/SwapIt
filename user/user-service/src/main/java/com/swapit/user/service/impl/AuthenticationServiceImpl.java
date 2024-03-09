@@ -34,6 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userRepository.findUserByUsername(request.getUsername())
                 .orElseThrow();
         return LoginResponse.builder()
+                .userId(user.getUserId())
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }
@@ -52,8 +53,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (existingUser.isPresent()) {
             throw new Exception("Username already registered");
         }
-        userRepository.save(user);
+        Integer userId = userRepository.save(user).getUserId();
         return RegisterResponse.builder()
+                .userId(userId)
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }
