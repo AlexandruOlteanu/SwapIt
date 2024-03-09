@@ -4,16 +4,20 @@ import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UserDetailsResponse;
 import com.swapit.user.api.service.UserService;
 import com.swapit.user.service.AuthenticationService;
 import com.swapit.user.service.InternalRequestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@EnableCaching
 @Slf4j
 public class UserController implements UserService {
 
@@ -27,6 +31,13 @@ public class UserController implements UserService {
     @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) throws Exception {
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    @Override
+    @Cacheable(value = "getUserDetails", keyGenerator = "cacheKeyGenerator")
+    public ResponseEntity<UserDetailsResponse> getUserDetails(String username) {
+        return ResponseEntity.ok(UserDetailsResponse.builder()
+                .build());
     }
 
 

@@ -4,6 +4,7 @@ import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UserDetailsResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -19,12 +20,16 @@ public interface UserService {
     String LOGIN = "login";
     String REGISTER = "register";
     String GET_USER_ID_BY_USERNAME_OR_EMAIL = "getUserIdByUsernameOrEmail";
+    String USER_DETAILS = "getUserDetails";
 
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
 
     @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws Exception;
+
+    @GetMapping(value = BASE_URL + USER_DETAILS)
+    ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "username") String username);
 
 
 

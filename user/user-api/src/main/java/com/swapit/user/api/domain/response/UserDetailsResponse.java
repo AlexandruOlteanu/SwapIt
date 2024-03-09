@@ -7,7 +7,6 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 @Jacksonized
 @Builder
-public class RegisterResponse {
-    private Integer userId;
-    private String jwtToken;
+public class UserDetailsResponse {
+    String res;
 }

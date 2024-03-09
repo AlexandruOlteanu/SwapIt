@@ -9,6 +9,7 @@ import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UserDetailsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +30,8 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     @Qualifier("externalCallRestTemplate")
     private final RestTemplate restTemplate;
     private final UrlGeneratorService urlGeneratorService;
+    private static final String USERNAME_PARAM = "username";
+
     @Override
     public LoginResponse login(LoginRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.USER_LOGIN);
@@ -68,7 +75,21 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         try {
             restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
         } catch (Exception e) {
-            log.error("Exception in User Register {}", e.getMessage(), e);
+            log.error("Exception in Sending Private Message {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public UserDetailsResponse getUserDetails(String username) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_USER_DETAILS);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USERNAME_PARAM, Optional.ofNullable(username));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, UserDetailsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting user details {}", e.getMessage(), e);
             throw e;
         }
     }

@@ -10,6 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 public class LoginResponse {
 
+    private Integer userId;
     private String jwtToken;
 
 }
