@@ -23,6 +23,7 @@
 
 		<!-- External Libraries Dependencies -->
 		<jjwt.version>0.11.5</jjwt.version>
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
 
 	</properties>
 
