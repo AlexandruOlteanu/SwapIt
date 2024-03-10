@@ -13,6 +13,7 @@ import static com.swapit.commons.utils.Constants.USER_ID_HEADER;
 @Component("cacheKeyGenerator")
 public class CacheKeyGenerator implements KeyGenerator {
     @Override
+    @NonNull
     public Object generate(@NonNull Object target, @NonNull Method method, @NonNull Object... params) {
         String userId = ThreadLocalContext.getContext().get(USER_ID_HEADER);
         return String.join("_", target.getClass().getSimpleName(), method.getName(), StringUtils.arrayToDelimitedString(params, "_"), userId);

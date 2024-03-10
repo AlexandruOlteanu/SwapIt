@@ -29,13 +29,13 @@ public interface BffService {
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
 
     @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws Exception;
+    ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
 
     @PutMapping(value = BASE_URL + PRODUCT_CREATION, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void productCreation(@Valid @RequestBody ProductCreationRequest request);
 
     @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request) throws Exception;
+    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request);
 
     @GetMapping(value = BASE_URL + USER_DETAILS)
     ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "username") String username);

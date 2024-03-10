@@ -1,7 +1,6 @@
 package com.swapit.user.web;
 
 import com.swapit.apiGateway.api.dto.response.ProductDTO;
-import com.swapit.apiGateway.service.ApiGatewayPublicService;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.response.LoginResponse;

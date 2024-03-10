@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ExternalOperationsService {
 
-    public List<ProductDTO> getAllProductsByUserId(Integer userId);
+    List<ProductDTO> getAllProductsByUserId(Integer userId);
 }

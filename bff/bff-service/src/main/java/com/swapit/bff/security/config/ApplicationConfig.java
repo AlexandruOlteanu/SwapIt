@@ -1,6 +1,5 @@
 package com.swapit.bff.security.config;
 
-import com.swapit.bff.service.ExternalOperationsService;
 import com.swapit.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
