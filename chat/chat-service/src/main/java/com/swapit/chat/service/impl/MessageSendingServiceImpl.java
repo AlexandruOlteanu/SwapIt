@@ -37,7 +37,7 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     private final MessageRepository messageRepository;
     @Override
     @Transactional
-    public void sendPrivateMessage(PrivateChatMessage request) throws Exception {
+    public void sendPrivateMessage(PrivateChatMessage request) {
         var senderId = externalOperationsService.getUserIdByUsernameOrEmail(request.getSenderUsername(), null);
         var receiverId = externalOperationsService.getUserIdByUsernameOrEmail(request.getReceiverUsername(), null);
         Integer conversationId = request.getConversationId();

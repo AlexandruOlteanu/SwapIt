@@ -1,7 +1,5 @@
 package com.swapit.commons.model;
 
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.UtilityClass;
 
 import java.util.Map;
