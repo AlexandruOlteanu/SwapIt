@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "product_specifications")
-public class ProductSpecifications {
+public class ProductSpecification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

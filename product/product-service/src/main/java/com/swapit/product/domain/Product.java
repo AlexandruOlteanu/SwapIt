@@ -49,6 +49,6 @@ public class Product {
     private String subcategory;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductSpecifications> productSpecifications;
+    private List<ProductSpecification> productSpecifications;
 
 }

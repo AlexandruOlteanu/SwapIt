@@ -2,9 +2,9 @@ package com.swapit.product.service.impl;
 
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.product.domain.Product;
-import com.swapit.product.domain.ProductSpecifications;
+import com.swapit.product.domain.ProductSpecification;
 import com.swapit.product.repository.ProductRepository;
-import com.swapit.product.repository.ProductSpecificationsRepository;
+import com.swapit.product.repository.ProductSpecificationRepository;
 import com.swapit.product.service.ExternalOperationsService;
 import com.swapit.product.service.ProductCreateService;
 import jakarta.transaction.Transactional;
@@ -20,7 +20,7 @@ public class ProductCreateServiceImpl implements ProductCreateService {
 
     private final ProductRepository productRepository;
     private final ExternalOperationsService externalOperationsService;
-    private final ProductSpecificationsRepository productSpecificationsRepository;
+    private final ProductSpecificationRepository productSpecificationsRepository;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -39,7 +39,7 @@ public class ProductCreateServiceImpl implements ProductCreateService {
                 .build();
         productRepository.save(product);
         request.getProductSpecifications()
-                .forEach(productSpecification -> productSpecificationsRepository.save(ProductSpecifications.builder()
+                .forEach(productSpecification -> productSpecificationsRepository.save(ProductSpecification.builder()
                                         .product(product)
                                         .key(productSpecification.getKey())
                                         .value(productSpecification.getValue())

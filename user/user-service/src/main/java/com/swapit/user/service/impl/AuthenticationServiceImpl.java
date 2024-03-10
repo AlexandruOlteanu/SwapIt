@@ -35,6 +35,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .orElseThrow();
         return LoginResponse.builder()
                 .userId(user.getUserId())
+                .role(user.getRole().toString())
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }
@@ -56,6 +57,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Integer userId = userRepository.save(user).getUserId();
         return RegisterResponse.builder()
                 .userId(userId)
+                .role(Role.USER.toString())
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }

@@ -9,7 +9,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
 
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_ID_BY_USERNAME_EMAIL,
-        GET_USER_DETAILS
+        GET_USER_DETAILS, GET_ALL_PRODUCTS_BY_USER_ID
     }
 
     // BFF URI
@@ -28,6 +28,10 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     @Value("${user.getUserIdByUsernameOrEmail.route}")
     private String getUserIdByUsernameOrEmailUri;
 
+    // PRODUCT URI
+    @Value("${product.getAllProductsByUserId.route}")
+    private String getAllProductsByUserIdUri;
+
     @Override
     public String getServiceURL(UrlIdentifier api) {
         return switch (api) {
@@ -37,6 +41,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case SEND_PRIVATE_MESSAGE -> sendPrivateMessageUri;
             case GET_USER_ID_BY_USERNAME_EMAIL -> getUserIdByUsernameOrEmailUri;
             case GET_USER_DETAILS -> getUserDetailsUri;
+            case GET_ALL_PRODUCTS_BY_USER_ID -> getAllProductsByUserIdUri;
         };
     }
 }

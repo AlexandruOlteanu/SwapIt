@@ -11,6 +11,7 @@ import lombok.extern.jackson.Jacksonized;
 public class LoginResponse {
 
     private Integer userId;
+    private String role;
     private String jwtToken;
 
 }
