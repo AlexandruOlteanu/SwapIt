@@ -1,6 +1,6 @@
 package com.swapit.product.mappers;
 
-import com.swapit.apiGateway.api.dto.response.ProductDTO;
+import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.domain.Product;
 
 public class ProductMapper {

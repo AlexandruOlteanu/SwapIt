@@ -1,4 +1,4 @@
-package com.swapit.apiGateway.api.dto.response;
+package com.swapit.product.api.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,8 +8,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
-@Jacksonized
 @Builder
+@Jacksonized
 public class ProductDTO {
     private Integer productId;
     private Integer userId;

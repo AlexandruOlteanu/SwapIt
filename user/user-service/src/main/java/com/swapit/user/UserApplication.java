@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.swapit.commons"
 })
 @EnableFeignClients(basePackages = {
-		"com.swapit.apiGateway.service"
+		"com.swapit.product.service"
 })
 public class UserApplication {
 

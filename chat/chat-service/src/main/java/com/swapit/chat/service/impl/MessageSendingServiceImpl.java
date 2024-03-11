@@ -8,7 +8,6 @@ import com.swapit.chat.domain.Message;
 import com.swapit.chat.repository.ConversationParticipantsRepository;
 import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.repository.MessageRepository;
-import com.swapit.chat.service.ExternalOperationsService;
 import com.swapit.chat.service.MessageSendingService;
 import com.swapit.chat.utils.ConversationType;
 import com.swapit.chat.utils.MessageType;
@@ -31,15 +30,14 @@ public class MessageSendingServiceImpl implements MessageSendingService {
 
     @Qualifier("pusherBean")
     private final Pusher pusher;
-    private final ExternalOperationsService externalOperationsService;
     private final ConversationRepository conversationRepository;
     private final ConversationParticipantsRepository conversationParticipantsRepository;
     private final MessageRepository messageRepository;
     @Override
     @Transactional
     public void sendPrivateMessage(PrivateChatMessage request) {
-        var senderId = externalOperationsService.getUserIdByUsernameOrEmail(request.getSenderUsername(), null);
-        var receiverId = externalOperationsService.getUserIdByUsernameOrEmail(request.getReceiverUsername(), null);
+        var senderId = request.getSenderId();
+        var receiverId = request.getReceiverId();
         Integer conversationId = request.getConversationId();
         Conversation conversation;
         ZonedDateTime updatedLastAction = ZonedDateTime.now();

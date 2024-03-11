@@ -8,7 +8,8 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 @Builder
 @Jacksonized
-public class ProductSpecificationsDTO {
+public class ProductSpecificationDTO {
+    private Integer specificationId;
     @NotNull
     private String key;
     @NotNull

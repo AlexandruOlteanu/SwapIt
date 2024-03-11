@@ -1,7 +1,8 @@
 package com.swapit.user.service.impl;
 
-import com.swapit.apiGateway.api.dto.response.ProductDTO;
-import com.swapit.apiGateway.service.ApiGatewayPublicService;
+import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.response.GetProductsResponse;
+import com.swapit.product.service.ProductPublicService;
 import com.swapit.user.service.ExternalOperationsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +16,10 @@ import java.util.List;
 @Slf4j
 public class ExternalOperationsServiceImpl implements ExternalOperationsService {
 
-    private final ApiGatewayPublicService apiGatewayPublicService;
+    private final ProductPublicService productPublicService;
 
     @Override
-    public List<ProductDTO> getAllProductsByUserId(Integer userId) {
-            return apiGatewayPublicService.getAllProductsByUserId(userId).getBody();
+    public GetProductsResponse getAllProductsByUserId(Integer userId) {
+            return productPublicService.getAllProductsByUserId(userId).getBody();
     }
 }

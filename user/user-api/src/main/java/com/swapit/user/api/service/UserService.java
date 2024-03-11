@@ -31,12 +31,4 @@ public interface UserService {
     @GetMapping(value = BASE_URL + USER_DETAILS)
     ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "username") String username) throws Exception;
 
-
-
-    // Internal Requests
-    @GetMapping(value = BASE_URL + GET_USER_ID_BY_USERNAME_OR_EMAIL)
-    ResponseEntity<Integer> getUserIdByUsernameOrEmail(@RequestParam(value = "username", required = false) String username,
-                                       @RequestParam(value = "email", required = false) String email) throws Exception;
-
-
 }

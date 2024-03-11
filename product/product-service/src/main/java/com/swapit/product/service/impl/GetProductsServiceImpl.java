@@ -1,10 +1,11 @@
 package com.swapit.product.service.impl;
 
-import com.swapit.apiGateway.api.dto.response.ProductDTO;
+import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.product.domain.Product;
 import com.swapit.product.mappers.ProductMapper;
 import com.swapit.product.repository.ProductRepository;
-import com.swapit.product.service.InternalRequestService;
+import com.swapit.product.service.GetProductsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,16 +16,18 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InternalRequestServiceImpl implements InternalRequestService {
+public class GetProductsServiceImpl implements GetProductsService {
 
     private final ProductRepository productRepository;
 
     @Override
-    public List<ProductDTO> getAllProductsByUserId(Integer userId) {
+    public GetProductsResponse getAllProductsByUserId(Integer userId) {
         List<Product> products = productRepository.findAllByUserId(userId)
                 .orElse(new ArrayList<>());
-        return products.stream()
-                .map(ProductMapper::toDTO)
-                .toList();
+        List<ProductDTO> productDTOS = products.stream()
+                .map(ProductMapper::toDTO).toList();
+        return GetProductsResponse.builder()
+                .products(productDTOS)
+                .build();
     }
 }

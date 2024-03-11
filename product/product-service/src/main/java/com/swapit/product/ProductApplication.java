@@ -10,9 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.swapit.product",
 		"com.swapit.commons"
 })
-@EnableFeignClients(basePackages = {
-		"com.swapit.apiGateway.service"
-})
 public class ProductApplication {
 
 	public static void main(String[] args) {

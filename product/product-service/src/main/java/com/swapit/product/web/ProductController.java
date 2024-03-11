@@ -1,9 +1,10 @@
 package com.swapit.product.web;
 
-import com.swapit.apiGateway.api.dto.response.ProductDTO;
+import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.product.api.service.ProductService;
-import com.swapit.product.service.InternalRequestService;
+import com.swapit.product.service.GetProductsService;
 import com.swapit.product.service.ProductCreateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +19,7 @@ import java.util.List;
 public class ProductController implements ProductService {
 
     private final ProductCreateService productCreateService;
-    private final InternalRequestService internalRequestService;
-
+    private final GetProductsService getProductsService;
 
     @Override
     public void createProduct(ProductCreationRequest request) throws Exception {
@@ -27,7 +27,7 @@ public class ProductController implements ProductService {
     }
 
     @Override
-    public ResponseEntity<List<ProductDTO>> getAllProductsByUserId(Integer userId) {
-        return ResponseEntity.ok(internalRequestService.getAllProductsByUserId(userId));
+    public ResponseEntity<GetProductsResponse> getAllProductsByUserId(Integer userId) {
+        return ResponseEntity.ok(getProductsService.getAllProductsByUserId(userId));
     }
 }
