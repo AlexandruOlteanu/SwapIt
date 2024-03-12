@@ -8,10 +8,13 @@ import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.service.GetProductsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.swapit.commons.cache.ConfigConstants.CACHE_PRODUCTS_FOR_USERS;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +24,9 @@ public class GetProductsServiceImpl implements GetProductsService {
     private final ProductRepository productRepository;
 
     @Override
+    @Cacheable(value = CACHE_PRODUCTS_FOR_USERS, key = "#userId")
     public GetProductsResponse getAllProductsByUserId(Integer userId) {
-        List<Product> products = productRepository.findAllByUserId(userId)
+        List<Product> products = productRepository.findAllByUserIdOrderByCreationDateDesc(userId)
                 .orElse(new ArrayList<>());
         List<ProductDTO> productDTOS = products.stream()
                 .map(ProductMapper::toDTO).toList();

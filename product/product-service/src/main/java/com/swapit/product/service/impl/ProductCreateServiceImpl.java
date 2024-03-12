@@ -5,6 +5,7 @@ import com.swapit.product.domain.Product;
 import com.swapit.product.domain.ProductSpecification;
 import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.repository.ProductSpecificationRepository;
+import com.swapit.product.service.CacheService;
 import com.swapit.product.service.ProductCreateService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,13 @@ public class ProductCreateServiceImpl implements ProductCreateService {
 
     private final ProductRepository productRepository;
     private final ProductSpecificationRepository productSpecificationsRepository;
+    private final CacheService cacheService;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void createProduct(ProductCreationRequest request) {
         Integer userId = request.getUserId();
+        cacheService.deleteCachedProductsForUser(userId);
         Product product = Product.builder()
                 .title(request.getTitle())
                 .userId(userId)

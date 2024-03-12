@@ -14,6 +14,6 @@ public interface ExternalOperationsService {
     RegisterResponse register(RegisterRequest request);
     void productCreation(ProductCreationRequest request);
     void sendPrivateMessage(PrivateChatMessage request);
-    UserDetailsResponse getUserDetails(String username);
+    UserDetailsResponse getUserDetails(Integer userId);
 
 }

@@ -4,6 +4,6 @@ import com.swapit.product.api.domain.request.ProductCreationRequest;
 
 public interface ProductCreateService {
 
-    void createProduct(ProductCreationRequest request) throws Exception;
+    void createProduct(ProductCreationRequest request);
 
 }

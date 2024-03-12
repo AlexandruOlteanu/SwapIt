@@ -30,7 +30,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     @Qualifier("externalCallRestTemplate")
     private final RestTemplate restTemplate;
     private final UrlGeneratorService urlGeneratorService;
-    private static final String USERNAME_PARAM = "username";
+    private static final String USER_ID_PARAM = "userId";
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -81,10 +81,10 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public UserDetailsResponse getUserDetails(String username) {
+    public UserDetailsResponse getUserDetails(Integer userId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_USER_DETAILS);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(USERNAME_PARAM, Optional.ofNullable(username));
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
         log.info(uriBuilder.toUriString());
         try {
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, UserDetailsResponse.class).getBody();

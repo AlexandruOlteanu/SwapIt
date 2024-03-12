@@ -1,14 +1,11 @@
 package com.swapit.product.api.service;
 
-import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Validated

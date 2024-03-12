@@ -37,7 +37,7 @@ public interface ApiGatewayService {
     void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request);
 
     @GetMapping(value = BASE_URL + USER_DETAILS)
-    ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "username") String username);
+    ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
 
 
 }

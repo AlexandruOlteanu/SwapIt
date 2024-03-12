@@ -11,7 +11,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     Optional<Product> findProductByProductId(Integer productId);
     Optional<List<Product>> findAllByCategory(String category);
-    Optional<List<Product>> findAllByUserId(Integer userId);
+    Optional<List<Product>> findAllByUserIdOrderByCreationDateDesc(Integer userId);
     Optional<List<Product>> findAllBySubcategory(String subcategory);
 
 }

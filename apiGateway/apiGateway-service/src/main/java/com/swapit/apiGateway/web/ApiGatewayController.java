@@ -42,8 +42,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<UserDetailsResponse> getUserDetails(String username) {
-        return ResponseEntity.ok(externalOperationsService.getUserDetails(username));
+    public ResponseEntity<UserDetailsResponse> getUserDetails(Integer userId) {
+        return ResponseEntity.ok(externalOperationsService.getUserDetails(userId));
     }
 
 }

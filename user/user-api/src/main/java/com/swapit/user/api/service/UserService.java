@@ -19,7 +19,6 @@ public interface UserService {
     String AUTHENTICATION = "auth/";
     String LOGIN = "login";
     String REGISTER = "register";
-    String GET_USER_ID_BY_USERNAME_OR_EMAIL = "getUserIdByUsernameOrEmail";
     String USER_DETAILS = "getUserDetails";
 
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
@@ -29,6 +28,6 @@ public interface UserService {
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws Exception;
 
     @GetMapping(value = BASE_URL + USER_DETAILS)
-    ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "username") String username) throws Exception;
+    ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
 
 }

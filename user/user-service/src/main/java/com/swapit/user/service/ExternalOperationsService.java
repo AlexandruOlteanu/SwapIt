@@ -2,8 +2,6 @@ package com.swapit.user.service;
 
 import com.swapit.product.api.domain.response.GetProductsResponse;
 
-import java.util.List;
-
 public interface ExternalOperationsService {
 
     GetProductsResponse getAllProductsByUserId(Integer userId);

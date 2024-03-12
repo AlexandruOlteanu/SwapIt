@@ -17,6 +17,6 @@ public interface ChatService {
     String SEND = "sendPrivateMessage";
 
     @PostMapping(value = BASE_URL + SEND, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request) throws Exception;
+    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request);
 
 }
