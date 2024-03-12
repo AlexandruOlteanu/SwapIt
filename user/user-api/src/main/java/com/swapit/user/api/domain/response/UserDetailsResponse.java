@@ -1,6 +1,6 @@
 package com.swapit.user.api.domain.response;
 
-import com.swapit.apiGateway.api.dto.response.ProductDTO;
+import com.swapit.product.api.domain.dto.ProductDTO;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;

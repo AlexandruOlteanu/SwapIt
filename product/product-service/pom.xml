@@ -16,11 +16,6 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.swapit</groupId>
-            <artifactId>apiGateway-api</artifactId>
-            <version>${apiGateway.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

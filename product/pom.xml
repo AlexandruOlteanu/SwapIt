@@ -37,12 +37,6 @@
 			<version>${commons.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.swapit</groupId>
-			<artifactId>apiGateway-client</artifactId>
-			<version>${apiGateway.version}</version>
-		</dependency>
-
 	</dependencies>
 
 	<build>

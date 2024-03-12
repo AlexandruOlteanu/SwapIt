@@ -1,13 +1,11 @@
 package com.swapit.product.api.service;
 
-import com.swapit.apiGateway.api.dto.response.ProductDTO;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.product.api.domain.response.GetProductsResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Validated
@@ -22,8 +20,7 @@ public interface ProductService {
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void createProduct(@Valid @RequestBody ProductCreationRequest request) throws Exception;
 
-    // Internal Requests
     @GetMapping(value = BASE_URL + GET_ALL_PRODUCTS_BY_USER_ID)
-    ResponseEntity<List<ProductDTO>> getAllProductsByUserId(@RequestParam(value = "userId") Integer userId);
+    ResponseEntity<GetProductsResponse> getAllProductsByUserId(@RequestParam(value = "userId") Integer userId);
 
 }

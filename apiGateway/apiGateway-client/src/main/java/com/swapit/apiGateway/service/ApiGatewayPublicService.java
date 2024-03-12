@@ -1,10 +1,8 @@
 package com.swapit.apiGateway.service;
 
 
-import com.swapit.apiGateway.api.service.ApiGatewayService;
-import org.springframework.cloud.openfeign.FeignClient;
+import com.swapit.apiGateway.api.ApiGatewayService;
 
-@FeignClient(name = "apiGateway")
 public interface ApiGatewayPublicService extends ApiGatewayService {
 
 }

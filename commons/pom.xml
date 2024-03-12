@@ -24,6 +24,7 @@
 		<!-- External Libraries Dependencies -->
 		<jjwt.version>0.11.5</jjwt.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<hazelcast.version>5.3.6</hazelcast.version>
 
 	</properties>
 
@@ -108,6 +109,16 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast</artifactId>
+			<version>${hazelcast.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-spring</artifactId>
+			<version>${hazelcast.version}</version>
 		</dependency>
 
 	</dependencies>

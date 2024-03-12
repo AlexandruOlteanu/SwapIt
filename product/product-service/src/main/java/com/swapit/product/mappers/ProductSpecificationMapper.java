@@ -1,6 +1,6 @@
 package com.swapit.product.mappers;
 
-import com.swapit.apiGateway.api.dto.response.ProductSpecificationDTO;
+import com.swapit.product.api.domain.dto.ProductSpecificationDTO;
 import com.swapit.product.domain.ProductSpecification;
 
 public class ProductSpecificationMapper {
@@ -11,6 +11,7 @@ public class ProductSpecificationMapper {
                 .value(productSpecificationDTO.getValue())
                 .build();
     }
+    
     static ProductSpecificationDTO toDTO(ProductSpecification productSpecification) {
         return ProductSpecificationDTO.builder()
                 .specificationId(productSpecification.getSpecificationId())

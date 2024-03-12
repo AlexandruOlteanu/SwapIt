@@ -39,8 +39,7 @@ public class RequestHeadersFilter extends OncePerRequestFilter {
     }
 
     private Map<String, String> createHeadersMap(HttpServletRequest request) {
-        var headers = mandatoryHeaders.stream().filter(header -> request.getHeader(header) != null)
+        return mandatoryHeaders.stream().filter(header -> request.getHeader(header) != null)
                 .collect(Collectors.toMap(Function.identity(), request::getHeader));
-        return headers;
     }
 }

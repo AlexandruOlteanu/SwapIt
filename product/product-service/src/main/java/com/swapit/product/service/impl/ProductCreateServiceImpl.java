@@ -5,7 +5,7 @@ import com.swapit.product.domain.Product;
 import com.swapit.product.domain.ProductSpecification;
 import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.repository.ProductSpecificationRepository;
-import com.swapit.product.service.ExternalOperationsService;
+import com.swapit.product.service.CacheService;
 import com.swapit.product.service.ProductCreateService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +19,14 @@ import org.springframework.stereotype.Service;
 public class ProductCreateServiceImpl implements ProductCreateService {
 
     private final ProductRepository productRepository;
-    private final ExternalOperationsService externalOperationsService;
     private final ProductSpecificationRepository productSpecificationsRepository;
+    private final CacheService cacheService;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void createProduct(ProductCreationRequest request) throws Exception {
-        Integer userId = externalOperationsService.getUserIdByUsernameOrEmail(request.getUsername(), null);
-        if (userId == null) {
-            throw new Exception("Error: User doesn't exist");
-        }
+    public void createProduct(ProductCreationRequest request) {
+        Integer userId = request.getUserId();
+        cacheService.deleteCachedProductsForUser(userId);
         Product product = Product.builder()
                 .title(request.getTitle())
                 .userId(userId)
@@ -39,10 +37,11 @@ public class ProductCreateServiceImpl implements ProductCreateService {
                 .build();
         productRepository.save(product);
         request.getProductSpecifications()
-                .forEach(productSpecification -> productSpecificationsRepository.save(ProductSpecification.builder()
+                .forEach((key, value) ->
+                        productSpecificationsRepository.save(ProductSpecification.builder()
                                         .product(product)
-                                        .key(productSpecification.getKey())
-                                        .value(productSpecification.getValue())
-                                .build()));
+                                        .key(key)
+                                        .value(value)
+                .build()));
     }
 }

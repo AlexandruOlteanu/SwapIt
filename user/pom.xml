@@ -23,7 +23,7 @@
 		<java.version>21</java.version>
 
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
-		<apiGateway.version>0.0.1-SNAPSHOT</apiGateway.version>
+		<product.version>0.0.1-SNAPSHOT</product.version>
 	</properties>
 
 	<dependencies>
@@ -32,13 +32,7 @@
 			<artifactId>commons</artifactId>
 			<version>${commons.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.swapit</groupId>
-			<artifactId>apiGateway-client</artifactId>
-			<version>${apiGateway.version}</version>
-		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
