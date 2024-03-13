@@ -27,6 +27,9 @@ public class Conversation {
     @Enumerated(EnumType.STRING)
     private ConversationType type;
 
+    @Column(name = "conversation_title")
+    private String conversationTitle;
+
     @Column(name = "last_action_at")
     private ZonedDateTime lastActionAt;
 

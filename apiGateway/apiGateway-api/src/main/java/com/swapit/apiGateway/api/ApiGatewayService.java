@@ -1,6 +1,8 @@
 package com.swapit.apiGateway.api;
 
-import com.swapit.chat.api.domain.request.PrivateChatMessage;
+import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
+import com.swapit.chat.api.domain.response.ConversationResponse;
+import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
@@ -11,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @Validated
@@ -23,6 +26,9 @@ public interface ApiGatewayService {
     String PRODUCT_CREATION = "productCreation";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
     String USER_DETAILS = "getUserDetails";
+    String GET_CONVERSATIONS_PREVIEW = "getConversationsPreview";
+    String GET_CONVERSATION = "getConversation";
+
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
@@ -34,10 +40,15 @@ public interface ApiGatewayService {
     void productCreation(@Valid @RequestBody ProductCreationRequest request);
 
     @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessage request);
+    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request);
 
     @GetMapping(value = BASE_URL + USER_DETAILS)
     ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
 
+    @GetMapping(value = BASE_URL + GET_CONVERSATIONS_PREVIEW)
+    ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "userId") Integer userId);
+
+    @GetMapping(value = BASE_URL + GET_CONVERSATION)
+    ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId) throws Exception;
 
 }

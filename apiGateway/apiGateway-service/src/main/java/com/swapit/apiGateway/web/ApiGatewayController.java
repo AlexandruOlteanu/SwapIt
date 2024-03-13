@@ -2,7 +2,9 @@ package com.swapit.apiGateway.web;
 
 import com.swapit.apiGateway.api.ApiGatewayService;
 import com.swapit.apiGateway.service.ExternalOperationsService;
-import com.swapit.chat.api.domain.request.PrivateChatMessage;
+import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
+import com.swapit.chat.api.domain.response.ConversationResponse;
+import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
@@ -37,13 +39,23 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public void sendPrivateMessage(PrivateChatMessage request) {
+    public void sendPrivateMessage(PrivateChatMessageRequest request) {
         externalOperationsService.sendPrivateMessage(request);
     }
 
     @Override
     public ResponseEntity<UserDetailsResponse> getUserDetails(Integer userId) {
         return ResponseEntity.ok(externalOperationsService.getUserDetails(userId));
+    }
+
+    @Override
+    public ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(Integer userId) {
+        return ResponseEntity.ok(externalOperationsService.getConversationsPreview(userId));
+    }
+
+    @Override
+    public ResponseEntity<ConversationResponse> getConversation(Integer conversationId) {
+        return ResponseEntity.ok(externalOperationsService.getConversation(conversationId));
     }
 
 }

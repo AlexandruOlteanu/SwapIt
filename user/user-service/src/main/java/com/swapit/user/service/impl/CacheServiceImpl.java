@@ -10,7 +10,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import static com.swapit.commons.cache.ConfigConstants.CACHE_USER_GET_DETAILS;
+import static com.swapit.commons.cache.ConfigConstants.*;
 
 @Service
 @RequiredArgsConstructor

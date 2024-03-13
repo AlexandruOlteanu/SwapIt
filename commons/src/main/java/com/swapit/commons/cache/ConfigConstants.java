@@ -6,4 +6,9 @@ public interface ConfigConstants {
 
     // User cache configurations
     String CACHE_USER_GET_DETAILS = "cachedUserDetails";
+
+    // Chat cache configurations
+    String CACHE_CONVERSATIONS_PREVIEWS = "cachedConversationsPreview";
+    String CACHE_SINGULAR_CONV_PREVIEW = "cacheSingularConvPreview";
+    String CACHE_CONVERSATION = "cacheConversation";
 }

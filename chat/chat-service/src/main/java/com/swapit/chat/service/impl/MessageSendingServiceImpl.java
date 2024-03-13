@@ -1,13 +1,14 @@
 package com.swapit.chat.service.impl;
 
 import com.pusher.rest.Pusher;
-import com.swapit.chat.api.domain.request.PrivateChatMessage;
+import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.domain.Conversation;
 import com.swapit.chat.domain.ConversationParticipants;
 import com.swapit.chat.domain.Message;
 import com.swapit.chat.repository.ConversationParticipantsRepository;
 import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.repository.MessageRepository;
+import com.swapit.chat.service.CacheService;
 import com.swapit.chat.service.MessageSendingService;
 import com.swapit.chat.utils.ConversationType;
 import com.swapit.chat.utils.MessageType;
@@ -15,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 
@@ -33,9 +35,10 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     private final ConversationRepository conversationRepository;
     private final ConversationParticipantsRepository conversationParticipantsRepository;
     private final MessageRepository messageRepository;
+    private final CacheService cacheService;
     @Override
     @Transactional
-    public void sendPrivateMessage(PrivateChatMessage request) {
+    public void sendPrivateMessage(PrivateChatMessageRequest request) {
         var senderId = request.getSenderId();
         var receiverId = request.getReceiverId();
         Integer conversationId = request.getConversationId();
@@ -71,7 +74,11 @@ public class MessageSendingServiceImpl implements MessageSendingService {
 
         pusher.trigger(channel, MESSAGE, request);
         log.info("Message sent to channel: " + channel);
-
+        cacheService.deleteAllCachedConversationPreview(senderId);
+        cacheService.deleteAllCachedConversationPreview(receiverId);
+        cacheService.deleteCachedConversationPreview(conversationId, senderId);
+        cacheService.deleteCachedConversationPreview(conversationId, receiverId);
+        cacheService.deleteCachedConversation(conversationId);
     }
 
     private String generatePrivateConversationChannelPath(Integer receiver, Integer conversationId) {
