@@ -1,16 +1,18 @@
 package com.swapit.product.service.impl;
 
+import com.swapit.commons.cache.CacheInvalidateService;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.product.domain.Product;
 import com.swapit.product.domain.ProductSpecification;
 import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.repository.ProductSpecificationRepository;
-import com.swapit.product.service.CacheService;
 import com.swapit.product.service.ProductCreateService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import static com.swapit.commons.cache.CacheConstants.CACHE_PRODUCTS_FOR_USER;
 
 
 @Service
@@ -20,13 +22,13 @@ public class ProductCreateServiceImpl implements ProductCreateService {
 
     private final ProductRepository productRepository;
     private final ProductSpecificationRepository productSpecificationsRepository;
-    private final CacheService cacheService;
+    private final CacheInvalidateService cacheInvalidateService;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
     public void createProduct(ProductCreationRequest request) {
         Integer userId = request.getUserId();
-        cacheService.deleteCachedProductsForUser(userId);
+        cacheInvalidateService.invalidateCache(CACHE_PRODUCTS_FOR_USER, userId);
         Product product = Product.builder()
                 .title(request.getTitle())
                 .userId(userId)

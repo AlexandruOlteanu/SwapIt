@@ -6,8 +6,10 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
+import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
 import com.swapit.user.api.domain.response.UserDetailsResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ public interface ApiGatewayService {
     String USER_DETAILS = "getUserDetails";
     String GET_CONVERSATIONS_PREVIEW = "getConversationsPreview";
     String GET_CONVERSATION = "getConversation";
+    String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
 
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
@@ -49,6 +52,9 @@ public interface ApiGatewayService {
     ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "userId") Integer userId);
 
     @GetMapping(value = BASE_URL + GET_CONVERSATION)
-    ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId) throws Exception;
+    ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId);
+
+    @PutMapping(value = BASE_URL + UPDATE_BASIC_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
+    ResponseEntity<UpdateBasicUserDetailsResponse> updateBasicUserDetails(@Valid @RequestBody UpdateBasicUserDetailsRequest request);
 
 }

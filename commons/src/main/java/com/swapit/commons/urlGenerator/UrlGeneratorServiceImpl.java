@@ -1,15 +1,19 @@
-package com.swapit.commons.service.impl;
+package com.swapit.commons.urlGenerator;
 
-import com.swapit.commons.service.UrlGeneratorService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class UrlGeneratorServiceImpl implements UrlGeneratorService {
 
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
-        GET_CONVERSATIONS_PREVIEW, SPECIFIC_USER_DETAIL, GET_CONVERSATION
+        GET_CONVERSATIONS_PREVIEW, SPECIFIC_USER_DETAIL, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
+        UPDATE_ADVANCED_USER_DETAILS
     }
 
     // BFF URI
@@ -29,6 +33,10 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String getSpecificUserDetailUri;
     @Value("${chat.getConversation.route}")
     private String getConversationUri;
+    @Value("${user.updateBasicUserDetails.route}")
+    private String updateBasicUserDetailsUri;
+    @Value("${user.updateAdvancedUserDetails.route}")
+    private String updateAdvancedUserDetailsUri;
     @Override
     public String getServiceURL(UrlIdentifier api) {
         return switch (api) {
@@ -40,6 +48,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case GET_CONVERSATIONS_PREVIEW -> getConversationsPreviewUri;
             case SPECIFIC_USER_DETAIL -> getSpecificUserDetailUri;
             case GET_CONVERSATION -> getConversationUri;
+            case UPDATE_BASIC_USER_DETAILS -> updateBasicUserDetailsUri;
+            case UPDATE_ADVANCED_USER_DETAILS -> updateAdvancedUserDetailsUri;
         };
     }
 }

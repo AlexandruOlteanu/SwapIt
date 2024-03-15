@@ -1,5 +1,6 @@
 package com.swapit.user.api.domain.request;
 
+import com.swapit.user.api.util.UserDetailType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -12,5 +13,5 @@ public class SpecificUserDetailRequest {
     @NotNull
     private Integer userId;
     @NotNull
-    private String actionType;
+    private UserDetailType userDetailType;
 }

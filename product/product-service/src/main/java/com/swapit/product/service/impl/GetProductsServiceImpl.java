@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.swapit.commons.cache.ConfigConstants.CACHE_PRODUCTS_FOR_USERS;
+import static com.swapit.commons.cache.CacheConstants.CACHE_PRODUCTS_FOR_USER;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class GetProductsServiceImpl implements GetProductsService {
     private final ProductRepository productRepository;
 
     @Override
-    @Cacheable(value = CACHE_PRODUCTS_FOR_USERS, key = "#userId")
+    @Cacheable(value = CACHE_PRODUCTS_FOR_USER, key = "@cacheKeyGenerator.generateKey(#userId)")
     public GetProductsResponse getAllProductsByUserId(Integer userId) {
         List<Product> products = productRepository.findAllByUserIdOrderByCreationDateDesc(userId)
                 .orElse(new ArrayList<>());

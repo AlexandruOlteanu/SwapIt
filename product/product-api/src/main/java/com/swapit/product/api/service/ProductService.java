@@ -18,7 +18,7 @@ public interface ProductService {
 
 
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void createProduct(@Valid @RequestBody ProductCreationRequest request) throws Exception;
+    void createProduct(@Valid @RequestBody ProductCreationRequest request);
 
     @GetMapping(value = BASE_URL + GET_ALL_PRODUCTS_BY_USER_ID)
     ResponseEntity<GetProductsResponse> getAllProductsByUserId(@RequestParam(value = "userId") Integer userId);

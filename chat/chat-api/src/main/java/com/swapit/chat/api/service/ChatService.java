@@ -24,6 +24,6 @@ public interface ChatService {
     @GetMapping(value = BASE_URL + GET_CONVERSATIONS_PREVIEW)
     ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "userId") Integer userId);
     @GetMapping(value = BASE_URL + GET_CONVERSATION)
-    ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId) throws Exception;
+    ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId);
 
 }

@@ -7,10 +7,11 @@ import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.SpecificUserDetailRequest;
+import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
 import com.swapit.user.api.domain.response.UserDetailsResponse;
-import org.springframework.http.ResponseEntity;
 
 public interface ExternalOperationsService {
 
@@ -22,5 +23,6 @@ public interface ExternalOperationsService {
     ConversationsPreviewResponse getConversationsPreview(Integer userId);
     <T> T getSpecificUserDetail(SpecificUserDetailRequest request, Class<T> objType);
     ConversationResponse getConversation(Integer conversationId);
+    UpdateBasicUserDetailsResponse updateBasicUserDetails(UpdateBasicUserDetailsRequest request);
 
 }

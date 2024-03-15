@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.swapit.commons.cache.ConfigConstants.CACHE_CONVERSATION;
-import static com.swapit.commons.cache.ConfigConstants.CACHE_CONVERSATIONS_PREVIEWS;
+import static com.swapit.commons.cache.CacheConstants.CACHE_CONVERSATION;
+import static com.swapit.commons.cache.CacheConstants.CACHE_CONVERSATIONS_PREVIEW;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +28,7 @@ public class GetConversationServiceImpl implements GetConversationService {
     private final ConversationRepository conversationRepository;
     private final ConversationPreviewService conversationPreviewService;
     @Override
-    @Cacheable(value = CACHE_CONVERSATIONS_PREVIEWS, key = "#userId")
+    @Cacheable(value = CACHE_CONVERSATIONS_PREVIEW, key = "@cacheKeyGenerator.generateKey(#userId)")
     public ConversationsPreviewResponse getConversationsPreview(Integer userId) {
         List<Integer> conversationsIds = conversationRepository.findAllConversationsIdsOfUser(userId)
                 .orElse(new ArrayList<>());
@@ -39,10 +39,10 @@ public class GetConversationServiceImpl implements GetConversationService {
     }
 
     @Override
-    @Cacheable(value = CACHE_CONVERSATION, key = "#conversationId")
-    public ConversationResponse getConversation(Integer conversationId) throws Exception {
+    @Cacheable(value = CACHE_CONVERSATION, key = "@cacheKeyGenerator.generateKey(#conversationId)")
+    public ConversationResponse getConversation(Integer conversationId) {
         Conversation conversation = conversationRepository.findByConversationId(conversationId)
-                .orElseThrow(() -> new Exception("Conversation doesn't exist"));
+                .orElseThrow(() -> new RuntimeException("Conversation doesn't exist"));
         Collections.reverse(conversation.getMessages());
         List<Integer> conversationParticipantsIds = conversation.getConversationParticipants()
                 .stream().map(ConversationParticipants::getUserId).toList();

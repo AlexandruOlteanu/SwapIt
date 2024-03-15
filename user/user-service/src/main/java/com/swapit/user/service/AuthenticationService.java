@@ -8,6 +8,6 @@ import com.swapit.user.api.domain.response.RegisterResponse;
 public interface AuthenticationService {
 
     LoginResponse login(LoginRequest request);
-    RegisterResponse register(RegisterRequest request) throws Exception;
+    RegisterResponse register(RegisterRequest request);
 
 }

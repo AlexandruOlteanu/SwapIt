@@ -3,10 +3,11 @@ package com.swapit.user.api.service;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.SpecificUserDetailRequest;
+import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
 import com.swapit.user.api.domain.response.UserDetailsResponse;
-import com.swapit.user.api.util.SpecificUserDetailActionType;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,17 +24,21 @@ public interface UserService {
     String REGISTER = "register";
     String USER_DETAILS = "getUserDetails";
     String SPECIFIC_USER_DETAIL = "getSpecificUserDetail";
+    String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
 
     @PostMapping(value = BASE_URL + AUTHENTICATION + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
 
     @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) throws Exception;
+    ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
 
     @GetMapping(value = BASE_URL + USER_DETAILS)
     ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
 
     @PostMapping(value = BASE_URL + SPECIFIC_USER_DETAIL, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<Object> getSpecificUserDetail(@Valid @RequestBody SpecificUserDetailRequest request) throws Exception;
+    ResponseEntity<Object> getSpecificUserDetail(@Valid @RequestBody SpecificUserDetailRequest request);
+
+    @PutMapping(value = BASE_URL + UPDATE_BASIC_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
+    ResponseEntity<UpdateBasicUserDetailsResponse> updateBasicUserDetails(@Valid @RequestBody UpdateBasicUserDetailsRequest request);
 
 }

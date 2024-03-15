@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.swapit.commons.cache.ConfigConstants.CACHE_SINGULAR_CONV_PREVIEW;
+import static com.swapit.commons.cache.CacheConstants.CACHE_SINGULAR_CONVERSATION_PREVIEW;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +22,7 @@ public class ConversationPreviewServiceImpl implements ConversationPreviewServic
     private final ConversationRepository conversationRepository;
 
     @Override
-    @Cacheable(value = CACHE_SINGULAR_CONV_PREVIEW, key = "#conversationId + '_' + #userId")
+    @Cacheable(value = CACHE_SINGULAR_CONVERSATION_PREVIEW, key = "@cacheKeyGenerator.generateKey(#conversationId, #userId)")
     public ConversationPreviewDTO getConversationPreview(Integer conversationId, Integer userId) {
         Conversation conversation = conversationRepository.findById(conversationId).orElse(Conversation.builder().build());
         List<Integer> otherParticipantsIds = conversation.getConversationParticipants().stream()

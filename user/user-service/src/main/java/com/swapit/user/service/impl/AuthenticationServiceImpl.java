@@ -41,7 +41,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public RegisterResponse register(RegisterRequest request) throws Exception {
+    public RegisterResponse register(RegisterRequest request) {
         User user = User.builder()
                 .username(request.getUsername())
                 .name(request.getName())
@@ -52,7 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
         Optional<User> existingUser = userRepository.findUserByUsername(user.getUsername());
         if (existingUser.isPresent()) {
-            throw new Exception("Username already registered");
+            throw new RuntimeException("Username already registered");
         }
         Integer userId = userRepository.save(user).getUserId();
         return RegisterResponse.builder()

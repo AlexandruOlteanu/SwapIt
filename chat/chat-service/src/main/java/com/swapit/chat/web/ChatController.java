@@ -30,7 +30,7 @@ public class ChatController implements ChatService {
     }
 
     @Override
-    public ResponseEntity<ConversationResponse> getConversation(Integer conversationId) throws Exception {
+    public ResponseEntity<ConversationResponse> getConversation(Integer conversationId) {
         return ResponseEntity.ok(getConversationService.getConversation(conversationId));
     }
 }

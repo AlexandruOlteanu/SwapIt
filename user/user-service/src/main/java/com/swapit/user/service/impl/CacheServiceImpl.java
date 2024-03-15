@@ -6,11 +6,10 @@ import com.swapit.user.repository.UserRepository;
 import com.swapit.user.service.CacheService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import static com.swapit.commons.cache.ConfigConstants.*;
+import static com.swapit.commons.cache.CacheConstants.CACHE_USER_FROM_DB;
 
 @Service
 @RequiredArgsConstructor
@@ -19,16 +18,9 @@ public class CacheServiceImpl implements CacheService {
 
     private final UserRepository userRepository;
 
-    @Cacheable(value = CACHE_USER_GET_DETAILS, key = "#userId")
-    public User getUserDetailsFromDb(Integer userId) throws Exception {
+    @Cacheable(value = CACHE_USER_FROM_DB, key = "@cacheKeyGenerator.generateKey(#userId)")
+    public User getCompleteUserDetails(Integer userId) {
         return userRepository.findUserByUserId(userId)
-                .orElseThrow(() -> new Exception("User with id " + userId + "doesn't exist"));
+                .orElseThrow(() -> new RuntimeException("User with id " + userId + "doesn't exist"));
     }
-
-    @Override
-    @CacheEvict(value = CACHE_USER_GET_DETAILS, key = "#userId")
-    public void deleteCachedUserDetailsFromDb(Integer userId) {
-
-    }
-
 }
