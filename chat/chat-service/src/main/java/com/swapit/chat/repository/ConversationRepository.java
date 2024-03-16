@@ -11,12 +11,8 @@ public interface ConversationRepository extends JpaRepository<Conversation, Inte
     @Query("select c from Conversation c join c.conversationParticipants p where p.userId = :userId order by c.lastActionAt desc")
     Optional<List<Conversation>> findAllByUserId(Integer userId);
 
-    @Query("select c.conversationId from Conversation c join c.conversationParticipants p where p.userId = :userId order by c.lastActionAt desc")
-    Optional<List<Integer>> findAllConversationsIdsOfUser(Integer userId);
-
     @Query("select c.conversationId from Conversation c join c.conversationParticipants p where p.userId in (:firstUserId, :secondUserId) group by c.conversationId " +
             "having count(distinct p.userId) = 2 and count(p) = 2")
     Optional<Integer> findPrivateConversationId(Integer firstUserId, Integer secondUserId);
 
-    Optional<Conversation> findByConversationId(Integer conversationId);
 }

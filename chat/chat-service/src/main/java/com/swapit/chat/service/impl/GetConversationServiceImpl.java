@@ -10,15 +10,12 @@ import com.swapit.chat.service.ConversationPreviewService;
 import com.swapit.chat.service.GetConversationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.swapit.commons.cache.CacheConstants.CACHE_CONVERSATION;
-import static com.swapit.commons.cache.CacheConstants.CACHE_CONVERSATIONS_PREVIEW;
 
 @Service
 @RequiredArgsConstructor
@@ -28,20 +25,18 @@ public class GetConversationServiceImpl implements GetConversationService {
     private final ConversationRepository conversationRepository;
     private final ConversationPreviewService conversationPreviewService;
     @Override
-    @Cacheable(value = CACHE_CONVERSATIONS_PREVIEW, key = "@cacheKeyGenerator.generateKey(#userId)")
     public ConversationsPreviewResponse getConversationsPreview(Integer userId) {
-        List<Integer> conversationsIds = conversationRepository.findAllConversationsIdsOfUser(userId)
+        List<Conversation> conversations = conversationRepository.findAllByUserId(userId)
                 .orElse(new ArrayList<>());
         return ConversationsPreviewResponse.builder()
-                .conversationsPreview(conversationsIds.stream()
-                        .map(conversationId -> conversationPreviewService.getConversationPreview(conversationId, userId)).toList())
+                .conversationsPreview(conversations.stream()
+                        .map(conversation -> conversationPreviewService.getConversationPreview(conversation, userId)).toList())
                 .build();
     }
 
     @Override
-    @Cacheable(value = CACHE_CONVERSATION, key = "@cacheKeyGenerator.generateKey(#conversationId)")
     public ConversationResponse getConversation(Integer conversationId) {
-        Conversation conversation = conversationRepository.findByConversationId(conversationId)
+        Conversation conversation = conversationRepository.findById(conversationId)
                 .orElseThrow(() -> new RuntimeException("Conversation doesn't exist"));
         Collections.reverse(conversation.getMessages());
         List<Integer> conversationParticipantsIds = conversation.getConversationParticipants()

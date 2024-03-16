@@ -10,7 +10,6 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.swapit.commons.cache.CacheConstants.CACHE_CONVERSATIONS_PREVIEW;
 
 
 @Configuration
@@ -18,23 +17,19 @@ public class HazelcastConfig {
 
     @Value("${hazelcast.member.ip}")
     private String memberIp;
-    @Value("${cache.conversations.preview.ttl}")
-    private Integer cacheConversationsPreviewTtl;
+    @Value("${hazelcast.instance.name}")
+    private String hazelcastInstanceName;
 
     @Bean
     public Config hazelcastConfiguration() {
         Config config = new Config();
 
+        config.setInstanceName(hazelcastInstanceName);
+
         // Customize the network configuration
         NetworkConfig networkConfig = config.getNetworkConfig();
         JoinConfig joinConfig = networkConfig.getJoin();
         joinConfig.getMulticastConfig().setEnabled(false); // Disable multicast
-
-        MapConfig mapConfig = new MapConfig();
-        mapConfig.setName(CACHE_CONVERSATIONS_PREVIEW);
-        mapConfig.setTimeToLiveSeconds(cacheConversationsPreviewTtl);
-
-        config.addMapConfig(mapConfig);
 
         // Enable and configure TCP/IP join
         TcpIpConfig tcpIpConfig = joinConfig.getTcpIpConfig();

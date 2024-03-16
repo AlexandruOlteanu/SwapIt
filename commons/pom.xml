@@ -23,8 +23,8 @@
 
 		<!-- External Libraries Dependencies -->
 		<jjwt.version>0.11.5</jjwt.version>
-		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<hazelcast.version>5.3.6</hazelcast.version>
+		<hazelcast-hibernate.version>5.1.0</hazelcast-hibernate.version>
 
 	</properties>
 
@@ -119,6 +119,11 @@
 			<groupId>com.hazelcast</groupId>
 			<artifactId>hazelcast-spring</artifactId>
 			<version>${hazelcast.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast-hibernate53</artifactId>
+			<version>${hazelcast-hibernate.version}</version>
 		</dependency>
 
 	</dependencies>

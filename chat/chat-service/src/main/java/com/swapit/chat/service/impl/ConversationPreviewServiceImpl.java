@@ -7,12 +7,9 @@ import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.service.ConversationPreviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.swapit.commons.cache.CacheConstants.CACHE_SINGULAR_CONVERSATION_PREVIEW;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +19,7 @@ public class ConversationPreviewServiceImpl implements ConversationPreviewServic
     private final ConversationRepository conversationRepository;
 
     @Override
-    @Cacheable(value = CACHE_SINGULAR_CONVERSATION_PREVIEW, key = "@cacheKeyGenerator.generateKey(#conversationId, #userId)")
-    public ConversationPreviewDTO getConversationPreview(Integer conversationId, Integer userId) {
-        Conversation conversation = conversationRepository.findById(conversationId).orElse(Conversation.builder().build());
+    public ConversationPreviewDTO getConversationPreview(Conversation conversation, Integer userId) {
         List<Integer> otherParticipantsIds = conversation.getConversationParticipants().stream()
                 .map(ConversationParticipants::getUserId)
                 .filter(participantId -> !participantId.equals(userId))

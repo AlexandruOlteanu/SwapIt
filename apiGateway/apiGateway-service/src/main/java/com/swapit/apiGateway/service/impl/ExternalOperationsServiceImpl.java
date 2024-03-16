@@ -9,17 +9,13 @@ import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
-import com.swapit.user.api.domain.request.SpecificUserDetailRequest;
+import com.swapit.user.api.domain.request.SpecificUsersDetailsRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
-import com.swapit.user.api.domain.response.LoginResponse;
-import com.swapit.user.api.domain.response.RegisterResponse;
-import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
-import com.swapit.user.api.domain.response.UserDetailsResponse;
+import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.util.UserDetailType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -27,9 +23,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-import static com.swapit.commons.cache.CacheConstants.CACHE_CONVERSATIONS_PREVIEW;
+import static com.swapit.user.api.util.UserDetailType.NAME;
+import static com.swapit.user.api.util.UserDetailType.SURNAME;
 
 
 @Service
@@ -106,7 +106,6 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    @Cacheable(value = CACHE_CONVERSATIONS_PREVIEW, key = "@cacheKeyGenerator.generateKey(#userId)")
     public ConversationsPreviewResponse getConversationsPreview(Integer userId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_CONVERSATIONS_PREVIEW);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
@@ -116,19 +115,25 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             ConversationsPreviewResponse conversationsPreviewResponse = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, ConversationsPreviewResponse.class).getBody();
 
             assert conversationsPreviewResponse != null;
+            Map<Integer, List<UserDetailType>> requestedUserDetails = new HashMap<>();
             conversationsPreviewResponse.getConversationsPreview()
+                    .stream().filter(cp -> cp.getConversationTitle() == null)
                     .forEach(conversationPreview -> {
-                        if (conversationPreview.getConversationTitle() == null) {
-                            String userName = getSpecificUserDetail(SpecificUserDetailRequest.builder()
-                                    .userId(conversationPreview.getOtherParticipantsIds().getFirst())
-                                    .userDetailType(UserDetailType.NAME)
-                                    .build(), String.class);
-                            String userSurname = getSpecificUserDetail(SpecificUserDetailRequest.builder()
-                                    .userId(conversationPreview.getOtherParticipantsIds().getFirst())
-                                    .userDetailType(UserDetailType.SURNAME)
-                                    .build(), String.class);
-                            conversationPreview.setConversationTitle(userName + " " + userSurname);
-                        }
+                            Integer correspondent = conversationPreview.getOtherParticipantsIds().getFirst();
+                            requestedUserDetails.put(correspondent, List.of(NAME, SURNAME));
+                    });
+            SpecificUsersDetailsRequest request = SpecificUsersDetailsRequest.builder()
+                    .requestedUserDetails(requestedUserDetails)
+                    .build();
+            SpecificUsersDetailsResponse response = getSpecificUserDetails(request);
+            conversationsPreviewResponse.getConversationsPreview()
+                    .stream().filter(cp -> cp.getConversationTitle() == null)
+                    .forEach(cp -> {
+                        Integer correspondent = cp.getOtherParticipantsIds().getFirst();
+                        var currentUserDetails = response.getRequestedUserDetails().get(correspondent);
+                        String userName = (String) currentUserDetails.get(NAME);
+                        String userSurname = (String) currentUserDetails.get(SURNAME);
+                        cp.setConversationTitle(userName + " " + userSurname);
                     });
             return conversationsPreviewResponse;
         } catch (Exception e) {
@@ -137,11 +142,11 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         }
     }
 
-    public <T> T getSpecificUserDetail(SpecificUserDetailRequest request, Class<T> responseType) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SPECIFIC_USER_DETAIL);
+    public SpecificUsersDetailsResponse getSpecificUserDetails(SpecificUsersDetailsRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SPECIFIC_USERS_DETAILS);
         log.info(url);
         try {
-            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), responseType).getBody();
+            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), SpecificUsersDetailsResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting specific user detail {}", e.getMessage(), e);
             throw e;

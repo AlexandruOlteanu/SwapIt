@@ -11,18 +11,13 @@ import com.swapit.chat.repository.MessageRepository;
 import com.swapit.chat.service.MessageSendingService;
 import com.swapit.chat.utils.ConversationType;
 import com.swapit.chat.utils.MessageType;
-import com.swapit.commons.cache.CacheInvalidateService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-
 import java.time.ZonedDateTime;
-
 import static com.swapit.chat.utils.Constants.*;
-import static com.swapit.commons.cache.CacheConstants.*;
 
 
 @Service
@@ -35,7 +30,6 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     private final ConversationRepository conversationRepository;
     private final ConversationParticipantsRepository conversationParticipantsRepository;
     private final MessageRepository messageRepository;
-    private final CacheInvalidateService cacheInvalidateService;
     @Override
     @Transactional
     public void sendPrivateMessage(PrivateChatMessageRequest request) {
@@ -74,12 +68,6 @@ public class MessageSendingServiceImpl implements MessageSendingService {
 
         pusher.trigger(channel, MESSAGE, request);
         log.info("Message sent to channel: " + channel);
-
-        cacheInvalidateService.invalidateCache(CACHE_CONVERSATIONS_PREVIEW, senderId);
-        cacheInvalidateService.invalidateCache(CACHE_CONVERSATIONS_PREVIEW, receiverId);
-        cacheInvalidateService.invalidateCache(CACHE_SINGULAR_CONVERSATION_PREVIEW, conversationId, senderId);
-        cacheInvalidateService.invalidateCache(CACHE_SINGULAR_CONVERSATION_PREVIEW, conversationId, receiverId);
-        cacheInvalidateService.invalidateCache(CACHE_CONVERSATION, conversationId);
     }
 
     private String generatePrivateConversationChannelPath(Integer receiver, Integer conversationId) {

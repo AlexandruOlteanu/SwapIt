@@ -12,7 +12,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
 
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
-        GET_CONVERSATIONS_PREVIEW, SPECIFIC_USER_DETAIL, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
+        GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
         UPDATE_ADVANCED_USER_DETAILS
     }
 
@@ -29,8 +29,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String getUserDetailsUri;
     @Value("${chat.getConversationsPreview.route}")
     private String getConversationsPreviewUri;
-    @Value("${user.getSpecificUserDetail.route}")
-    private String getSpecificUserDetailUri;
+    @Value("${user.getSpecificUsersDetails.route}")
+    private String getSpecificUsersDetailsUri;
     @Value("${chat.getConversation.route}")
     private String getConversationUri;
     @Value("${user.updateBasicUserDetails.route}")
@@ -46,7 +46,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case SEND_PRIVATE_MESSAGE -> sendPrivateMessageUri;
             case GET_USER_DETAILS -> getUserDetailsUri;
             case GET_CONVERSATIONS_PREVIEW -> getConversationsPreviewUri;
-            case SPECIFIC_USER_DETAIL -> getSpecificUserDetailUri;
+            case SPECIFIC_USERS_DETAILS -> getSpecificUsersDetailsUri;
             case GET_CONVERSATION -> getConversationUri;
             case UPDATE_BASIC_USER_DETAILS -> updateBasicUserDetailsUri;
             case UPDATE_ADVANCED_USER_DETAILS -> updateAdvancedUserDetailsUri;

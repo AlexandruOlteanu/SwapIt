@@ -1,6 +1,5 @@
 package com.swapit.user.service.impl;
 
-import com.swapit.commons.cache.CacheInvalidateService;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
 import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
 import com.swapit.user.api.util.UserDetailType;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.swapit.commons.cache.CacheConstants.CACHE_USER_FROM_DB;
 
 @Service
 @RequiredArgsConstructor
@@ -19,11 +17,10 @@ import static com.swapit.commons.cache.CacheConstants.CACHE_USER_FROM_DB;
 public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
 
     private final UserRepository userRepository;
-    private final CacheInvalidateService cacheInvalidateService;
 
     @Override
     public UpdateBasicUserDetailsResponse updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
-        User user = userRepository.findUserByUserId(request.getUserId())
+        User user = userRepository.findById(request.getUserId())
                 .orElseThrow();
         request.getUserDetails().forEach((key, value) -> {
                      switch (UserDetailType.valueOf(key)) {
@@ -33,7 +30,6 @@ public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
                      }
                 });
         userRepository.save(user);
-        cacheInvalidateService.invalidateCache(CACHE_USER_FROM_DB, user.getUserId());
         return UpdateBasicUserDetailsResponse.builder()
                 .name(user.getName())
                 .surname(user.getSurname())

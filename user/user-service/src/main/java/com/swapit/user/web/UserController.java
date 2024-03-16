@@ -2,12 +2,9 @@ package com.swapit.user.web;
 
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
-import com.swapit.user.api.domain.request.SpecificUserDetailRequest;
+import com.swapit.user.api.domain.request.SpecificUsersDetailsRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
-import com.swapit.user.api.domain.response.LoginResponse;
-import com.swapit.user.api.domain.response.RegisterResponse;
-import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
-import com.swapit.user.api.domain.response.UserDetailsResponse;
+import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.service.UserService;
 import com.swapit.user.service.*;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +37,8 @@ public class UserController implements UserService {
     }
 
     @Override
-    public ResponseEntity<Object> getSpecificUserDetail(SpecificUserDetailRequest request) {
-        return ResponseEntity.ok(getUserDetailsService.getSpecificUserDetail(request));
+    public ResponseEntity<SpecificUsersDetailsResponse> getSpecificUsersDetails(SpecificUsersDetailsRequest request) {
+        return ResponseEntity.ok(getUserDetailsService.getSpecificUsersDetails(request));
     }
 
     @Override
