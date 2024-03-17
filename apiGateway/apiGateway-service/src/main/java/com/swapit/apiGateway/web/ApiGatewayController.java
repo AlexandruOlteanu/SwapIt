@@ -9,9 +9,9 @@ import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
+import com.swapit.user.api.domain.request.UpdateProtectedUserDetailsRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
-import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
 import com.swapit.user.api.domain.response.UserDetailsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +61,13 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<UpdateBasicUserDetailsResponse> updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
-        return ResponseEntity.ok(externalOperationsService.updateBasicUserDetails(request));
+    public void  updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
+        externalOperationsService.updateBasicUserDetails(request);
+    }
+
+    @Override
+    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
+        externalOperationsService.updateProtectedUserDetails(request);
     }
 
 }

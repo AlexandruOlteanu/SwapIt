@@ -4,7 +4,7 @@ import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.user.api.domain.request.SpecificUsersDetailsRequest;
 import com.swapit.user.api.domain.response.SpecificUsersDetailsResponse;
 import com.swapit.user.api.domain.response.UserDetailsResponse;
-import com.swapit.user.api.util.UserDetailType;
+import com.swapit.user.api.util.UserBasicDetailType;
 import com.swapit.user.domain.User;
 import com.swapit.user.repository.UserRepository;
 import com.swapit.user.service.ExternalOperationsService;
@@ -41,12 +41,12 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
 
     @Override
     public SpecificUsersDetailsResponse getSpecificUsersDetails(SpecificUsersDetailsRequest request){
-        Map<Integer, Map<UserDetailType, Object>> requestedDetails = new HashMap<>();
+        Map<Integer, Map<UserBasicDetailType, Object>> requestedDetails = new HashMap<>();
         request.getRequestedUserDetails()
                 .forEach((key, value) -> {
-                    Map<UserDetailType, Object> currentUserDetails = new HashMap<>();
+                    Map<UserBasicDetailType, Object> currentUserDetails = new HashMap<>();
                     User user = userRepository.findById(key).orElseThrow();
-                    value.forEach(userDetailType -> currentUserDetails.put(userDetailType, getSpecificDetail(userDetailType, user)));
+                    value.forEach(userBasicDetailType -> currentUserDetails.put(userBasicDetailType, getSpecificDetail(userBasicDetailType, user)));
                     requestedDetails.put(key, currentUserDetails);
                 });
         return SpecificUsersDetailsResponse.builder()
@@ -54,8 +54,8 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
                 .build();
     }
 
-    private Object getSpecificDetail(UserDetailType userDetailType, User user) {
-        return switch (userDetailType) {
+    private Object getSpecificDetail(UserBasicDetailType userBasicDetailType, User user) {
+        return switch (userBasicDetailType) {
             case NAME -> user.getName();
             case SURNAME -> user.getSurname();
             case USERNAME -> user.getUsername();

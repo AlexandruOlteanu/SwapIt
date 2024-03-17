@@ -7,12 +7,9 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.commons.urlGenerator.UrlGeneratorService;
 import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
-import com.swapit.user.api.domain.request.LoginRequest;
-import com.swapit.user.api.domain.request.RegisterRequest;
-import com.swapit.user.api.domain.request.SpecificUsersDetailsRequest;
-import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
+import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
-import com.swapit.user.api.util.UserDetailType;
+import com.swapit.user.api.util.UserBasicDetailType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,8 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.swapit.user.api.util.UserDetailType.NAME;
-import static com.swapit.user.api.util.UserDetailType.SURNAME;
+import static com.swapit.user.api.util.UserBasicDetailType.NAME;
+import static com.swapit.user.api.util.UserBasicDetailType.SURNAME;
 
 
 @Service
@@ -115,7 +112,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             ConversationsPreviewResponse conversationsPreviewResponse = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, ConversationsPreviewResponse.class).getBody();
 
             assert conversationsPreviewResponse != null;
-            Map<Integer, List<UserDetailType>> requestedUserDetails = new HashMap<>();
+            Map<Integer, List<UserBasicDetailType>> requestedUserDetails = new HashMap<>();
             conversationsPreviewResponse.getConversationsPreview()
                     .stream().filter(cp -> cp.getConversationTitle() == null)
                     .forEach(conversationPreview -> {
@@ -125,7 +122,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             SpecificUsersDetailsRequest request = SpecificUsersDetailsRequest.builder()
                     .requestedUserDetails(requestedUserDetails)
                     .build();
-            SpecificUsersDetailsResponse response = getSpecificUserDetails(request);
+            SpecificUsersDetailsResponse response = getSpecificUsersDetails(request);
             conversationsPreviewResponse.getConversationsPreview()
                     .stream().filter(cp -> cp.getConversationTitle() == null)
                     .forEach(cp -> {
@@ -142,13 +139,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         }
     }
 
-    public SpecificUsersDetailsResponse getSpecificUserDetails(SpecificUsersDetailsRequest request) {
+    public SpecificUsersDetailsResponse getSpecificUsersDetails(SpecificUsersDetailsRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SPECIFIC_USERS_DETAILS);
         log.info(url);
         try {
             return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), SpecificUsersDetailsResponse.class).getBody();
         } catch (Exception e) {
-            log.error("Exception in getting specific user detail {}", e.getMessage(), e);
+            log.error("Exception in getting specific user details {}", e.getMessage(), e);
             throw e;
         }
     }
@@ -168,13 +165,25 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public UpdateBasicUserDetailsResponse updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
+    public void updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_BASIC_USER_DETAILS);
         log.info(url);
         try {
-            return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), UpdateBasicUserDetailsResponse.class).getBody();
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
         } catch (Exception e) {
             log.error("Exception in Updating Basic User Details: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_PROTECTED_USER_DETAILS);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in Updating Protected User Details: {}", e.getMessage(), e);
             throw e;
         }
     }

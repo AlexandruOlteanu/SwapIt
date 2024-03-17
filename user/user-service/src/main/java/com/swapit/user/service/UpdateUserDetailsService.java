@@ -1,8 +1,9 @@
 package com.swapit.user.service;
 
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
-import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
+import com.swapit.user.api.domain.request.UpdateProtectedUserDetailsRequest;
 
 public interface UpdateUserDetailsService {
-    UpdateBasicUserDetailsResponse updateBasicUserDetails(UpdateBasicUserDetailsRequest request);
+    void updateBasicUserDetails(UpdateBasicUserDetailsRequest request);
+    void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request);
 }

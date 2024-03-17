@@ -13,7 +13,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
-        UPDATE_ADVANCED_USER_DETAILS
+        UPDATE_PROTECTED_USER_DETAILS
     }
 
     // BFF URI
@@ -35,8 +35,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String getConversationUri;
     @Value("${user.updateBasicUserDetails.route}")
     private String updateBasicUserDetailsUri;
-    @Value("${user.updateAdvancedUserDetails.route}")
-    private String updateAdvancedUserDetailsUri;
+    @Value("${user.updateProtectedUserDetails.route}")
+    private String updateProtectedUserDetailsUri;
     @Override
     public String getServiceURL(UrlIdentifier api) {
         return switch (api) {
@@ -49,7 +49,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case SPECIFIC_USERS_DETAILS -> getSpecificUsersDetailsUri;
             case GET_CONVERSATION -> getConversationUri;
             case UPDATE_BASIC_USER_DETAILS -> updateBasicUserDetailsUri;
-            case UPDATE_ADVANCED_USER_DETAILS -> updateAdvancedUserDetailsUri;
+            case UPDATE_PROTECTED_USER_DETAILS -> updateProtectedUserDetailsUri;
         };
     }
 }

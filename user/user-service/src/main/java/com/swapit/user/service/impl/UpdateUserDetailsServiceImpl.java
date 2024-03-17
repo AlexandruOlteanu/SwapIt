@@ -1,13 +1,15 @@
 package com.swapit.user.service.impl;
 
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
-import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
-import com.swapit.user.api.util.UserDetailType;
+import com.swapit.user.api.domain.request.UpdateProtectedUserDetailsRequest;
 import com.swapit.user.domain.User;
 import com.swapit.user.repository.UserRepository;
 import com.swapit.user.service.UpdateUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -17,22 +19,36 @@ import org.springframework.stereotype.Service;
 public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
 
     private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UpdateBasicUserDetailsResponse updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
+    public void updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow();
         request.getUserDetails().forEach((key, value) -> {
-                     switch (UserDetailType.valueOf(key)) {
-                         case NAME -> user.setName(value);
-                         case SURNAME -> user.setSurname(value);
-                         default -> throw new RuntimeException("Unrecognised field value for User Update " + key);
-                     }
-                });
+             switch (key) {
+                 case NAME -> user.setName(value);
+                 case SURNAME -> user.setSurname(value);
+                 default -> throw new RuntimeException("Unrecognised field value for User Update " + key);
+             }
+        });
         userRepository.save(user);
-        return UpdateBasicUserDetailsResponse.builder()
-                .name(user.getName())
-                .surname(user.getSurname())
-                .build();
+    }
+
+    @Override
+    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
+        request.getUserDetails().forEach((key, value) -> {
+            switch (key) {
+                case EMAIL -> user.setEmail(value);
+                case USERNAME -> user.setSurname(value);
+                case PASSWORD -> user.setPassword(passwordEncoder.encode(value));
+                default -> throw new RuntimeException("Unrecognised field value for User Update " + key);
+            }
+        });
+        userRepository.save(user);
     }
 }

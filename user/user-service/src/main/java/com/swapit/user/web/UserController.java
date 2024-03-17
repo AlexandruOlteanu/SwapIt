@@ -1,9 +1,6 @@
 package com.swapit.user.web;
 
-import com.swapit.user.api.domain.request.LoginRequest;
-import com.swapit.user.api.domain.request.RegisterRequest;
-import com.swapit.user.api.domain.request.SpecificUsersDetailsRequest;
-import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
+import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.service.UserService;
 import com.swapit.user.service.*;
@@ -42,7 +39,12 @@ public class UserController implements UserService {
     }
 
     @Override
-    public ResponseEntity<UpdateBasicUserDetailsResponse> updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
-        return ResponseEntity.ok(updateUserDetailsService.updateBasicUserDetails(request));
+    public void updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
+        updateUserDetailsService.updateBasicUserDetails(request);
+    }
+
+    @Override
+    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
+        updateUserDetailsService.updateProtectedUserDetails(request);
     }
 }

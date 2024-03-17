@@ -1,5 +1,5 @@
 package com.swapit.user.api.util;
 
-public enum UserDetailType {
+public enum UserBasicDetailType {
     USERNAME, NAME, SURNAME
 }

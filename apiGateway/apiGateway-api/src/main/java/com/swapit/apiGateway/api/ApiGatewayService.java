@@ -7,9 +7,9 @@ import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
+import com.swapit.user.api.domain.request.UpdateProtectedUserDetailsRequest;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
-import com.swapit.user.api.domain.response.UpdateBasicUserDetailsResponse;
 import com.swapit.user.api.domain.response.UserDetailsResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +31,7 @@ public interface ApiGatewayService {
     String GET_CONVERSATIONS_PREVIEW = "getConversationsPreview";
     String GET_CONVERSATION = "getConversation";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
-
+    String UPDATE_PROTECTED_USER_DETAILS = "updateProtectedUserDetails";
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
@@ -55,6 +55,9 @@ public interface ApiGatewayService {
     ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId);
 
     @PutMapping(value = BASE_URL + UPDATE_BASIC_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<UpdateBasicUserDetailsResponse> updateBasicUserDetails(@Valid @RequestBody UpdateBasicUserDetailsRequest request);
+    void updateBasicUserDetails(@Valid @RequestBody UpdateBasicUserDetailsRequest request);
+
+    @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
+    void updateProtectedUserDetails(@Valid @RequestBody UpdateProtectedUserDetailsRequest request);
 
 }
