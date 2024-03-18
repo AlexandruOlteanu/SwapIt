@@ -4,6 +4,9 @@ import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductSubcategoryRequest;
+import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
@@ -32,6 +35,9 @@ public interface ApiGatewayService {
     String GET_CONVERSATION = "getConversation";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
     String UPDATE_PROTECTED_USER_DETAILS = "updateProtectedUserDetails";
+    String ADD_NEW_PRODUCT_CATEGORY = "addNewProductCategory";
+    String ADD_NEW_PRODUCT_SUBCATEGORY = "addNewProductSubcategory";
+    String GET_ALL_PRODUCT_CATEGORIES = "getAllProductCategories";
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
@@ -60,4 +66,12 @@ public interface ApiGatewayService {
     @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     void updateProtectedUserDetails(@Valid @RequestBody UpdateProtectedUserDetailsRequest request);
 
+    @PutMapping(value = BASE_URL + ADD_NEW_PRODUCT_CATEGORY)
+    void addNewProductCategory(@Valid @RequestBody AddNewProductCategoryRequest request);
+
+    @PutMapping(value = BASE_URL + ADD_NEW_PRODUCT_SUBCATEGORY)
+    void addNewProductSubcategory(@Valid @RequestBody AddNewProductSubcategoryRequest request);
+
+    @GetMapping(value = BASE_URL + GET_ALL_PRODUCT_CATEGORIES)
+    ResponseEntity<GetProductCategoriesResponse> getAllProductCategories();
 }

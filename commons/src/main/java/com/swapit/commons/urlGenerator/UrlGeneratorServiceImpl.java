@@ -13,7 +13,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
-        UPDATE_PROTECTED_USER_DETAILS
+        UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, ADD_NEW_PRODUCT_SUBCATEGORY, GET_ALL_PRODUCT_CATEGORIES
     }
 
     // BFF URI
@@ -23,7 +23,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String userRegisterUri;
     @Value("${product.create.route}")
     private String productCreationUri;
-    @Value("${chat.send.private.message.route}")
+    @Value("${chat.sendPrivateMessage.route}")
     private String sendPrivateMessageUri;
     @Value("${user.getUserDetails.route}")
     private String getUserDetailsUri;
@@ -37,6 +37,12 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String updateBasicUserDetailsUri;
     @Value("${user.updateProtectedUserDetails.route}")
     private String updateProtectedUserDetailsUri;
+    @Value("${searchEngine.addNewProductCategory.route}")
+    private String addNewProductCategoryUri;
+    @Value("${searchEngine.addNewProductSubcategory.route}")
+    private String addNewProductSubcategoryUri;
+    @Value("${searchEngine.getAllProductCategories.route}")
+    private String getAllProductCategoriesUri;
     @Override
     public String getServiceURL(UrlIdentifier api) {
         return switch (api) {
@@ -50,6 +56,9 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case GET_CONVERSATION -> getConversationUri;
             case UPDATE_BASIC_USER_DETAILS -> updateBasicUserDetailsUri;
             case UPDATE_PROTECTED_USER_DETAILS -> updateProtectedUserDetailsUri;
+            case ADD_NEW_PRODUCT_CATEGORY -> addNewProductCategoryUri;
+            case ADD_NEW_PRODUCT_SUBCATEGORY -> addNewProductSubcategoryUri;
+            case GET_ALL_PRODUCT_CATEGORIES -> getAllProductCategoriesUri;
         };
     }
 }

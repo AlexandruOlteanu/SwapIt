@@ -6,6 +6,9 @@ import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductSubcategoryRequest;
+import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
@@ -68,6 +71,21 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
         externalOperationsService.updateProtectedUserDetails(request);
+    }
+
+    @Override
+    public void addNewProductCategory(AddNewProductCategoryRequest request) {
+        externalOperationsService.addNewProductCategory(request);
+    }
+
+    @Override
+    public void addNewProductSubcategory(AddNewProductSubcategoryRequest request) {
+        externalOperationsService.addNewProductSubcategory(request);
+    }
+
+    @Override
+    public ResponseEntity<GetProductCategoriesResponse> getAllProductCategories() {
+        return ResponseEntity.ok(externalOperationsService.getAllProductCategories());
     }
 
 }

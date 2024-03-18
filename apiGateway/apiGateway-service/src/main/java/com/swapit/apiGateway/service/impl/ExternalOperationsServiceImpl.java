@@ -4,9 +4,13 @@ import com.swapit.apiGateway.service.ExternalOperationsService;
 import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
+import com.swapit.commons.uriEncode.UriEncode;
 import com.swapit.commons.urlGenerator.UrlGeneratorService;
 import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductSubcategoryRequest;
+import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.util.UserBasicDetailType;
@@ -39,6 +43,10 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     private final UrlGeneratorService urlGeneratorService;
     private static final String USER_ID_PARAM = "userId";
     private static final String CONVERSATION_ID_PARAM = "conversationId";
+    private static final String CATEGORY = "category";
+    private static final String CATEGORY_ID = "categoryId";
+    private static final String SUBCATEGORY = "subcategory";
+
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -184,6 +192,42 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
         } catch (Exception e) {
             log.error("Exception in Updating Protected User Details: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void addNewProductCategory(AddNewProductCategoryRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_NEW_PRODUCT_CATEGORY);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in adding product category {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void addNewProductSubcategory(AddNewProductSubcategoryRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_NEW_PRODUCT_SUBCATEGORY);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in adding product subcategory {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public GetProductCategoriesResponse getAllProductCategories() {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_ALL_PRODUCT_CATEGORIES);
+        log.info(url);
+        try {
+            return restTemplate.exchange(url, HttpMethod.GET, null, GetProductCategoriesResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting all product categories {}", e.getMessage(), e);
             throw e;
         }
     }

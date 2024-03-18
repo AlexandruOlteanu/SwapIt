@@ -27,6 +27,7 @@
 		<user.version>0.0.1-SNAPSHOT</user.version>
 		<product.version>0.0.1-SNAPSHOT</product.version>
 		<chat.version>0.0.1-SNAPSHOT</chat.version>
+		<searchEngine.version>0.0.1-SNAPSHOT</searchEngine.version>
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
 
 	</properties>
@@ -54,6 +55,11 @@
 			<groupId>com.swapit</groupId>
 			<artifactId>chat-api</artifactId>
 			<version>${chat.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.swapit</groupId>
+			<artifactId>searchEngine-api</artifactId>
+			<version>${searchEngine.version}</version>
 		</dependency>
 
 		<dependency>

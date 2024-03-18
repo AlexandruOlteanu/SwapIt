@@ -4,6 +4,9 @@ import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.AddNewProductSubcategoryRequest;
+import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 
@@ -19,4 +22,7 @@ public interface ExternalOperationsService {
     ConversationResponse getConversation(Integer conversationId);
     void updateBasicUserDetails(UpdateBasicUserDetailsRequest request);
     void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request);
+    void addNewProductCategory(AddNewProductCategoryRequest request);
+    void addNewProductSubcategory(AddNewProductSubcategoryRequest request);
+    GetProductCategoriesResponse getAllProductCategories();
 }
