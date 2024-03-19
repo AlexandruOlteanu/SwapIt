@@ -28,7 +28,11 @@ public class ProductCategory {
     @Column(name = "value")
     private String value;
 
-    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parent_id")
+    private ProductCategory parent;
+
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SUBSELECT)
-    private List<ProductSubcategory> productSubcategories;
+    private List<ProductCategory> subcategories;
 }

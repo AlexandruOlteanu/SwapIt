@@ -12,5 +12,5 @@ import java.util.List;
 public class ProductCategoryDTO {
     private Integer categoryId;
     private String value;
-    List<ProductSubcategoryDTO> productSubcategories;
+    List<ProductCategoryDTO> subcategories;
 }

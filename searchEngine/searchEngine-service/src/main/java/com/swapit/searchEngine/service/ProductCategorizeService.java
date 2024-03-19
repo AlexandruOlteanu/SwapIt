@@ -1,11 +1,9 @@
 package com.swapit.searchEngine.service;
 
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
-import com.swapit.searchEngine.api.service.domain.request.AddNewProductSubcategoryRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 
 public interface ProductCategorizeService {
     void addNewProductCategory(AddNewProductCategoryRequest request);
-    void addNewProductSubcategory(AddNewProductSubcategoryRequest request);
     GetProductCategoriesResponse getAllProductCategories();
 }

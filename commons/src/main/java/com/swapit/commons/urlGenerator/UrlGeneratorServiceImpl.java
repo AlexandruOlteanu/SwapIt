@@ -13,7 +13,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
-        UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, ADD_NEW_PRODUCT_SUBCATEGORY, GET_ALL_PRODUCT_CATEGORIES
+        UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES
     }
 
     // BFF URI
@@ -39,8 +39,6 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String updateProtectedUserDetailsUri;
     @Value("${searchEngine.addNewProductCategory.route}")
     private String addNewProductCategoryUri;
-    @Value("${searchEngine.addNewProductSubcategory.route}")
-    private String addNewProductSubcategoryUri;
     @Value("${searchEngine.getAllProductCategories.route}")
     private String getAllProductCategoriesUri;
     @Override
@@ -57,7 +55,6 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case UPDATE_BASIC_USER_DETAILS -> updateBasicUserDetailsUri;
             case UPDATE_PROTECTED_USER_DETAILS -> updateProtectedUserDetailsUri;
             case ADD_NEW_PRODUCT_CATEGORY -> addNewProductCategoryUri;
-            case ADD_NEW_PRODUCT_SUBCATEGORY -> addNewProductSubcategoryUri;
             case GET_ALL_PRODUCT_CATEGORIES -> getAllProductCategoriesUri;
         };
     }
