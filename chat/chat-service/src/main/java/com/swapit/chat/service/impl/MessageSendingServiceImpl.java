@@ -11,6 +11,7 @@ import com.swapit.chat.repository.MessageRepository;
 import com.swapit.chat.service.MessageSendingService;
 import com.swapit.chat.utils.ConversationType;
 import com.swapit.chat.utils.MessageType;
+import com.swapit.commons.encryption.EncryptionService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +31,10 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     private final ConversationRepository conversationRepository;
     private final ConversationParticipantsRepository conversationParticipantsRepository;
     private final MessageRepository messageRepository;
+    private final EncryptionService encryptionService;
     @Override
     @Transactional
-    public void sendPrivateMessage(PrivateChatMessageRequest request) {
+    public void sendPrivateMessage(PrivateChatMessageRequest request) throws Exception {
         var senderId = request.getSenderId();
         var receiverId = request.getReceiverId();
         Integer conversationId = request.getConversationId();
@@ -61,7 +63,7 @@ public class MessageSendingServiceImpl implements MessageSendingService {
                         .sentAt(updatedLastAction)
                         .sentBy(senderId)
                         .type(MessageType.valueOf(request.getMessageType()))
-                        .value(request.getMessage())
+                        .value(encryptionService.encrypt(request.getMessage()))
                 .build());
 
         String channel = generatePrivateConversationChannelPath(receiverId, conversationId);

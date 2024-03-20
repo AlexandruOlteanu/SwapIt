@@ -20,7 +20,7 @@ public interface ChatService {
     String GET_CONVERSATION = "getConversation";
 
     @PostMapping(value = BASE_URL + SEND, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request);
+    void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request) throws Exception;
     @GetMapping(value = BASE_URL + GET_CONVERSATIONS_PREVIEW)
     ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "userId") Integer userId);
     @GetMapping(value = BASE_URL + GET_CONVERSATION)

@@ -21,7 +21,7 @@ public class ChatController implements ChatService {
     private final GetConversationService getConversationService;
 
     @Override
-    public void sendPrivateMessage(PrivateChatMessageRequest request) {
+    public void sendPrivateMessage(PrivateChatMessageRequest request) throws Exception {
         messageSendingService.sendPrivateMessage(request);
     }
     @Override

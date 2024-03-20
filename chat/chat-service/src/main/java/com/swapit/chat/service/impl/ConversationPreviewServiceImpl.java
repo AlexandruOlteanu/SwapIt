@@ -5,6 +5,7 @@ import com.swapit.chat.domain.Conversation;
 import com.swapit.chat.domain.ConversationParticipants;
 import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.service.ConversationPreviewService;
+import com.swapit.commons.encryption.EncryptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,10 +17,10 @@ import java.util.List;
 @Slf4j
 public class ConversationPreviewServiceImpl implements ConversationPreviewService {
 
-    private final ConversationRepository conversationRepository;
+    private final EncryptionService encryptionService;
 
     @Override
-    public ConversationPreviewDTO getConversationPreview(Conversation conversation, Integer userId) {
+    public ConversationPreviewDTO getConversationPreview(Conversation conversation, Integer userId) throws Exception {
         List<Integer> otherParticipantsIds = conversation.getConversationParticipants().stream()
                 .map(ConversationParticipants::getUserId)
                 .filter(participantId -> !participantId.equals(userId))
@@ -28,7 +29,7 @@ public class ConversationPreviewServiceImpl implements ConversationPreviewServic
                 .otherParticipantsIds(otherParticipantsIds)
                 .conversationTitle(conversation.getConversationTitle())
                 .sentByUser(conversation.getMessages().getLast().getSentBy().equals(userId))
-                .lastMessageSent(conversation.getMessages().getLast().getValue())
+                .lastMessageSent(encryptionService.decrypt(conversation.getMessages().getLast().getValue()))
                 .lastMessageSentAt(conversation.getMessages().getLast().getSentAt())
                 .conversationId(conversation.getConversationId())
                 .build();
