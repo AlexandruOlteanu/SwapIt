@@ -7,7 +7,9 @@ import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
+import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
@@ -80,6 +82,11 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<GetProductCategoriesResponse> getAllProductCategories() {
         return ResponseEntity.ok(externalOperationsService.getAllProductCategories());
+    }
+
+    @Override
+    public ResponseEntity<SearchProductsResponse> searchProducts(SearchProductsRequest request) {
+        return ResponseEntity.ok(externalOperationsService.searchProducts(request));
     }
 
 }

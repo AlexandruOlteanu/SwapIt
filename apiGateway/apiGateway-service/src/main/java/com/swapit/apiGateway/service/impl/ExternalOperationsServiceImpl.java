@@ -8,7 +8,10 @@ import com.swapit.commons.urlGenerator.UrlGeneratorService;
 import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.IndexProductRequest;
+import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
+import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.util.UserBasicDetailType;
@@ -41,9 +44,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     private final UrlGeneratorService urlGeneratorService;
     private static final String USER_ID_PARAM = "userId";
     private static final String CONVERSATION_ID_PARAM = "conversationId";
-    private static final String CATEGORY = "category";
-    private static final String CATEGORY_ID = "categoryId";
-    private static final String SUBCATEGORY = "subcategory";
+    private static final String PRODUCT_ID_PARAM = "productId";
 
 
     @Override
@@ -75,7 +76,8 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.PRODUCT_CREATION);
         log.info(url);
         try {
-            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class);
+            Integer productId = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
+            indexProduct(productId);
         } catch (Exception e) {
             log.error("Exception in Product Creation {}", e.getMessage(), e);
             throw e;
@@ -214,6 +216,31 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             return restTemplate.exchange(url, HttpMethod.GET, null, GetProductCategoriesResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting all product categories {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public SearchProductsResponse searchProducts(SearchProductsRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEARCH_PRODUCTS);
+        log.info(url);
+        try {
+            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), SearchProductsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting all product categories {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public void indexProduct(Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.INDEX_PRODUCT);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, null, Void.class);
+        } catch (Exception e) {
+            log.error("Exception in indexing product {}", e.getMessage(), e);
             throw e;
         }
     }

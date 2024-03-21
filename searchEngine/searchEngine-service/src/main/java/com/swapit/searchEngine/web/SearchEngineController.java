@@ -2,12 +2,17 @@ package com.swapit.searchEngine.web;
 
 import com.swapit.searchEngine.api.service.SearchEngineService;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
+import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.searchEngine.service.ProductCategorizeService;
+import com.swapit.searchEngine.service.SearchIndexService;
+import com.swapit.searchEngine.service.SearchProductsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchEngineController implements SearchEngineService {
 
     private final ProductCategorizeService productCategorizeService;
+    private final SearchIndexService searchIndexService;
+    private final SearchProductsService searchProductsService;
 
     @Override
     public void addNewProductCategory(AddNewProductCategoryRequest request) {
@@ -24,5 +31,15 @@ public class SearchEngineController implements SearchEngineService {
     @Override
     public ResponseEntity<GetProductCategoriesResponse> getAllProductCategories() {
         return ResponseEntity.ok(productCategorizeService.getAllProductCategories());
+    }
+
+    @Override
+    public void indexProduct(Integer productId) throws IOException {
+        searchIndexService.indexProduct(productId);
+    }
+
+    @Override
+    public ResponseEntity<SearchProductsResponse> searchProducts(SearchProductsRequest request) throws IOException {
+        return ResponseEntity.ok(searchProductsService.searchProducts(request));
     }
 }

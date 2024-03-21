@@ -12,8 +12,7 @@ public class ProductMapper {
                 .creationDate(productDTO.getCreationDate())
                 .description(productDTO.getDescription())
                 .price(productDTO.getPrice())
-                .category(productDTO.getCategory())
-                .subcategory(productDTO.getSubcategory())
+                .categoryId(productDTO.getCategoryId())
                 .productSpecifications(productDTO.getProductSpecifications()
                         .stream().map(ProductSpecificationMapper::toEntity).toList())
                 .build();
@@ -26,8 +25,7 @@ public class ProductMapper {
                 .creationDate(product.getCreationDate())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .category(product.getCategory())
-                .subcategory(product.getSubcategory())
+                .categoryId(product.getCategoryId())
                 .productSpecifications(product.getProductSpecifications()
                         .stream().map(ProductSpecificationMapper::toDTO).toList())
                 .build();

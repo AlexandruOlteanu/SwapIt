@@ -46,11 +46,8 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "category")
-    private String category;
-
-    @Column(name = "subcategory")
-    private String subcategory;
+    @Column(name = "category_id")
+    private Integer categoryId;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SUBSELECT)

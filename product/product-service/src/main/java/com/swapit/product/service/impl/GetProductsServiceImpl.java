@@ -2,6 +2,7 @@ package com.swapit.product.service.impl;
 
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.response.GetProductsResponse;
+import com.swapit.product.api.domain.response.SearchProductData;
 import com.swapit.product.domain.Product;
 import com.swapit.product.mappers.ProductMapper;
 import com.swapit.product.repository.ProductRepository;
@@ -33,4 +34,17 @@ public class GetProductsServiceImpl implements GetProductsService {
                 .products(productDTOS)
                 .build();
     }
+
+    @Override
+    public SearchProductData searchProductData(Integer productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product id not found"));
+        return SearchProductData.builder()
+                .productId(product.getProductId())
+                .categoryId(product.getCategoryId())
+                .title(product.getTitle())
+                .description(product.getDescription())
+                .build();
+    }
+
 }

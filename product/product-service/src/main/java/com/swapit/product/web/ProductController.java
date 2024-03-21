@@ -2,6 +2,7 @@ package com.swapit.product.web;
 
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.product.api.domain.response.GetProductsResponse;
+import com.swapit.product.api.domain.response.SearchProductData;
 import com.swapit.product.api.service.ProductService;
 import com.swapit.product.service.GetProductsService;
 import com.swapit.product.service.ProductCreateService;
@@ -19,12 +20,17 @@ public class ProductController implements ProductService {
     private final GetProductsService getProductsService;
 
     @Override
-    public void createProduct(ProductCreationRequest request) {
-        productCreateService.createProduct(request);
+    public ResponseEntity<Integer> createProduct(ProductCreationRequest request) {
+        return ResponseEntity.ok(productCreateService.createProduct(request));
     }
 
     @Override
     public ResponseEntity<GetProductsResponse> getAllProductsByUserId(Integer userId) {
         return ResponseEntity.ok(getProductsService.getAllProductsByUserId(userId));
+    }
+
+    @Override
+    public ResponseEntity<SearchProductData> searchProductData(Integer productId) {
+        return ResponseEntity.ok(getProductsService.searchProductData(productId));
     }
 }

@@ -22,17 +22,16 @@ public class ProductCreateServiceImpl implements ProductCreateService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public void createProduct(ProductCreationRequest request) {
+    public Integer createProduct(ProductCreationRequest request) {
         Integer userId = request.getUserId();
         Product product = Product.builder()
                 .title(request.getTitle())
                 .userId(userId)
                 .description(request.getDescription())
                 .price(request.getPrice())
-                .category(request.getCategory())
-                .subcategory(request.getSubcategory())
+                .categoryId(request.getCategoryId())
                 .build();
-        productRepository.save(product);
+        Integer productId = productRepository.save(product).getProductId();
         request.getProductSpecifications()
                 .forEach((key, value) ->
                         productSpecificationsRepository.save(ProductSpecification.builder()
@@ -40,5 +39,6 @@ public class ProductCreateServiceImpl implements ProductCreateService {
                                         .key(key)
                                         .value(value)
                 .build()));
+        return productId;
     }
 }

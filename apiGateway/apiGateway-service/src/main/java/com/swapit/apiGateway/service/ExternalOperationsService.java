@@ -5,9 +5,13 @@ import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
+import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface ExternalOperationsService {
 
@@ -23,4 +27,5 @@ public interface ExternalOperationsService {
     void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request);
     void addNewProductCategory(AddNewProductCategoryRequest request);
     GetProductCategoriesResponse getAllProductCategories();
+    SearchProductsResponse searchProducts(SearchProductsRequest request);
 }
