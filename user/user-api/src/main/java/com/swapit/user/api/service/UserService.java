@@ -16,8 +16,8 @@ public interface UserService {
     String AUTHENTICATION = "auth/";
     String LOGIN = "login";
     String REGISTER = "register";
-    String USER_DETAILS = "getUserDetails";
-    String SPECIFIC_USERS_DETAILS = "getSpecificUsersDetails";
+    String GET_USER_DETAILS = "getUserDetails";
+    String GET_SPECIFIC_USERS_DETAILS = "getSpecificUsersDetails";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
     String UPDATE_PROTECTED_USER_DETAILS = "updateProtectedUserDetails";
 
@@ -27,11 +27,11 @@ public interface UserService {
     @PutMapping(value = BASE_URL + AUTHENTICATION + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
 
-    @GetMapping(value = BASE_URL + USER_DETAILS)
-    ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
+    @GetMapping(value = BASE_URL + GET_USER_DETAILS)
+    ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
 
-    @PostMapping(value = BASE_URL + SPECIFIC_USERS_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<SpecificUsersDetailsResponse> getSpecificUsersDetails(@Valid @RequestBody SpecificUsersDetailsRequest request);
+    @PostMapping(value = BASE_URL + GET_SPECIFIC_USERS_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    ResponseEntity<GetSpecificUsersDetailsResponse> getSpecificUsersDetails(@Valid @RequestBody GetSpecificUsersDetailsRequest request);
 
     @PutMapping(value = BASE_URL + UPDATE_BASIC_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     void updateBasicUserDetails(@Valid @RequestBody UpdateBasicUserDetailsRequest request);

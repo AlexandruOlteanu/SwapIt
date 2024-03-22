@@ -1,12 +1,17 @@
 package com.swapit.product.service;
 
+import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
+import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
-import com.swapit.product.api.domain.response.SearchProductData;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
 
 public interface GetProductsService {
     GetProductsResponse getProductsByUserId(Integer userId);
     GetProductsByIdsResponse getProductsByIds(GetProductsByIdsRequest request);
-    SearchProductData searchProductData(Integer productId);
+    ProductDTO getProductById(Integer productId);
+    GetProductsByCategoryResponse getProductsByCategory(GetProductsByCategoryRequest request);
 }

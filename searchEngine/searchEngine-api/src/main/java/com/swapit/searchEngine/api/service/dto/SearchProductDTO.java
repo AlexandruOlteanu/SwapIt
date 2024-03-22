@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Data
 @Jacksonized
@@ -16,6 +15,6 @@ public class SearchProductDTO {
     private ZonedDateTime creationDate;
     private String title;
     private String description;
-    private List<String> categoryTree;
+    private Integer categoryId;
     private Integer popularity;
 }

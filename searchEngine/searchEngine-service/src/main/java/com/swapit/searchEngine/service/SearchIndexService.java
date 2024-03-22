@@ -9,5 +9,4 @@ import java.util.Map;
 public interface SearchIndexService {
     void indexProduct(Integer productId) throws IOException;
     List<Pair<Integer, Integer>> searchMatchingProductsScore(String query) throws IOException;
-    List<String> getCategoryTree(Integer categoryId);
 }

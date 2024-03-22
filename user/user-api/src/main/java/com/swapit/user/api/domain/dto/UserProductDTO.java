@@ -1,18 +1,19 @@
-package com.swapit.product.api.domain.response;
+package com.swapit.user.api.domain.dto;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.List;
+import java.time.ZonedDateTime;
 
 @Data
 @Jacksonized
 @Builder
-public class SearchProductData {
+public class UserProductDTO {
     private Integer productId;
+    private ZonedDateTime creationDate;
     private String title;
     private String description;
     private Integer categoryId;
-    private List<String> categories;
+    private Integer popularity;
 }

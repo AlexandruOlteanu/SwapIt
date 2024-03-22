@@ -6,11 +6,16 @@ import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.commons.urlGenerator.UrlGeneratorService;
 import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
+import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
+import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
+import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.util.UserBasicDetailType;
@@ -44,7 +49,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     private static final String USER_ID_PARAM = "userId";
     private static final String CONVERSATION_ID_PARAM = "conversationId";
     private static final String PRODUCT_ID_PARAM = "productId";
-
+    private static final String CATEGORY_ID_PARAM = "categoryId";
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -71,8 +76,8 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void productCreation(ProductCreationRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.PRODUCT_CREATION);
+    public void createProduct(ProductCreationRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.CREATE_PRODUCT);
         log.info(url);
         try {
             Integer productId = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
@@ -96,13 +101,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public UserDetailsResponse getUserDetails(Integer userId) {
+    public GetUserDetailsResponse getUserDetails(Integer userId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_USER_DETAILS);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
                 .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
         log.info(uriBuilder.toUriString());
         try {
-            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, UserDetailsResponse.class).getBody();
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetUserDetailsResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting user details {}", e.getMessage(), e);
             throw e;
@@ -126,10 +131,10 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
                             Integer correspondent = conversationPreview.getOtherParticipantsIds().getFirst();
                             requestedUserDetails.put(correspondent, List.of(NAME, SURNAME));
                     });
-            SpecificUsersDetailsRequest request = SpecificUsersDetailsRequest.builder()
+            GetSpecificUsersDetailsRequest request = GetSpecificUsersDetailsRequest.builder()
                     .requestedUserDetails(requestedUserDetails)
                     .build();
-            SpecificUsersDetailsResponse response = getSpecificUsersDetails(request);
+            GetSpecificUsersDetailsResponse response = getSpecificUsersDetails(request);
             conversationsPreviewResponse.getConversationsPreview()
                     .stream().filter(cp -> cp.getConversationTitle() == null)
                     .forEach(cp -> {
@@ -146,11 +151,11 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         }
     }
 
-    public SpecificUsersDetailsResponse getSpecificUsersDetails(SpecificUsersDetailsRequest request) {
+    public GetSpecificUsersDetailsResponse getSpecificUsersDetails(GetSpecificUsersDetailsRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SPECIFIC_USERS_DETAILS);
         log.info(url);
         try {
-            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), SpecificUsersDetailsResponse.class).getBody();
+            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), GetSpecificUsersDetailsResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting specific user details {}", e.getMessage(), e);
             throw e;
@@ -227,6 +232,48 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), SearchProductsResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting all product categories {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public ProductDTO getProductById(Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCT_BY_ID);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, ProductDTO.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting product by product id {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public GetCategoryTreeResponse getCategoryTree(Integer categoryId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_CATEGORY_TREE);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(CATEGORY_ID_PARAM, Optional.ofNullable(categoryId));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetCategoryTreeResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting category tree {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public SearchProductsResponse searchProductsByCategory(Integer categoryId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEARCH_PRODUCTS_BY_CATEGORY);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(CATEGORY_ID_PARAM, Optional.ofNullable(categoryId));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, SearchProductsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in searching Products by category {}", e.getMessage(), e);
             throw e;
         }
     }

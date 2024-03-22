@@ -29,12 +29,12 @@ public class UserController implements UserService {
     }
 
     @Override
-    public ResponseEntity<UserDetailsResponse> getUserDetails(Integer userId) {
-        return ResponseEntity.ok(getUserDetailsService.getCompleteUserDetails(userId));
+    public ResponseEntity<GetUserDetailsResponse> getUserDetails(Integer userId) {
+        return ResponseEntity.ok(getUserDetailsService.getUserDetails(userId));
     }
 
     @Override
-    public ResponseEntity<SpecificUsersDetailsResponse> getSpecificUsersDetails(SpecificUsersDetailsRequest request) {
+    public ResponseEntity<GetSpecificUsersDetailsResponse> getSpecificUsersDetails(GetSpecificUsersDetailsRequest request) {
         return ResponseEntity.ok(getUserDetailsService.getSpecificUsersDetails(request));
     }
 

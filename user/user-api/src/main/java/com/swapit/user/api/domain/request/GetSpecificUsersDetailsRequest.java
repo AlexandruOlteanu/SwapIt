@@ -11,6 +11,6 @@ import java.util.Map;
 @Data
 @Jacksonized
 @Builder
-public class SpecificUsersDetailsRequest {
+public class GetSpecificUsersDetailsRequest {
     Map<Integer, List<UserBasicDetailType>> requestedUserDetails;
 }

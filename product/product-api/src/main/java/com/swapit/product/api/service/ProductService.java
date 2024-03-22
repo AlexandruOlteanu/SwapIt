@@ -1,10 +1,12 @@
 package com.swapit.product.api.service;
 
+import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
-import com.swapit.product.api.domain.response.SearchProductData;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,10 +18,12 @@ public interface ProductService {
 
     String MEDIA_TYPE_APPLICATION_JSON = "application/json";
     String BASE_URL = "/api/v1/swapIt/product/";
-    String CREATE_PRODUCT = "create";
+    String CREATE_PRODUCT = "createProduct";
     String GET_ALL_PRODUCTS_BY_USER_ID = "getAllProductsByUserId";
-    String SEARCH_PRODUCT_DATA = "searchProductData";
-    String GET_PRODUCTS_BY_ID = "getProductsById";
+    String GET_PRODUCTS_BY_IDS = "getProductsByIds";
+    String GET_PRODUCT_BY_ID = "getProductById";
+    String GET_PRODUCTS_BY_CATEGORY = "getProductsByCategory";
+
 
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<Integer> createProduct(@Valid @RequestBody ProductCreationRequest request);
@@ -27,10 +31,12 @@ public interface ProductService {
     @GetMapping(value = BASE_URL + GET_ALL_PRODUCTS_BY_USER_ID)
     ResponseEntity<GetProductsResponse> getProductsByUserId(@RequestParam(value = "userId") Integer userId);
 
-    @GetMapping(value = BASE_URL + SEARCH_PRODUCT_DATA)
-    ResponseEntity<SearchProductData> searchProductData(@RequestParam(value = "productId") Integer productId);
-
-    @PostMapping(value = BASE_URL + GET_PRODUCTS_BY_ID)
+    @PostMapping(value = BASE_URL + GET_PRODUCTS_BY_IDS)
     ResponseEntity<GetProductsByIdsResponse> getProductsByIds(@Valid @RequestBody GetProductsByIdsRequest request);
+
+    @GetMapping(value = BASE_URL + GET_PRODUCT_BY_ID)
+    ResponseEntity<ProductDTO> getProductById(@RequestParam(value = "productId") Integer productId);
+    @PostMapping(value = BASE_URL + GET_PRODUCTS_BY_CATEGORY)
+    ResponseEntity<GetProductsByCategoryResponse> getProductsByCategory(@Valid @RequestBody GetProductsByCategoryRequest request);
 
 }

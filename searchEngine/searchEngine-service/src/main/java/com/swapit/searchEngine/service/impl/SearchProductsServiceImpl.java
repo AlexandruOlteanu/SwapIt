@@ -2,12 +2,16 @@ package com.swapit.searchEngine.service.impl;
 
 import com.swapit.commons.utils.Pair;
 import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
+import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 import com.swapit.product.service.ProductPublicService;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
+import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
 import com.swapit.searchEngine.api.service.dto.SearchProductDTO;
+import com.swapit.searchEngine.service.ProductCategorizeService;
 import com.swapit.searchEngine.service.SearchIndexService;
 import com.swapit.searchEngine.service.SearchProductsService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +31,7 @@ import java.util.stream.Collectors;
 public class SearchProductsServiceImpl implements SearchProductsService {
     private final SearchIndexService searchIndexService;
     private final ProductPublicService productPublicService;
+    private final ProductCategorizeService productCategorizeService;
 
     @Override
     public SearchProductsResponse searchProducts(SearchProductsRequest request) throws IOException {
@@ -50,7 +55,32 @@ public class SearchProductsServiceImpl implements SearchProductsService {
                         .creationDate(productDTO.getCreationDate())
                         .title(productDTO.getTitle())
                         .description(productDTO.getDescription())
-                        .categoryTree(searchIndexService.getCategoryTree(productDTO.getCategoryId()))
+                        .categoryId(productDTO.getCategoryId())
+                        .popularity(productDTO.getPopularity())
+                        .build())
+                .toList();
+        return SearchProductsResponse.builder()
+                .searchProducts(searchProductDTOS)
+                .build();
+    }
+
+    @Override
+    public SearchProductsResponse searchProductsByCategory(Integer categoryId) {
+        var childCategoryTreeIds = productCategorizeService.getCategoryTree(categoryId).getChildCategories().stream()
+                .map(CategoryTreeValueDTO::getCategoryId).toList();
+        GetProductsByCategoryRequest request = GetProductsByCategoryRequest.builder()
+                .categoriesIds(childCategoryTreeIds)
+                .build();
+        GetProductsByCategoryResponse response = productPublicService.getProductsByCategory(request).getBody();
+        assert response != null;
+        List<SearchProductDTO> searchProductDTOS = response.getProducts().stream()
+                .map(productDTO -> SearchProductDTO.builder()
+                        .productId(productDTO.getProductId())
+                        .userId(productDTO.getUserId())
+                        .creationDate(productDTO.getCreationDate())
+                        .title(productDTO.getTitle())
+                        .description(productDTO.getDescription())
+                        .categoryId(productDTO.getCategoryId())
                         .popularity(productDTO.getPopularity())
                         .build())
                 .toList();

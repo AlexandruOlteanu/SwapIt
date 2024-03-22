@@ -5,18 +5,22 @@ import com.swapit.apiGateway.service.ExternalOperationsService;
 import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
+import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
+import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.RegisterRequest;
 import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
 import com.swapit.user.api.domain.request.UpdateProtectedUserDetailsRequest;
+import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
-import com.swapit.user.api.domain.response.UserDetailsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +44,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public void productCreation(ProductCreationRequest request) {
-        externalOperationsService.productCreation(request);
+    public void createProduct(ProductCreationRequest request) {
+        externalOperationsService.createProduct(request);
     }
 
     @Override
@@ -50,7 +54,7 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<UserDetailsResponse> getUserDetails(Integer userId) {
+    public ResponseEntity<GetUserDetailsResponse> getUserDetails(Integer userId) {
         return ResponseEntity.ok(externalOperationsService.getUserDetails(userId));
     }
 
@@ -87,6 +91,21 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<SearchProductsResponse> searchProducts(SearchProductsRequest request) {
         return ResponseEntity.ok(externalOperationsService.searchProducts(request));
+    }
+
+    @Override
+    public ResponseEntity<ProductDTO> getProductById(Integer productId) {
+        return ResponseEntity.ok(externalOperationsService.getProductById(productId));
+    }
+
+    @Override
+    public ResponseEntity<GetCategoryTreeResponse> getCategoryTree(Integer categoryId) {
+        return ResponseEntity.ok(externalOperationsService.getCategoryTree(categoryId));
+    }
+
+    @Override
+    public ResponseEntity<SearchProductsResponse> searchProductsByCategory(Integer categoryId) {
+        return ResponseEntity.ok(externalOperationsService.searchProductsByCategory(categoryId));
     }
 
 }

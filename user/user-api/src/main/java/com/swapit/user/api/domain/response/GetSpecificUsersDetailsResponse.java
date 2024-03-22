@@ -10,6 +10,6 @@ import java.util.Map;
 @Data
 @Jacksonized
 @Builder
-public class SpecificUsersDetailsResponse {
+public class GetSpecificUsersDetailsResponse {
     Map<Integer, Map<UserBasicDetailType, Object>> requestedUserDetails;
 }

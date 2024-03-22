@@ -11,33 +11,41 @@ import org.springframework.stereotype.Service;
 public class UrlGeneratorServiceImpl implements UrlGeneratorService {
 
     public enum UrlIdentifier {
-        USER_LOGIN, USER_REGISTER, PRODUCT_CREATION, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
+        USER_LOGIN, USER_REGISTER, CREATE_PRODUCT, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
         UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, INDEX_PRODUCT,
-        SEARCH_PRODUCTS
+        SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY
     }
 
-    // BFF URI
+    // USER URI
     @Value("${user.login.route}")
     private String userLoginUri;
     @Value("${user.register.route}")
     private String userRegisterUri;
-    @Value("${product.create.route}")
-    private String productCreationUri;
-    @Value("${chat.sendPrivateMessage.route}")
-    private String sendPrivateMessageUri;
     @Value("${user.getUserDetails.route}")
     private String getUserDetailsUri;
-    @Value("${chat.getConversationsPreview.route}")
-    private String getConversationsPreviewUri;
-    @Value("${user.getSpecificUsersDetails.route}")
-    private String getSpecificUsersDetailsUri;
-    @Value("${chat.getConversation.route}")
-    private String getConversationUri;
     @Value("${user.updateBasicUserDetails.route}")
     private String updateBasicUserDetailsUri;
     @Value("${user.updateProtectedUserDetails.route}")
     private String updateProtectedUserDetailsUri;
+    @Value("${user.getSpecificUsersDetails.route}")
+    private String getSpecificUsersDetailsUri;
+
+    // PRODUCT URI
+    @Value("${product.createProduct.route}")
+    private String createProductUri;
+    @Value("${product.getProductById.route}")
+    private String getProductByIdUri;
+
+    // CHAT URI
+    @Value("${chat.sendPrivateMessage.route}")
+    private String sendPrivateMessageUri;
+    @Value("${chat.getConversationsPreview.route}")
+    private String getConversationsPreviewUri;
+    @Value("${chat.getConversation.route}")
+    private String getConversationUri;
+
+    // SEARCH ENGINE URI
     @Value("${searchEngine.addNewProductCategory.route}")
     private String addNewProductCategoryUri;
     @Value("${searchEngine.getAllProductCategories.route}")
@@ -46,12 +54,17 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String indexProductUri;
     @Value("${searchEngine.searchProducts.route}")
     private String searchProductsUri;
+    @Value("${searchEngine.getCategoryTree.route}")
+    private String getCategoryTreeUri;
+    @Value("${searchEngine.searchProductsByCategory.route}")
+    private String searchProductsByCategoryUri;
+
     @Override
     public String getServiceURL(UrlIdentifier api) {
         return switch (api) {
             case USER_LOGIN -> userLoginUri;
             case USER_REGISTER -> userRegisterUri;
-            case PRODUCT_CREATION -> productCreationUri;
+            case CREATE_PRODUCT -> createProductUri;
             case SEND_PRIVATE_MESSAGE -> sendPrivateMessageUri;
             case GET_USER_DETAILS -> getUserDetailsUri;
             case GET_CONVERSATIONS_PREVIEW -> getConversationsPreviewUri;
@@ -63,6 +76,9 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case GET_ALL_PRODUCT_CATEGORIES -> getAllProductCategoriesUri;
             case INDEX_PRODUCT -> indexProductUri;
             case SEARCH_PRODUCTS -> searchProductsUri;
+            case GET_PRODUCT_BY_ID -> getProductByIdUri;
+            case GET_CATEGORY_TREE -> getCategoryTreeUri;
+            case SEARCH_PRODUCTS_BY_CATEGORY -> searchProductsByCategoryUri;
         };
     }
 }

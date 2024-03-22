@@ -17,6 +17,6 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
 
     @Override
     public GetProductsResponse getAllProductsByUserId(Integer userId) {
-            return productPublicService.getAllProductsByUserId(userId).getBody();
+            return productPublicService.getProductsByUserId(userId).getBody();
     }
 }

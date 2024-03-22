@@ -1,10 +1,10 @@
 package com.swapit.searchEngine.service.impl;
 
 import com.swapit.commons.utils.Pair;
-import com.swapit.product.api.domain.response.SearchProductData;
+import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.service.ProductPublicService;
-import com.swapit.searchEngine.domain.ProductCategory;
-import com.swapit.searchEngine.repository.ProductCategoryRepository;
+import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
+import com.swapit.searchEngine.service.ProductCategorizeService;
 import com.swapit.searchEngine.service.SearchIndexService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,19 +33,22 @@ public class SearchIndexServiceImpl implements SearchIndexService {
     @Value("${searchEngine.nrSearchResults}")
     private Integer nrSearchResults;
     private final ProductPublicService productPublicService;
-    private final ProductCategoryRepository productCategoryRepository;
+    private final ProductCategorizeService productCategorizeService;
     private final static String PRODUCT_ID_KEY = "productId";
     private final static String METADATA_KEY = "metadata";
 
     @Override
     public void indexProduct(Integer productId) throws IOException {
-        SearchProductData searchProductData = getIndexProductData(productId);
-        String categoryChain = getCategoryChain(searchProductData.getCategories());
+        ProductDTO productDTO = productPublicService.getProductById(productId).getBody();
+        assert productDTO != null;
+        List<String> categories = productCategorizeService.getCategoryTree(productDTO.getCategoryId()).getParentCategories().stream()
+                .map(CategoryTreeValueDTO::getValue).toList();
+        String categoryChain = getCategoryChain(categories);
         IndexWriterConfig config = new IndexWriterConfig(standardAnalyzer);
         IndexWriter indexWriter = new IndexWriter(directory, config);
         Document document = new Document();
-        document.add(new TextField(PRODUCT_ID_KEY, String.valueOf(searchProductData.getProductId()), Field.Store.YES));
-        document.add(new TextField(METADATA_KEY, joinValues(searchProductData.getTitle(), searchProductData.getDescription(), categoryChain), Field.Store.YES));
+        document.add(new TextField(PRODUCT_ID_KEY, String.valueOf(productDTO.getProductId()), Field.Store.YES));
+        document.add(new TextField(METADATA_KEY, joinValues(productDTO.getTitle(), productDTO.getDescription(), categoryChain), Field.Store.YES));
         indexWriter.addDocument(document);
         indexWriter.close();
     }
@@ -95,23 +98,4 @@ public class SearchIndexServiceImpl implements SearchIndexService {
         String[] words = query.split("[^a-zA-Z]+");
         return Arrays.asList(words);
     }
-
-    private SearchProductData getIndexProductData(Integer productId) {
-        SearchProductData searchProductData = productPublicService.searchProductData(productId).getBody();
-        assert searchProductData != null;
-        searchProductData.setCategories(getCategoryTree(searchProductData.getCategoryId()));
-        return searchProductData;
-    }
-
-    public List<String> getCategoryTree(Integer categoryId) {
-        ProductCategory productCategory = productCategoryRepository.findById(categoryId)
-                .orElseThrow();
-        List<String> categoryTree = new ArrayList<>();
-        while (productCategory != null) {
-            categoryTree.addFirst(productCategory.getValue());
-            productCategory = productCategory.getParent();
-        }
-        return categoryTree;
-    }
-
 }
