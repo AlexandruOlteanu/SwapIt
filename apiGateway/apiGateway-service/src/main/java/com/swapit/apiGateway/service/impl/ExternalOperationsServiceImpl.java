@@ -8,7 +8,6 @@ import com.swapit.commons.urlGenerator.UrlGeneratorService;
 import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
-import com.swapit.searchEngine.api.service.domain.request.IndexProductRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;

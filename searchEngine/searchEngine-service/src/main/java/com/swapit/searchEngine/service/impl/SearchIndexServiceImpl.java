@@ -1,5 +1,6 @@
 package com.swapit.searchEngine.service.impl;
 
+import com.swapit.commons.utils.Pair;
 import com.swapit.product.api.domain.response.SearchProductData;
 import com.swapit.product.service.ProductPublicService;
 import com.swapit.searchEngine.domain.ProductCategory;
@@ -50,9 +51,9 @@ public class SearchIndexServiceImpl implements SearchIndexService {
     }
 
     @Override
-    public Set<Integer> searchMatchingProductsIds(String query) throws IOException {
+    public List<Pair<Integer, Integer>> searchMatchingProductsScore(String query) throws IOException {
         List<String> queryValues = processQuery(query);
-        Set<Integer> productIds = new HashSet<>();
+        Map<Integer, Integer> productScores = new HashMap<>();
         DirectoryReader directoryReader = DirectoryReader.open(directory);
         IndexSearcher searcher = new IndexSearcher(directoryReader);
 
@@ -64,7 +65,8 @@ public class SearchIndexServiceImpl implements SearchIndexService {
                         for (ScoreDoc scoreDoc : results.scoreDocs) {
                             StoredFields storedFields = searcher.storedFields();
                             Document doc = storedFields.document(scoreDoc.doc);
-                            productIds.add(Integer.valueOf(doc.get(PRODUCT_ID_KEY)));
+                            Integer productId = Integer.valueOf(doc.get(PRODUCT_ID_KEY));
+                            productScores.put(productId, productScores.getOrDefault(productId, 0) + 1);
                         }
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -72,8 +74,13 @@ public class SearchIndexServiceImpl implements SearchIndexService {
                 }
         );
 
+        List<Pair<Integer, Integer>> productScoresList = productScores.entrySet().stream()
+                .map(entry -> Pair.of(entry.getKey(), entry.getValue()))
+                .sorted(Comparator.comparing((Pair<Integer, Integer> pair) -> pair.getSecond()).reversed())
+                .toList();
+
         directoryReader.close();
-        return productIds;
+        return productScoresList;
     }
 
     private String joinValues(String title, String description, String categoryChain) {
@@ -92,15 +99,19 @@ public class SearchIndexServiceImpl implements SearchIndexService {
     private SearchProductData getIndexProductData(Integer productId) {
         SearchProductData searchProductData = productPublicService.searchProductData(productId).getBody();
         assert searchProductData != null;
-        ProductCategory productCategory = productCategoryRepository.findById(searchProductData.getCategoryId())
+        searchProductData.setCategories(getCategoryTree(searchProductData.getCategoryId()));
+        return searchProductData;
+    }
+
+    public List<String> getCategoryTree(Integer categoryId) {
+        ProductCategory productCategory = productCategoryRepository.findById(categoryId)
                 .orElseThrow();
-        List<String> categories = new ArrayList<>();
+        List<String> categoryTree = new ArrayList<>();
         while (productCategory != null) {
-            categories.add(productCategory.getValue());
+            categoryTree.addFirst(productCategory.getValue());
             productCategory = productCategory.getParent();
         }
-        searchProductData.setCategories(categories);
-        return searchProductData;
+        return categoryTree;
     }
 
 }

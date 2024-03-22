@@ -1,6 +1,8 @@
 package com.swapit.product.service.impl;
 
 import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
+import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.product.api.domain.response.SearchProductData;
 import com.swapit.product.domain.Product;
@@ -24,13 +26,25 @@ public class GetProductsServiceImpl implements GetProductsService {
     private final ProductRepository productRepository;
 
     @Override
-    public GetProductsResponse getAllProductsByUserId(Integer userId) {
+    public GetProductsResponse getProductsByUserId(Integer userId) {
         List<Product> products = productRepository.findAllByUserId(userId).orElse(new ArrayList<>());
         products.sort(Comparator.comparing(Product::getCreationDate).reversed());
         List<ProductDTO> productDTOS = products.stream()
-                .map(ProductMapper::toDTO)
+                .map(ProductMapper::productToProductDto)
                 .toList();
         return GetProductsResponse.builder()
+                .products(productDTOS)
+                .build();
+    }
+
+    @Override
+    public GetProductsByIdsResponse getProductsByIds(GetProductsByIdsRequest request) {
+        List<Product> products = productRepository.findAllByProductIdIn(request.getProductIds())
+                .orElseThrow(() -> new RuntimeException("No results found"));
+        List<ProductDTO> productDTOS = products.stream()
+                .map(ProductMapper::productToProductDto)
+                .toList();
+        return GetProductsByIdsResponse.builder()
                 .products(productDTOS)
                 .build();
     }

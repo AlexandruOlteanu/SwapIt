@@ -1,6 +1,6 @@
 package com.swapit.searchEngine.api.service.domain.response;
 
-import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.searchEngine.api.service.dto.SearchProductDTO;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
@@ -11,5 +11,5 @@ import java.util.List;
 @Jacksonized
 @Builder
 public class SearchProductsResponse {
-    List<ProductDTO> searchProducts;
+    List<SearchProductDTO> searchProducts;
 }

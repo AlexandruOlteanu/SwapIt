@@ -4,7 +4,7 @@ import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.domain.Product;
 
 public class ProductMapper {
-    public static Product toEntity(ProductDTO productDTO) {
+    public static Product productDtoToProduct(ProductDTO productDTO) {
         return Product.builder()
                 .productId(productDTO.getProductId())
                 .userId(productDTO.getUserId())
@@ -13,11 +13,13 @@ public class ProductMapper {
                 .description(productDTO.getDescription())
                 .price(productDTO.getPrice())
                 .categoryId(productDTO.getCategoryId())
+                .popularity(productDTO.getPopularity())
                 .productSpecifications(productDTO.getProductSpecifications()
-                        .stream().map(ProductSpecificationMapper::toEntity).toList())
+                        .stream().map(ProductSpecificationMapper::prodSpecDtoToProdSpec).toList())
                 .build();
     }
-    public static ProductDTO toDTO(Product product) {
+
+    public static ProductDTO productToProductDto(Product product) {
         return ProductDTO.builder()
                 .productId(product.getProductId())
                 .userId(product.getUserId())
@@ -26,8 +28,9 @@ public class ProductMapper {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .categoryId(product.getCategoryId())
+                .popularity(product.getPopularity())
                 .productSpecifications(product.getProductSpecifications()
-                        .stream().map(ProductSpecificationMapper::toDTO).toList())
+                        .stream().map(ProductSpecificationMapper::prodSpecToProdSpecDto).toList())
                 .build();
     }
 }

@@ -49,6 +49,9 @@ public class Product {
     @Column(name = "category_id")
     private Integer categoryId;
 
+    @Column(name = "popularity")
+    private Integer popularity;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SUBSELECT)
     private List<ProductSpecification> productSpecifications;

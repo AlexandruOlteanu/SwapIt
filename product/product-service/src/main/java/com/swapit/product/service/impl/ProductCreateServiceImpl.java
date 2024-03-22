@@ -19,6 +19,7 @@ public class ProductCreateServiceImpl implements ProductCreateService {
 
     private final ProductRepository productRepository;
     private final ProductSpecificationRepository productSpecificationsRepository;
+    private final Integer ZERO = 0;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -30,6 +31,7 @@ public class ProductCreateServiceImpl implements ProductCreateService {
                 .description(request.getDescription())
                 .price(request.getPrice())
                 .categoryId(request.getCategoryId())
+                .popularity(ZERO)
                 .build();
         Integer productId = productRepository.save(product).getProductId();
         request.getProductSpecifications()
