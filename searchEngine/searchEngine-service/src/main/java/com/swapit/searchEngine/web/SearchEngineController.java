@@ -1,6 +1,5 @@
 package com.swapit.searchEngine.web;
 
-import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.searchEngine.api.service.SearchEngineService;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;

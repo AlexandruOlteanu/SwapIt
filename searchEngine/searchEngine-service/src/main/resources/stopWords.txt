@@ -14,4 +14,4 @@ nimeni,niste,noastra,noastre,noi,nostri,nostru,nu,ori,oricand,oricare,oricat,ori
 oricat,oricum,oriunde,pana,pe,pentru,peste,pana,poate,pot,prea,prima,primul,prin,printre,sa,sa,sai,sale,
 sau,sau,se,şi,sant,santem,santeti,spre,sub,sunt,suntem,sunteti,ta,tai,tale,tau,te,ti,tie,tine,toata,
 toate,tot,toti,totusi,tu,un,una,unde,undeva,unei,unele,uneori,unor,va,vi,voastra,voastre,voi,vostri,
-vostru,voua,vreo,vreun
+vostru,voua,vreo,vreun,si

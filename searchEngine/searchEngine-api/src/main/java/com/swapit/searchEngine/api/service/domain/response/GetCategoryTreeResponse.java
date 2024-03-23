@@ -1,6 +1,5 @@
 package com.swapit.searchEngine.api.service.domain.response;
 
-import com.swapit.commons.utils.Pair;
 import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
 import lombok.Builder;
 import lombok.Data;

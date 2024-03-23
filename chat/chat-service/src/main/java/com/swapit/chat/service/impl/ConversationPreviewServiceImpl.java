@@ -3,7 +3,6 @@ package com.swapit.chat.service.impl;
 import com.swapit.chat.api.domain.dto.ConversationPreviewDTO;
 import com.swapit.chat.domain.Conversation;
 import com.swapit.chat.domain.ConversationParticipants;
-import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.service.ConversationPreviewService;
 import com.swapit.commons.encryption.EncryptionService;
 import lombok.RequiredArgsConstructor;

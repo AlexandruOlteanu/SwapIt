@@ -1,7 +1,6 @@
 package com.swapit.searchEngine.service.impl;
 
 import com.swapit.commons.cache.CacheInvalidateService;
-import com.swapit.commons.utils.Pair;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;

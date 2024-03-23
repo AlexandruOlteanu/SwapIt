@@ -2,8 +2,8 @@ package com.swapit.searchEngine.service.impl;
 
 import com.swapit.commons.utils.Pair;
 import com.swapit.product.api.domain.dto.ProductDTO;
-import com.swapit.product.service.ProductPublicService;
 import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
+import com.swapit.searchEngine.service.ExternalOperationsService;
 import com.swapit.searchEngine.service.ProductCategorizeService;
 import com.swapit.searchEngine.service.SearchIndexService;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +32,15 @@ public class SearchIndexServiceImpl implements SearchIndexService {
     private final Directory directory;
     @Value("${searchEngine.nrSearchResults}")
     private Integer nrSearchResults;
-    private final ProductPublicService productPublicService;
+    private final ExternalOperationsService externalOperationsService;
+
     private final ProductCategorizeService productCategorizeService;
     private final static String PRODUCT_ID_KEY = "productId";
     private final static String METADATA_KEY = "metadata";
 
     @Override
     public void indexProduct(Integer productId) throws IOException {
-        ProductDTO productDTO = productPublicService.getProductById(productId).getBody();
+        ProductDTO productDTO = externalOperationsService.getProductById(productId);
         assert productDTO != null;
         List<String> categories = productCategorizeService.getCategoryTree(productDTO.getCategoryId()).getParentCategories().stream()
                 .map(CategoryTreeValueDTO::getValue).toList();

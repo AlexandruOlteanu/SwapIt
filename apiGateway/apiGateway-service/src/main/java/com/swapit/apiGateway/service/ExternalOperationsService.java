@@ -4,9 +4,7 @@ import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.dto.ProductDTO;
-import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.ProductCreationRequest;
-import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
@@ -14,7 +12,6 @@ import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesR
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 public interface ExternalOperationsService {
 

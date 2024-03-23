@@ -1,8 +1,6 @@
 package com.swapit.searchEngine.config;
 
-import org.apache.lucene.analysis.CharArrayMap;
 import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.StopwordAnalyzerBase;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
@@ -39,7 +37,7 @@ public class ApplicationConfig {
                         .forEach(matchResult -> charArraySet.add(matchResult.group()));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return new StandardAnalyzer(charArraySet);
     }
