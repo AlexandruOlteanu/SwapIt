@@ -29,6 +29,7 @@ public interface ApiGatewayService {
 
     String MEDIA_TYPE_APPLICATION_JSON = "application/json";
     String BASE_URL = "/api/v1/swapIt/apiGateway/";
+    String ADMIN_ACTION = "adminAction/";
     String LOGIN = "auth/login";
     String REGISTER = "auth/register";
     String CREATE_PRODUCT = "createProduct";
@@ -73,9 +74,6 @@ public interface ApiGatewayService {
     @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     void updateProtectedUserDetails(@Valid @RequestBody UpdateProtectedUserDetailsRequest request);
 
-    @PutMapping(value = BASE_URL + ADD_NEW_PRODUCT_CATEGORY)
-    void addNewProductCategory(@Valid @RequestBody AddNewProductCategoryRequest request);
-
     @GetMapping(value = BASE_URL + GET_ALL_PRODUCT_CATEGORIES)
     ResponseEntity<GetProductCategoriesResponse> getAllProductCategories();
 
@@ -90,6 +88,11 @@ public interface ApiGatewayService {
 
     @GetMapping(value = BASE_URL + SEARCH_PRODUCTS_BY_CATEGORY)
     ResponseEntity<SearchProductsResponse> searchProductsByCategory(@RequestParam(value = "categoryId") Integer categoryId);
+
+    // ADMIN API
+    @PutMapping(value = BASE_URL + ADMIN_ACTION + ADD_NEW_PRODUCT_CATEGORY)
+    void addNewProductCategory(@Valid @RequestBody AddNewProductCategoryRequest request);
+
 
 }
 
