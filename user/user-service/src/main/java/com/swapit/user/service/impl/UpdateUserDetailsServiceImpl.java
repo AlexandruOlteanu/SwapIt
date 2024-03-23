@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -43,8 +45,20 @@ public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
         request.getUserDetails().forEach((key, value) -> {
             switch (key) {
-                case EMAIL -> user.setEmail(value);
-                case USERNAME -> user.setSurname(value);
+                case EMAIL -> {
+                    Optional<User> existingUser = userRepository.findUserByEmail(value);
+                    if (existingUser.isPresent()) {
+                        throw new RuntimeException("Email already exists");
+                    }
+                    user.setEmail(value);
+                }
+                case USERNAME -> {
+                    Optional<User> existingUser = userRepository.findUserByUsername(value);
+                    if (existingUser.isPresent()) {
+                        throw new RuntimeException("Username already exists");
+                    }
+                    user.setUsername(value);
+                }
                 case PASSWORD -> user.setPassword(passwordEncoder.encode(value));
                 default -> throw new RuntimeException("Unrecognised field value for User Update " + key);
             }
