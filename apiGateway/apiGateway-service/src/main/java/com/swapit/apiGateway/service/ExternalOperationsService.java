@@ -16,6 +16,7 @@ import com.swapit.user.api.domain.response.*;
 public interface ExternalOperationsService {
 
     LoginResponse login(LoginRequest request);
+    Oauth2Response oauth2login(Oauth2Request request);
     RegisterResponse register(RegisterRequest request);
     void createProduct(ProductCreationRequest request);
     void sendPrivateMessage(PrivateChatMessageRequest request);

@@ -24,6 +24,11 @@ public class UserController implements UserService {
     }
 
     @Override
+    public ResponseEntity<Oauth2Response> oauth2login(Oauth2Request request) {
+        return ResponseEntity.ok(authenticationService.oauth2login(request));
+    }
+
+    @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }

@@ -61,6 +61,18 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
+    public Oauth2Response oauth2login(Oauth2Request request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.USER_OAUTH2_LOGIN);
+        log.info(url);
+        try {
+            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Oauth2Response.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in User Oauth2 Login {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
     public RegisterResponse register(RegisterRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.USER_REGISTER);
         log.info(url);

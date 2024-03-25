@@ -14,12 +14,14 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         USER_LOGIN, USER_REGISTER, CREATE_PRODUCT, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
         UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, INDEX_PRODUCT,
-        SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY
+        SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN
     }
 
     // USER URI
     @Value("${user.login.route}")
     private String userLoginUri;
+    @Value("${user.oauth2login.route}")
+    private String userOauth2LoginUri;
     @Value("${user.register.route}")
     private String userRegisterUri;
     @Value("${user.getUserDetails.route}")
@@ -79,6 +81,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case GET_PRODUCT_BY_ID -> getProductByIdUri;
             case GET_CATEGORY_TREE -> getCategoryTreeUri;
             case SEARCH_PRODUCTS_BY_CATEGORY -> searchProductsByCategoryUri;
+            case USER_OAUTH2_LOGIN -> userOauth2LoginUri;
         };
     }
 }

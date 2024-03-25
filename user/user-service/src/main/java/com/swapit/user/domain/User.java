@@ -10,9 +10,12 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
@@ -48,6 +51,12 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "auth_provider")
+    private String authProvider;
+
+    @Column(name = "oauth2_user_id")
+    private String oauth2UserId;
 
     @PrePersist
     public void setJoinDate() {

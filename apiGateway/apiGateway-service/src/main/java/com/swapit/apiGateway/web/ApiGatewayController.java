@@ -12,28 +12,48 @@ import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
-import com.swapit.user.api.domain.request.LoginRequest;
-import com.swapit.user.api.domain.request.RegisterRequest;
-import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
-import com.swapit.user.api.domain.request.UpdateProtectedUserDetailsRequest;
+import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
+import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.domain.response.RegisterResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
 public class ApiGatewayController implements ApiGatewayService {
 
+    private static final String OAUTH2_USER_ID = "sub";
+    private static final String PICTURE = "picture";
+    private static final String NAME = "family_name";
+    private static final String SURNAME = "given_name";
+    private static final String EMAIL = "email";
+
     private final ExternalOperationsService externalOperationsService;
 
     @Override
     public ResponseEntity<LoginResponse> login(LoginRequest request) {
         return ResponseEntity.ok(externalOperationsService.login(request));
+    }
+
+    @Override
+    public ResponseEntity<Oauth2Response> oauth2login(OAuth2AuthenticationToken auth2AuthenticationToken) {
+        Map<String, Object> attributes = auth2AuthenticationToken.getPrincipal().getAttributes();
+        Oauth2Request oauth2Request = Oauth2Request.builder()
+                                                .oauth2UserId((String) attributes.get(OAUTH2_USER_ID))
+                                                .picture((String) attributes.get(PICTURE))
+                                                .name((String) attributes.get(NAME))
+                                                .surname((String) attributes.get(SURNAME))
+                                                .email((String) attributes.get(EMAIL))
+                                        .build();
+        return ResponseEntity.ok(externalOperationsService.oauth2login(oauth2Request));
     }
 
     @Override

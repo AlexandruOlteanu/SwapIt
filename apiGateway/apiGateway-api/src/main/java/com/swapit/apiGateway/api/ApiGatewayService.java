@@ -10,15 +10,15 @@ import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
-import com.swapit.user.api.domain.request.LoginRequest;
-import com.swapit.user.api.domain.request.RegisterRequest;
-import com.swapit.user.api.domain.request.UpdateBasicUserDetailsRequest;
-import com.swapit.user.api.domain.request.UpdateProtectedUserDetailsRequest;
+import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
+import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.domain.response.RegisterResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +32,7 @@ public interface ApiGatewayService {
     String ADMIN_ACTION = "adminAction/";
     String LOGIN = "auth/login";
     String REGISTER = "auth/register";
+    String OAUTH2_LOGIN = "auth/oauth2login";
     String CREATE_PRODUCT = "createProduct";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
     String USER_DETAILS = "getUserDetails";
@@ -49,6 +50,9 @@ public interface ApiGatewayService {
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
+
+    @GetMapping(value = BASE_URL + OAUTH2_LOGIN, produces = MEDIA_TYPE_APPLICATION_JSON)
+    ResponseEntity<Oauth2Response> oauth2login(OAuth2AuthenticationToken auth2AuthenticationToken);
 
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
