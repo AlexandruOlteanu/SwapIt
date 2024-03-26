@@ -111,12 +111,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         results.forEach(hit -> {
                     Matcher matcher = pattern.matcher(hit);
                     if (matcher.find()) {
-                        if (matcher.group(1).isEmpty()) {
-                            suffix.add(0);
-                        }
-                        else {
-                            suffix.add(Integer.valueOf(matcher.group(1)));
-                        }
+                        Integer value = matcher.group(1).isEmpty() ? 0 : Integer.parseInt(matcher.group(1));
+                        suffix.add(value);
                     }
                 });
         suffix.sort(Comparator.naturalOrder());
