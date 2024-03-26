@@ -1,6 +1,4 @@
-package com.swapit.commons.service;
-
-import com.swapit.commons.service.impl.UrlGeneratorServiceImpl;
+package com.swapit.commons.urlGenerator;
 
 public interface UrlGeneratorService {
     String getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier api);

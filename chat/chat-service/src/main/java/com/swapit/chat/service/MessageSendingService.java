@@ -1,9 +1,9 @@
 package com.swapit.chat.service;
 
-import com.swapit.chat.api.domain.request.PrivateChatMessage;
+import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 
 public interface MessageSendingService {
 
-    void sendPrivateMessage(PrivateChatMessage request);
+    void sendPrivateMessage(PrivateChatMessageRequest request) throws Exception;
 
 }

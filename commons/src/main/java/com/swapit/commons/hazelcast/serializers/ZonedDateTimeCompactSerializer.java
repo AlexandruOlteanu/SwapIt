@@ -16,6 +16,7 @@ public class ZonedDateTimeCompactSerializer implements CompactSerializer<ZonedDa
         long epochSecond = reader.readInt64("epochSecond");
         int nano = reader.readInt32("nano");
         String zone = reader.readString("zone");
+        assert zone != null;
         return ZonedDateTime.ofInstant(java.time.Instant.ofEpochSecond(epochSecond, nano), ZoneId.of(zone));
     }
 

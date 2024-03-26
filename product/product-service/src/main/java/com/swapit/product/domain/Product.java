@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
 @Table(name = "product")
 public class Product {
@@ -42,13 +46,14 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "category")
-    private String category;
+    @Column(name = "category_id")
+    private Integer categoryId;
 
-    @Column(name = "subcategory")
-    private String subcategory;
+    @Column(name = "popularity")
+    private Integer popularity;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
     private List<ProductSpecification> productSpecifications;
 
 }

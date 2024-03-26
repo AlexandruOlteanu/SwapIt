@@ -3,23 +3,28 @@ package com.swapit.commons.hazelcast;
 import com.hazelcast.config.*;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.spring.cache.HazelcastCacheManager;
 import com.swapit.commons.hazelcast.serializers.ZonedDateTimeCompactSerializer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
+
 @Configuration
-@ConditionalOnProperty(name = "application.hazelcast.enabled", havingValue = "true", matchIfMissing = true)
 public class HazelcastConfig {
 
     @Value("${hazelcast.member.ip}")
     private String memberIp;
+    @Value("${hazelcast.instance.name}")
+    private String hazelcastInstanceName;
 
     @Bean
     public Config hazelcastConfiguration() {
         Config config = new Config();
+
+        config.setInstanceName(hazelcastInstanceName);
 
         // Customize the network configuration
         NetworkConfig networkConfig = config.getNetworkConfig();
@@ -34,6 +39,11 @@ public class HazelcastConfig {
         compactSerializationConfig.addSerializer(new ZonedDateTimeCompactSerializer());
 
         return config;
+    }
+
+    @Bean
+    public CacheManager getCacheManager() {
+        return new HazelcastCacheManager(hazelcastInstance(hazelcastConfiguration()));
     }
 
     @Bean

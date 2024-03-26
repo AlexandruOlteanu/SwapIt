@@ -1,7 +1,7 @@
 package com.swapit.chat.service.impl;
 
 import com.pusher.rest.Pusher;
-import com.swapit.chat.api.domain.request.PrivateChatMessage;
+import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.domain.Conversation;
 import com.swapit.chat.domain.ConversationParticipants;
 import com.swapit.chat.domain.Message;
@@ -11,15 +11,13 @@ import com.swapit.chat.repository.MessageRepository;
 import com.swapit.chat.service.MessageSendingService;
 import com.swapit.chat.utils.ConversationType;
 import com.swapit.chat.utils.MessageType;
+import com.swapit.commons.encryption.EncryptionService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
-
 import java.time.ZonedDateTime;
-
 import static com.swapit.chat.utils.Constants.*;
 
 
@@ -33,9 +31,10 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     private final ConversationRepository conversationRepository;
     private final ConversationParticipantsRepository conversationParticipantsRepository;
     private final MessageRepository messageRepository;
+    private final EncryptionService encryptionService;
     @Override
     @Transactional
-    public void sendPrivateMessage(PrivateChatMessage request) {
+    public void sendPrivateMessage(PrivateChatMessageRequest request) throws Exception {
         var senderId = request.getSenderId();
         var receiverId = request.getReceiverId();
         Integer conversationId = request.getConversationId();
@@ -64,14 +63,13 @@ public class MessageSendingServiceImpl implements MessageSendingService {
                         .sentAt(updatedLastAction)
                         .sentBy(senderId)
                         .type(MessageType.valueOf(request.getMessageType()))
-                        .value(request.getMessage())
+                        .value(encryptionService.encrypt(request.getMessage()))
                 .build());
 
         String channel = generatePrivateConversationChannelPath(receiverId, conversationId);
 
         pusher.trigger(channel, MESSAGE, request);
         log.info("Message sent to channel: " + channel);
-
     }
 
     private String generatePrivateConversationChannelPath(Integer receiver, Integer conversationId) {

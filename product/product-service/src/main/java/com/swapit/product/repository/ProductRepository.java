@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
-
-    Optional<Product> findProductByProductId(Integer productId);
-    Optional<List<Product>> findAllByCategory(String category);
-    Optional<List<Product>> findAllByUserIdOrderByCreationDateDesc(Integer userId);
-    Optional<List<Product>> findAllBySubcategory(String subcategory);
-
+    Optional<List<Product>> findAllByUserId(Integer userId);
+    Optional<List<Product>> findAllByProductIdIn(List<Integer> productIds);
+    Optional<List<Product>> findAllByCategoryIdIn(List<Integer> categoriesIds);
 }

@@ -14,7 +14,7 @@
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>searchEngine</name>
-	<description>User microservice responsible for registration/authentication and profile update</description>
+	<description>Search Engine microservice responsible for category/subcategory creation, products retrieval based on category, etc</description>
     <modules>
 		<module>searchEngine-api</module>
 		<module>searchEngine-client</module>
@@ -24,8 +24,9 @@
     <properties>
 		<java.version>21</java.version>
 
-		<user.version>0.0.1-SNAPSHOT</user.version>
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
+		<product.version>0.0.1-SNAPSHOT</product.version>
+		<lucene.version>9.10.0</lucene.version>
 
 	</properties>
 
@@ -35,6 +36,22 @@
 			<groupId>com.swapit</groupId>
 			<artifactId>commons</artifactId>
 			<version>${commons.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.swapit</groupId>
+			<artifactId>product-api</artifactId>
+			<version>${product.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.swapit</groupId>
+			<artifactId>product-client</artifactId>
+			<version>${product.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${lucene.version}</version>
 		</dependency>
 
 	</dependencies>

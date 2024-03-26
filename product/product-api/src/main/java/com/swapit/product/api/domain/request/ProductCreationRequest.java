@@ -20,8 +20,6 @@ public class ProductCreationRequest {
     private String description;
     private Double price;
     @NotNull
-    private String category;
-    @NotNull
-    private String subcategory;
+    private Integer categoryId;
     Map<String, String> productSpecifications;
 }

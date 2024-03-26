@@ -10,11 +10,10 @@ create table product
     title       varchar(255)                           not null,
     description varchar(2000),
     price       double precision,
-    category    varchar(255)                           not null,
-    subcategory varchar(255)
+    category_id integer                                not null,
+    popularity  integer                                not null
 );
 
 alter table product
     owner to postgres;
-
 
