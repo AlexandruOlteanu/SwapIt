@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ErrorHandler {
 
-    private static Integer INTERNAL_SERVER_ERROR = 500;
-    private static String X_ERROR_MESSAGE = "x_error_message";
+    private static final Integer INTERNAL_SERVER_ERROR = 500;
+    private static final String X_ERROR_MESSAGE = "x_error_message";
 
     public static void handleException(Exception e, HttpServletResponse response) {
         response.setStatus(INTERNAL_SERVER_ERROR);

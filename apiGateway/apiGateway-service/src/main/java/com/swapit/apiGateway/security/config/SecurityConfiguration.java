@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
@@ -29,26 +27,20 @@ public class SecurityConfiguration {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        try {
-            return http
-//                    .addFilterBefore(customFilter, AbstractAuthenticationProcessingFilter.class)
-                    .csrf(AbstractHttpConfigurer::disable)
-                    .authorizeHttpRequests(req -> {
-                        req.requestMatchers(WHITE_LIST_URL).permitAll();
-                        req.requestMatchers("/api/v1/swapIt/apiGateway/adminAction/**").hasAnyAuthority(ADMINISTRATOR.name());
-                        req.anyRequest().authenticated();
-                    })
-                    .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
-                    .oauth2Login(Customizer.withDefaults())
-                    .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                    .logout(logout ->
-                            logout.logoutUrl("/api/v1/swapIt/apiGateway/auth/")
-                                    .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()))
-                    .build();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(req -> {
+                    req.requestMatchers(WHITE_LIST_URL).permitAll();
+                    req.requestMatchers("/api/v1/swapIt/apiGateway/adminAction/**").hasAnyAuthority(ADMINISTRATOR.name());
+                    req.anyRequest().authenticated();
+                })
+                .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .oauth2Login(Customizer.withDefaults())
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .logout(logout ->
+                        logout.logoutUrl("/api/v1/swapIt/apiGateway/auth/")
+                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()))
+                .build();
     }
 }

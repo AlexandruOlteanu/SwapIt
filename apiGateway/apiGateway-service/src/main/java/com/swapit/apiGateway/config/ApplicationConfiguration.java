@@ -1,8 +1,6 @@
 package com.swapit.apiGateway.config;
 
 import com.swapit.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
 
 @Configuration("applicationConfiguration")
 @RequiredArgsConstructor
@@ -46,13 +40,6 @@ public class ApplicationConfiguration {
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
-    }
-
-    @Bean
-    public AuthenticationFailureHandler noOpAuthenticationFailureHandler() {
-        return (request, response, exception) -> {
-            // Do nothing, no redirection
-        };
     }
 
     @Bean

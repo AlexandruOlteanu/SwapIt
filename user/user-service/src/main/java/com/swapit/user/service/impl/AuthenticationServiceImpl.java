@@ -120,7 +120,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     }
                 });
         suffix.sort(Comparator.naturalOrder());
-        String endValue = suffix.isEmpty() ? "" : String.valueOf(suffix.getLast() + 1);
+        String endValue = suffix.isEmpty() ? "" : String.valueOf(findFirstMissing(suffix));
         return joinedPrefix + endValue;
+    }
+
+    private Integer findFirstMissing(List<Integer> numbers) {
+        int low = 0, high = numbers.size() - 1;
+        int answer = -1;
+        while (low <= high) {
+            int middle = low + (high - low) / 2;
+            if (numbers.get(middle).equals(middle)) {
+                answer = middle;
+                low = middle + 1;
+                continue;
+            }
+            high = middle - 1;
+        }
+        return answer + 1;
     }
 }

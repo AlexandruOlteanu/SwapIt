@@ -1,6 +1,5 @@
 package com.swapit.apiGateway.security.config;
 
-import jakarta.validation.Valid;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import jakarta.servlet.http.HttpServletRequest;
