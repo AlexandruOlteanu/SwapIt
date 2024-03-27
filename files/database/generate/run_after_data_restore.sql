@@ -5,6 +5,7 @@ SELECT setval('product_specifications_specification_id_seq', (SELECT MAX(specifi
 SELECT setval('product_product_id_seq', (SELECT MAX(product_id) FROM product));
 SELECT setval('users_user_id_seq', (SELECT MAX(user_id) FROM users));
 SELECT setval('product_category_product_category_id_seq', (SELECT MAX(product_category_id) FROM product_category));
+SELECT setval('product_like_id_seq', (SELECT MAX(id) FROM product_like));
 
 
 
