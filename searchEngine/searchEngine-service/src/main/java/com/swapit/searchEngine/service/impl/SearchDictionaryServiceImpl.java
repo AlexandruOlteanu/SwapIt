@@ -5,7 +5,7 @@ import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
 import com.swapit.searchEngine.service.ExternalOperationsService;
 import com.swapit.searchEngine.service.ProductCategorizeService;
-import com.swapit.searchEngine.service.SearchIndexService;
+import com.swapit.searchEngine.service.SearchDictionaryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.analysis.Analyzer;
@@ -25,7 +25,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SearchIndexServiceImpl implements SearchIndexService {
+public class SearchDictionaryServiceImpl implements SearchDictionaryService {
 
     @Qualifier("standardAnalyzer")
     private final Analyzer standardAnalyzer;
@@ -39,7 +39,7 @@ public class SearchIndexServiceImpl implements SearchIndexService {
     private final static String METADATA_KEY = "metadata";
 
     @Override
-    public void indexProduct(Integer productId) throws IOException {
+    public void addProductInSearchDictionary(Integer productId) throws IOException {
         ProductDTO productDTO = externalOperationsService.getProductById(productId);
         assert productDTO != null;
         List<String> categories = productCategorizeService.getCategoryTree(productDTO.getCategoryId()).getParentCategories().stream()
@@ -52,6 +52,18 @@ public class SearchIndexServiceImpl implements SearchIndexService {
         document.add(new TextField(METADATA_KEY, joinValues(productDTO.getTitle(), productDTO.getDescription(), categoryChain), Field.Store.YES));
         indexWriter.addDocument(document);
         indexWriter.close();
+    }
+
+    @Override
+    public void updateProductInSearchDictionary(Integer productId) throws IOException {
+        IndexWriterConfig config = new IndexWriterConfig(standardAnalyzer);
+        IndexWriter indexWriter = new IndexWriter(directory, config);
+        String documentId = String.valueOf(productId);
+        Term term = new Term(PRODUCT_ID_KEY, documentId);
+        Query query = new TermQuery(term);
+        indexWriter.deleteDocuments(query);
+        indexWriter.close();
+        addProductInSearchDictionary(productId);
     }
 
     @Override

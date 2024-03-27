@@ -7,7 +7,8 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.commons.urlGenerator.UrlGeneratorService;
 import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.dto.ProductDTO;
-import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.UpdateProductRequest;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
@@ -85,14 +86,27 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void createProduct(ProductCreationRequest request) {
+    public void createProduct(CreateProductRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.CREATE_PRODUCT);
         log.info(url);
         try {
             Integer productId = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
-            indexProduct(productId);
+            addProductInSearchDictionary(productId);
         } catch (Exception e) {
             log.error("Exception in Product Creation {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void updateProduct(UpdateProductRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_PRODUCT);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Integer.class);
+            updateProductInSearchDictionary(request.getProductId());
+        } catch (Exception e) {
+            log.error("Exception in Product Update {}", e.getMessage(), e);
             throw e;
         }
     }
@@ -287,15 +301,28 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         }
     }
 
-    public void indexProduct(Integer productId) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.INDEX_PRODUCT);
+    public void addProductInSearchDictionary(Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_PRODUCT_IN_SEARCH_DICTIONARY);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
                 .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
         log.info(uriBuilder.toUriString());
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, null, Void.class);
         } catch (Exception e) {
-            log.error("Exception in indexing product {}", e.getMessage(), e);
+            log.error("Exception in adding product in Dictionary {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public void updateProductInSearchDictionary(Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_PRODUCT_IN_SEARCH_DICTIONARY);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, null, Void.class);
+        } catch (Exception e) {
+            log.error("Exception in updating product in Dictionary {}", e.getMessage(), e);
             throw e;
         }
     }

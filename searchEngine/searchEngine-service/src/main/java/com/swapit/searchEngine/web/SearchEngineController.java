@@ -7,7 +7,7 @@ import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeRespon
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.searchEngine.service.ProductCategorizeService;
-import com.swapit.searchEngine.service.SearchIndexService;
+import com.swapit.searchEngine.service.SearchDictionaryService;
 import com.swapit.searchEngine.service.SearchProductsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class SearchEngineController implements SearchEngineService {
 
     private final ProductCategorizeService productCategorizeService;
-    private final SearchIndexService searchIndexService;
+    private final SearchDictionaryService searchDictionaryService;
     private final SearchProductsService searchProductsService;
 
     @Override
@@ -35,8 +35,13 @@ public class SearchEngineController implements SearchEngineService {
     }
 
     @Override
-    public void indexProduct(Integer productId) throws IOException {
-        searchIndexService.indexProduct(productId);
+    public void addProductInSearchDictionary(Integer productId) throws IOException {
+        searchDictionaryService.addProductInSearchDictionary(productId);
+    }
+
+    @Override
+    public void updateProductInSearchDictionary(Integer productId) throws IOException {
+        searchDictionaryService.updateProductInSearchDictionary(productId);
     }
 
     @Override

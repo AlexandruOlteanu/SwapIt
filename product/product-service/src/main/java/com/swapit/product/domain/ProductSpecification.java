@@ -22,7 +22,7 @@ public class ProductSpecification {
     @Column(name="specification_id")
     private Integer specificationId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

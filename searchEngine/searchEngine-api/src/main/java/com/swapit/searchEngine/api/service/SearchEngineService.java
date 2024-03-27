@@ -20,7 +20,9 @@ public interface SearchEngineService {
     String BASE_URL = "/api/v1/swapIt/searchEngine/";
     String ADD_NEW_PRODUCT_CATEGORY = "addNewProductCategory";
     String GET_ALL_PRODUCT_CATEGORIES = "getAllProductCategories";
-    String INDEX_PRODUCT = "indexProduct";
+    String ADD_PRODUCT_IN_SEARCH_DICTIONARY = "addProductInSearchDictionary";
+    String UPDATE_PRODUCT_IN_SEARCH_DICTIONARY = "updateProductInSearchDictionary";
+
     String SEARCH_PRODUCTS = "searchProducts";
     String GET_CATEGORY_TREE = "getCategoryTree";
     String SEARCH_PRODUCTS_BY_CATEGORY = "searchProductsByCategory";
@@ -31,8 +33,11 @@ public interface SearchEngineService {
     @GetMapping(value = BASE_URL + GET_ALL_PRODUCT_CATEGORIES, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<GetProductCategoriesResponse> getAllProductCategories();
 
-    @PutMapping(value = BASE_URL + INDEX_PRODUCT)
-    void indexProduct(@RequestParam("productId") Integer productId) throws IOException;
+    @PutMapping(value = BASE_URL + ADD_PRODUCT_IN_SEARCH_DICTIONARY)
+    void addProductInSearchDictionary(@RequestParam("productId") Integer productId) throws IOException;
+
+    @PutMapping(value = BASE_URL + UPDATE_PRODUCT_IN_SEARCH_DICTIONARY)
+    void updateProductInSearchDictionary(@RequestParam("productId") Integer productId) throws IOException;
 
     @PostMapping(value = BASE_URL + SEARCH_PRODUCTS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<SearchProductsResponse> searchProducts(@Valid @RequestBody SearchProductsRequest request) throws IOException;

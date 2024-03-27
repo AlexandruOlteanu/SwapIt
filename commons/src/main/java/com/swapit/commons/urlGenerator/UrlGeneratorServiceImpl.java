@@ -13,8 +13,9 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, CREATE_PRODUCT, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
-        UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, INDEX_PRODUCT,
-        SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN
+        UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, ADD_PRODUCT_IN_SEARCH_DICTIONARY,
+        SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN,
+        UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY
     }
 
     // USER URI
@@ -36,6 +37,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     // PRODUCT URI
     @Value("${product.createProduct.route}")
     private String createProductUri;
+    @Value("${product.updateProduct.route}")
+    private String updateProductUri;
     @Value("${product.getProductById.route}")
     private String getProductByIdUri;
 
@@ -52,8 +55,10 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String addNewProductCategoryUri;
     @Value("${searchEngine.getAllProductCategories.route}")
     private String getAllProductCategoriesUri;
-    @Value("${searchEngine.indexProduct.route}")
-    private String indexProductUri;
+    @Value("${searchEngine.addProductInSearchDictionary.route}")
+    private String addProductInSearchDictionaryUri;
+    @Value("${searchEngine.updateProductInSearchDictionary.route}")
+    private String updateProductInSearchDictionaryUri;
     @Value("${searchEngine.searchProducts.route}")
     private String searchProductsUri;
     @Value("${searchEngine.getCategoryTree.route}")
@@ -76,12 +81,14 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case UPDATE_PROTECTED_USER_DETAILS -> updateProtectedUserDetailsUri;
             case ADD_NEW_PRODUCT_CATEGORY -> addNewProductCategoryUri;
             case GET_ALL_PRODUCT_CATEGORIES -> getAllProductCategoriesUri;
-            case INDEX_PRODUCT -> indexProductUri;
+            case ADD_PRODUCT_IN_SEARCH_DICTIONARY -> addProductInSearchDictionaryUri;
             case SEARCH_PRODUCTS -> searchProductsUri;
             case GET_PRODUCT_BY_ID -> getProductByIdUri;
             case GET_CATEGORY_TREE -> getCategoryTreeUri;
             case SEARCH_PRODUCTS_BY_CATEGORY -> searchProductsByCategoryUri;
             case USER_OAUTH2_LOGIN -> userOauth2LoginUri;
+            case UPDATE_PRODUCT -> updateProductUri;
+            case UPDATE_PRODUCT_IN_SEARCH_DICTIONARY -> updateProductInSearchDictionaryUri;
         };
     }
 }

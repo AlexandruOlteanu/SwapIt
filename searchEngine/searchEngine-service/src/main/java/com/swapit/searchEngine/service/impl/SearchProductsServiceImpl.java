@@ -12,7 +12,7 @@ import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
 import com.swapit.searchEngine.api.service.dto.SearchProductDTO;
 import com.swapit.searchEngine.service.ExternalOperationsService;
 import com.swapit.searchEngine.service.ProductCategorizeService;
-import com.swapit.searchEngine.service.SearchIndexService;
+import com.swapit.searchEngine.service.SearchDictionaryService;
 import com.swapit.searchEngine.service.SearchProductsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +29,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class SearchProductsServiceImpl implements SearchProductsService {
-    private final SearchIndexService searchIndexService;
+    private final SearchDictionaryService searchDictionaryService;
     private final ProductCategorizeService productCategorizeService;
     private final ExternalOperationsService externalOperationsService;
 
     @Override
     public SearchProductsResponse searchProducts(SearchProductsRequest request) throws IOException {
-        List<Pair<Integer, Integer>> productsScore = searchIndexService.searchMatchingProductsScore(request.getQuery());
+        List<Pair<Integer, Integer>> productsScore = searchDictionaryService.searchMatchingProductsScore(request.getQuery());
         List<Integer> productIds = productsScore.stream()
                 .map(Pair::getFirst)
                 .toList();

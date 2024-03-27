@@ -4,7 +4,8 @@ import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.dto.ProductDTO;
-import com.swapit.product.api.domain.request.ProductCreationRequest;
+import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.UpdateProductRequest;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
@@ -33,6 +34,7 @@ public interface ApiGatewayService {
     String REGISTER = "auth/register";
     String OAUTH2_LOGIN = "auth/oauth2login";
     String CREATE_PRODUCT = "createProduct";
+    String UPDATE_PRODUCT = "updateProduct";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
     String USER_DETAILS = "getUserDetails";
     String GET_CONVERSATIONS_PREVIEW = "getConversationsPreview";
@@ -57,7 +59,10 @@ public interface ApiGatewayService {
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
 
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void createProduct(@Valid @RequestBody ProductCreationRequest request);
+    void createProduct(@Valid @RequestBody CreateProductRequest request);
+
+    @PutMapping(value = BASE_URL + UPDATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void updateProduct(@Valid @RequestBody UpdateProductRequest request);
 
     @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request);

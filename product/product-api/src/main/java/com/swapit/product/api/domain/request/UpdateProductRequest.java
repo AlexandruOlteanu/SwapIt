@@ -1,19 +1,20 @@
 package com.swapit.product.api.domain.request;
 
+import com.swapit.product.api.domain.dto.ProductSpecificationDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.Map;
+import java.util.List;
 
 @Data
 @Jacksonized
 @Builder
-public class ProductCreationRequest {
+public class UpdateProductRequest {
 
     @NotNull
-    private Integer userId;
+    private Integer productId;
     @NotNull
     private String title;
     @NotNull
@@ -21,5 +22,5 @@ public class ProductCreationRequest {
     private Double price;
     @NotNull
     private Integer categoryId;
-    Map<String, String> productSpecifications;
+    List<ProductSpecificationDTO> productSpecifications;
 }

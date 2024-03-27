@@ -52,7 +52,7 @@ public class Product {
     @Column(name = "popularity")
     private Integer popularity;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     private List<ProductSpecification> productSpecifications;
 
