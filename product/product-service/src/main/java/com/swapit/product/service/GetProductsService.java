@@ -8,7 +8,8 @@ import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 
 public interface GetProductsService {
-    GetProductsResponse getProductsByUserId(Integer userId);
+    GetProductsResponse getProductsByUser(Integer userId);
+    GetProductsResponse getLikedProductsByUser(Integer userId);
     GetProductsByIdsResponse getProductsByIds(GetProductsByIdsRequest request);
     ProductDTO getProductById(Integer productId);
     GetProductsByCategoryResponse getProductsByCategory(GetProductsByCategoryRequest request);

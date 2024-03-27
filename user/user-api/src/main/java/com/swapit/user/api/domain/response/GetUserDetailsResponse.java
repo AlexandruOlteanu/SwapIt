@@ -17,5 +17,4 @@ public class GetUserDetailsResponse {
     private String surname;
     private String email;
     private ZonedDateTime joinDate;
-    private List<UserProductDTO> products;
 }

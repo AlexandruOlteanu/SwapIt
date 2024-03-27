@@ -15,7 +15,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
         UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, ADD_PRODUCT_IN_SEARCH_DICTIONARY,
         SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN,
-        UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY
+        UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
+        GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER
     }
 
     // USER URI
@@ -41,6 +42,14 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String updateProductUri;
     @Value("${product.getProductById.route}")
     private String getProductByIdUri;
+    @Value("${product.getProductsByUser.route}")
+    private String getProductsByUserUri;
+    @Value("${product.changeProductLikeStatus.route}")
+    private String changeProductLikeStatusUri;
+    @Value("${product.getProductLikeStatus.route}")
+    private String getProductLikeStatusUri;
+    @Value("${product.getLikedProductsByUser.route}")
+    private String getLikedProductsByUserUri;
 
     // CHAT URI
     @Value("${chat.sendPrivateMessage.route}")
@@ -89,6 +98,10 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case USER_OAUTH2_LOGIN -> userOauth2LoginUri;
             case UPDATE_PRODUCT -> updateProductUri;
             case UPDATE_PRODUCT_IN_SEARCH_DICTIONARY -> updateProductInSearchDictionaryUri;
+            case CHANGE_PRODUCT_LIKE_STATUS -> changeProductLikeStatusUri;
+            case GET_PRODUCT_LIKE_STATUS -> getProductLikeStatusUri;
+            case GET_PRODUCTS_BY_USER -> getProductsByUserUri;
+            case GET_LIKED_PRODUCTS_BY_USER -> getLikedProductsByUserUri;
         };
     }
 }

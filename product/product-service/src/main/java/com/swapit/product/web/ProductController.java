@@ -1,16 +1,13 @@
 package com.swapit.product.web;
 
 import com.swapit.product.api.domain.dto.ProductDTO;
-import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
-import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
-import com.swapit.product.api.domain.request.CreateProductRequest;
-import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.request.*;
 import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.product.api.service.ProductService;
 import com.swapit.product.service.GetProductsService;
-import com.swapit.product.service.ProductOperationService;
+import com.swapit.product.service.ProductOperationsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,22 +18,37 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class ProductController implements ProductService {
 
-    private final ProductOperationService productOperationService;
+    private final ProductOperationsService productOperationsService;
     private final GetProductsService getProductsService;
 
     @Override
     public ResponseEntity<Integer> createProduct(CreateProductRequest request) {
-        return ResponseEntity.ok(productOperationService.createProduct(request));
+        return ResponseEntity.ok(productOperationsService.createProduct(request));
     }
 
     @Override
     public void updateProduct(UpdateProductRequest request) {
-        productOperationService.updateProduct(request);
+        productOperationsService.updateProduct(request);
     }
 
     @Override
-    public ResponseEntity<GetProductsResponse> getProductsByUserId(Integer userId) {
-        return ResponseEntity.ok(getProductsService.getProductsByUserId(userId));
+    public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
+        productOperationsService.changeProductLikeStatus(request);
+    }
+
+    @Override
+    public ResponseEntity<String> getProductLikeStatus(Integer userId, Integer productId) {
+        return ResponseEntity.ok(productOperationsService.getProductLikeStatus(userId, productId));
+    }
+
+    @Override
+    public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId) {
+        return ResponseEntity.ok(getProductsService.getProductsByUser(userId));
+    }
+
+    @Override
+    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer userId) {
+        return ResponseEntity.ok(getProductsService.getLikedProductsByUser(userId));
     }
 
     @Override

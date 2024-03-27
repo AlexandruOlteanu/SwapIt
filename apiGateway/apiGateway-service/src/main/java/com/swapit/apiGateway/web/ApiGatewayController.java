@@ -6,8 +6,10 @@ import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
@@ -70,6 +72,26 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public void updateProduct(UpdateProductRequest request) {
         externalOperationsService.updateProduct(request);
+    }
+
+    @Override
+    public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId) {
+        return ResponseEntity.ok(externalOperationsService.getProductsByUser(userId));
+    }
+
+    @Override
+    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer userId) {
+        return ResponseEntity.ok(externalOperationsService.getLikedProductsByUser(userId));
+    }
+
+    @Override
+    public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
+        externalOperationsService.changeProductLikeStatus(request);
+    }
+
+    @Override
+    public ResponseEntity<String> getProductLikeStatus(Integer userId, Integer productId) {
+        return ResponseEntity.ok(externalOperationsService.getProductLikeStatus(userId, productId));
     }
 
     @Override

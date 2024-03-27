@@ -4,5 +4,5 @@ import com.swapit.product.api.domain.response.GetProductsResponse;
 
 public interface ExternalOperationsService {
 
-    GetProductsResponse getAllProductsByUserId(Integer userId);
+    GetProductsResponse getProductsByUser(Integer userId);
 }

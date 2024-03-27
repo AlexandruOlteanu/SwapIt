@@ -7,8 +7,10 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.commons.urlGenerator.UrlGeneratorService;
 import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
@@ -107,6 +109,34 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             updateProductInSearchDictionary(request.getProductId());
         } catch (Exception e) {
             log.error("Exception in Product Update {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public GetProductsResponse getProductsByUser(Integer userId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCTS_BY_USER);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetProductsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting products by user id {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public GetProductsResponse getLikedProductsByUser(Integer userId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_LIKED_PRODUCTS_BY_USER);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetProductsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting liked products of user {}", e.getMessage(), e);
             throw e;
         }
     }
@@ -297,6 +327,33 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, SearchProductsResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in searching Products by category {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.CHANGE_PRODUCT_LIKE_STATUS);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
+        } catch (Exception e) {
+            log.error("Exception in changing product like status {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public String getProductLikeStatus(Integer userId, Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCT_LIKE_STATUS);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, String.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting product like status {}", e.getMessage(), e);
             throw e;
         }
     }

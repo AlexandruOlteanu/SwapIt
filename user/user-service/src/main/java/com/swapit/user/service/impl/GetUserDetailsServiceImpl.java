@@ -23,29 +23,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class GetUserDetailsServiceImpl implements GetUserDetailsService {
-    private final ExternalOperationsService externalOperationsService;
     private final UserRepository userRepository;
 
     @Override
     public GetUserDetailsResponse getUserDetails(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        GetProductsResponse productsResponse = externalOperationsService.getAllProductsByUserId(userId);
-        List<UserProductDTO> products = productsResponse.getProducts().stream()
-                .map(productDTO -> UserProductDTO.builder()
-                        .productId(productDTO.getProductId())
-                        .creationDate(productDTO.getCreationDate())
-                        .title(productDTO.getTitle())
-                        .description(productDTO.getDescription())
-                        .categoryId(productDTO.getCategoryId())
-                        .popularity(productDTO.getPopularity())
-                        .build()).toList();
         return GetUserDetailsResponse.builder()
                 .username(user.getUsername())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .email(user.getEmail())
                 .joinDate(user.getJoinDate())
-                .products(products)
                 .build();
     }
 

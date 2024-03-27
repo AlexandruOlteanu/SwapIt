@@ -4,8 +4,10 @@ import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
@@ -47,6 +49,10 @@ public interface ApiGatewayService {
     String GET_PRODUCT_BY_ID = "getProductById";
     String GET_CATEGORY_TREE = "getCategoryTree";
     String SEARCH_PRODUCTS_BY_CATEGORY = "searchProductsByCategory";
+    String CHANGE_PRODUCT_LIKE_STATUS = "changeProductLikeStatus";
+    String GET_PRODUCT_LIKE_STATUS = "getProductLikeStatus";
+    String GET_PRODUCTS_BY_USER = "getProductsByUser";
+    String GET_LIKED_PRODUCTS_BY_USER = "getLikedProductsByUser";
 
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
@@ -63,6 +69,18 @@ public interface ApiGatewayService {
 
     @PutMapping(value = BASE_URL + UPDATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void updateProduct(@Valid @RequestBody UpdateProductRequest request);
+
+    @GetMapping(value = BASE_URL + GET_PRODUCTS_BY_USER)
+    ResponseEntity<GetProductsResponse> getProductsByUser(@RequestParam(value = "userId") Integer userId);
+
+    @GetMapping(value = BASE_URL + GET_LIKED_PRODUCTS_BY_USER)
+    ResponseEntity<GetProductsResponse> getLikedProductsByUser(@RequestParam(value = "userId") Integer userId);
+
+    @PostMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void changeProductLikeStatus(@Valid @RequestBody ChangeProductLikeStatusRequest request);
+
+    @GetMapping(value = BASE_URL + GET_PRODUCT_LIKE_STATUS)
+    ResponseEntity<String> getProductLikeStatus(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);
 
     @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request);

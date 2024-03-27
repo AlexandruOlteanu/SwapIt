@@ -7,7 +7,9 @@ import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.product.domain.Product;
+import com.swapit.product.domain.ProductLike;
 import com.swapit.product.mappers.ProductMapper;
+import com.swapit.product.repository.ProductLikeRepository;
 import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.service.GetProductsService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.swapit.product.util.ProductLikeStatus.ACTIVE;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +29,27 @@ import java.util.List;
 public class GetProductsServiceImpl implements GetProductsService {
 
     private final ProductRepository productRepository;
+    private final ProductLikeRepository productLikeRepository;
 
     @Override
-    public GetProductsResponse getProductsByUserId(Integer userId) {
+    public GetProductsResponse getProductsByUser(Integer userId) {
         List<Product> products = productRepository.findAllByUserId(userId).orElse(new ArrayList<>());
         products.sort(Comparator.comparing(Product::getCreationDate).reversed());
+        List<ProductDTO> productDTOS = products.stream()
+                .map(ProductMapper::productToProductDto)
+                .toList();
+        return GetProductsResponse.builder()
+                .products(productDTOS)
+                .build();
+    }
+
+    @Override
+    public GetProductsResponse getLikedProductsByUser(Integer userId) {
+        List<Integer> productsLikedByUserIds = productLikeRepository.findAllByUserId(userId).orElse(new ArrayList<>())
+                .stream().filter(productLike -> productLike.getStatus().equals(ACTIVE.name()))
+                .map(ProductLike::getProductId)
+                .toList();
+        List<Product> products = productRepository.findAllByProductIdIn(productsLikedByUserIds).orElse(new ArrayList<>());
         List<ProductDTO> productDTOS = products.stream()
                 .map(ProductMapper::productToProductDto)
                 .toList();
