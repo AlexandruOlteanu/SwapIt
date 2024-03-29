@@ -23,11 +23,11 @@ public interface ExternalOperationsService {
     RegisterResponse register(RegisterRequest request);
     void createProduct(CreateProductRequest request);
     void updateProduct(UpdateProductRequest request);
-    GetProductsResponse getProductsByUser(Integer userId);
-    GetProductsResponse getLikedProductsByUser(Integer userId);
+    GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
+    GetProductsResponse getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void sendPrivateMessage(PrivateChatMessageRequest request);
     GetUserDetailsResponse getUserDetails(Integer userId);
-    ConversationsPreviewResponse getConversationsPreview(Integer userId);
+    ConversationsPreviewResponse getConversationsPreview(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     GetSpecificUsersDetailsResponse getSpecificUsersDetails(GetSpecificUsersDetailsRequest request);
     ConversationResponse getConversation(Integer conversationId);
     void updateBasicUserDetails(UpdateBasicUserDetailsRequest request);
@@ -37,7 +37,8 @@ public interface ExternalOperationsService {
     SearchProductsResponse searchProducts(SearchProductsRequest request);
     ProductDTO getProductById(Integer productId);
     GetCategoryTreeResponse getCategoryTree(Integer categoryId);
-    SearchProductsResponse searchProductsByCategory(Integer categoryId);
+    SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void changeProductLikeStatus(ChangeProductLikeStatusRequest request);
     String getProductLikeStatus(Integer userId, Integer productId);
+    GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
 }

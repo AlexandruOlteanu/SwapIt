@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.swapit.commons.utils.Constants.IntegerMaxValueAsString;
+
 
 @RestController
 @Validated
@@ -22,7 +24,10 @@ public interface ChatService {
     @PostMapping(value = BASE_URL + SEND, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request) throws Exception;
     @GetMapping(value = BASE_URL + GET_CONVERSATIONS_PREVIEW)
-    ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "userId") Integer userId);
+    ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "userId") Integer userId,
+                                                                         @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                                         @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                                         @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
     @GetMapping(value = BASE_URL + GET_CONVERSATION)
     ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId);
 

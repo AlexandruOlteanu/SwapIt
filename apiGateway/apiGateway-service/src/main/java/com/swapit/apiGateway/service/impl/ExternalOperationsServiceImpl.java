@@ -50,6 +50,10 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     private static final String CONVERSATION_ID_PARAM = "conversationId";
     private static final String PRODUCT_ID_PARAM = "productId";
     private static final String CATEGORY_ID_PARAM = "categoryId";
+    private static final String CHUNK_NUMBER_PARAM = "chunkNumber";
+    private static final String NR_ELEMENTS_PER_CHUNK_PARAM = "nrElementsPerChunk";
+    private static final String SORT_CRITERIA_PARAM = "sortCriteria";
+
 
     @Override
     public LoginResponse login(LoginRequest request) {
@@ -114,10 +118,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public GetProductsResponse getProductsByUser(Integer userId) {
+    public GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCTS_BY_USER);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
+                .queryParamIfPresent(CHUNK_NUMBER_PARAM, Optional.ofNullable(chunkNumber))
+                .queryParamIfPresent(NR_ELEMENTS_PER_CHUNK_PARAM, Optional.ofNullable(nrElementsPerChunk))
+                .queryParamIfPresent(SORT_CRITERIA_PARAM, Optional.ofNullable(sortCriteria));
         log.info(uriBuilder.toUriString());
         try {
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetProductsResponse.class).getBody();
@@ -128,10 +135,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public GetProductsResponse getLikedProductsByUser(Integer userId) {
+    public GetProductsResponse getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_LIKED_PRODUCTS_BY_USER);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
+                .queryParamIfPresent(CHUNK_NUMBER_PARAM, Optional.ofNullable(chunkNumber))
+                .queryParamIfPresent(NR_ELEMENTS_PER_CHUNK_PARAM, Optional.ofNullable(nrElementsPerChunk))
+                .queryParamIfPresent(SORT_CRITERIA_PARAM, Optional.ofNullable(sortCriteria));
         log.info(uriBuilder.toUriString());
         try {
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetProductsResponse.class).getBody();
@@ -168,10 +178,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public ConversationsPreviewResponse getConversationsPreview(Integer userId) {
+    public ConversationsPreviewResponse getConversationsPreview(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_CONVERSATIONS_PREVIEW);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
+                .queryParamIfPresent(CHUNK_NUMBER_PARAM, Optional.ofNullable(chunkNumber))
+                .queryParamIfPresent(NR_ELEMENTS_PER_CHUNK_PARAM, Optional.ofNullable(nrElementsPerChunk))
+                .queryParamIfPresent(SORT_CRITERIA_PARAM, Optional.ofNullable(sortCriteria));
         log.info(uriBuilder.toUriString());
         try {
             ConversationsPreviewResponse conversationsPreviewResponse = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, ConversationsPreviewResponse.class).getBody();
@@ -318,10 +331,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public SearchProductsResponse searchProductsByCategory(Integer categoryId) {
+    public SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEARCH_PRODUCTS_BY_CATEGORY);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(CATEGORY_ID_PARAM, Optional.ofNullable(categoryId));
+                .queryParamIfPresent(CATEGORY_ID_PARAM, Optional.ofNullable(categoryId))
+                .queryParamIfPresent(CHUNK_NUMBER_PARAM, Optional.ofNullable(chunkNumber))
+                .queryParamIfPresent(NR_ELEMENTS_PER_CHUNK_PARAM, Optional.ofNullable(nrElementsPerChunk))
+                .queryParamIfPresent(SORT_CRITERIA_PARAM, Optional.ofNullable(sortCriteria));
         log.info(uriBuilder.toUriString());
         try {
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, SearchProductsResponse.class).getBody();
@@ -354,6 +370,22 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, String.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting product like status {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_RECOMMENDED_PRODUCTS);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(CHUNK_NUMBER_PARAM, Optional.ofNullable(chunkNumber))
+                .queryParamIfPresent(NR_ELEMENTS_PER_CHUNK_PARAM, Optional.ofNullable(nrElementsPerChunk))
+                .queryParamIfPresent(SORT_CRITERIA_PARAM, Optional.ofNullable(sortCriteria));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetProductsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting recommended products {}", e.getMessage(), e);
             throw e;
         }
     }

@@ -27,21 +27,6 @@ public class GetConversationServiceImpl implements GetConversationService {
     private final ConversationRepository conversationRepository;
     private final ConversationPreviewService conversationPreviewService;
     private final EncryptionService encryptionService;
-    @Override
-    public ConversationsPreviewResponse getConversationsPreview(Integer userId) {
-        List<Conversation> conversations = conversationRepository.findAllByUserId(userId)
-                .orElse(new ArrayList<>());
-        return ConversationsPreviewResponse.builder()
-                .conversationsPreview(conversations.stream()
-                        .map(conversation -> {
-                            try {
-                                return conversationPreviewService.getConversationPreview(conversation, userId);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }).toList())
-                .build();
-    }
 
     @Override
     public ConversationResponse getConversation(Integer conversationId) {

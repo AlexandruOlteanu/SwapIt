@@ -19,11 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static com.swapit.searchEngine.util.SearchSortCriteria.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +36,10 @@ public class SearchProductsServiceImpl implements SearchProductsService {
 
     @Override
     public SearchProductsResponse searchProducts(SearchProductsRequest request) throws IOException {
+        String sortCriteria = request.getSortCriteria();
+        if (sortCriteria == null) {
+            sortCriteria = BEST_MATCH.name();
+        }
         List<Pair<Integer, Integer>> productsScore = searchDictionaryService.searchMatchingProductsScore(request.getQuery());
         List<Integer> productIds = productsScore.stream()
                 .map(Pair::getFirst)
@@ -48,7 +53,7 @@ public class SearchProductsServiceImpl implements SearchProductsService {
                 .map(mappedProducts::get)
                 .toList();
 
-        List<SearchProductDTO> searchProductDTOS = orderedProducts.stream()
+        List<SearchProductDTO> searchProductDTOS = new ArrayList<>(orderedProducts.stream()
                 .map(productDTO -> SearchProductDTO.builder()
                         .productId(productDTO.getProductId())
                         .userId(productDTO.getUserId())
@@ -58,18 +63,37 @@ public class SearchProductsServiceImpl implements SearchProductsService {
                         .categoryId(productDTO.getCategoryId())
                         .popularity(productDTO.getPopularity())
                         .build())
+                .toList());
+        if (sortCriteria.equalsIgnoreCase(NEWEST.name())) {
+            searchProductDTOS.sort(Comparator.comparing(SearchProductDTO::getCreationDate).reversed());
+        }
+        if (sortCriteria.equalsIgnoreCase(POPULARITY.name())) {
+            searchProductDTOS.sort(Comparator.comparing(SearchProductDTO::getPopularity).reversed());
+        }
+        if (sortCriteria.equalsIgnoreCase(RANDOM.name())) {
+            Collections.shuffle(searchProductDTOS);
+        }
+        int startIdx = request.getChunkNumber() * request.getNrElementsPerChunk();
+        int endIdx = startIdx + request.getNrElementsPerChunk();
+        int listSize = searchProductDTOS.size();
+        if (endIdx > listSize) endIdx = listSize;
+        List<SearchProductDTO> finalSearchResults = IntStream.range(startIdx, endIdx)
+                .mapToObj(searchProductDTOS::get)
                 .toList();
         return SearchProductsResponse.builder()
-                .searchProducts(searchProductDTOS)
+                .searchProducts(finalSearchResults)
                 .build();
     }
 
     @Override
-    public SearchProductsResponse searchProductsByCategory(Integer categoryId) {
+    public SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         var childCategoryTreeIds = productCategorizeService.getCategoryTree(categoryId).getChildCategories().stream()
                 .map(CategoryTreeValueDTO::getCategoryId).toList();
         GetProductsByCategoryRequest request = GetProductsByCategoryRequest.builder()
                 .categoriesIds(childCategoryTreeIds)
+                .chunkNumber(chunkNumber)
+                .nrElementsPerChunk(nrElementsPerChunk)
+                .sortCriteria(sortCriteria)
                 .build();
         GetProductsByCategoryResponse response = externalOperationsService.getProductsByCategory(request);
         assert response != null;

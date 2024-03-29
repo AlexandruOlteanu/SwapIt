@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+import static com.swapit.commons.utils.Constants.IntegerMaxValueAsString;
+
 @RestController
 @Validated
 public interface SearchEngineService {
@@ -46,7 +48,10 @@ public interface SearchEngineService {
     ResponseEntity<GetCategoryTreeResponse> getCategoryTree(@RequestParam(value = "categoryId") Integer categoryId);
 
     @GetMapping(value = BASE_URL + SEARCH_PRODUCTS_BY_CATEGORY)
-    ResponseEntity<SearchProductsResponse> searchProductsByCategory(@RequestParam(value = "categoryId") Integer categoryId);
+    ResponseEntity<SearchProductsResponse> searchProductsByCategory(@RequestParam(value = "categoryId") Integer categoryId,
+                                                                    @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                                    @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                                    @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
 
 
 }

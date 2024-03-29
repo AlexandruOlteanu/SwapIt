@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.swapit.product.util.ProductLikeStatus.ACTIVE;
@@ -113,6 +114,7 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
             productLikeRepository.save(newProductLike);
             return;
         }
+        productLike.setLastUpdateAction(ZonedDateTime.now());
         if (productLike.getStatus().equals(ACTIVE.name())) {
             product.setPopularity(product.getPopularity() - 1);
             productLike.setStatus(INACTIVE.name());

@@ -1,6 +1,6 @@
 package com.swapit.chat.domain;
 
-import com.swapit.chat.utils.MessageType;
+import com.swapit.chat.util.MessageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

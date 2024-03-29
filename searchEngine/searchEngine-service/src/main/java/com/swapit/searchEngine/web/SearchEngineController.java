@@ -55,7 +55,7 @@ public class SearchEngineController implements SearchEngineService {
     }
 
     @Override
-    public ResponseEntity<SearchProductsResponse> searchProductsByCategory(Integer categoryId) {
-        return ResponseEntity.ok(searchProductsService.searchProductsByCategory(categoryId));
+    public ResponseEntity<SearchProductsResponse> searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(searchProductsService.searchProductsByCategory(categoryId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 }

@@ -9,8 +9,8 @@ import com.swapit.chat.repository.ConversationParticipantsRepository;
 import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.repository.MessageRepository;
 import com.swapit.chat.service.MessageSendingService;
-import com.swapit.chat.utils.ConversationType;
-import com.swapit.chat.utils.MessageType;
+import com.swapit.chat.util.ConversationType;
+import com.swapit.chat.util.MessageType;
 import com.swapit.commons.encryption.EncryptionService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
-import static com.swapit.chat.utils.Constants.*;
+import static com.swapit.chat.util.Constants.*;
 
 
 @Service

@@ -42,13 +42,19 @@ public class ProductController implements ProductService {
     }
 
     @Override
-    public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId) {
-        return ResponseEntity.ok(getProductsService.getProductsByUser(userId));
+    public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(getProductsService.getProductsByUser(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
+
     }
 
     @Override
-    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer userId) {
-        return ResponseEntity.ok(getProductsService.getLikedProductsByUser(userId));
+    public ResponseEntity<GetProductsResponse> getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(getProductsService.getRecommendedProducts(chunkNumber, nrElementsPerChunk, sortCriteria));
+    }
+
+    @Override
+    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(getProductsService.getLikedProductsByUser(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override

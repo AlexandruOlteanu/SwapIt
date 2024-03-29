@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.swapit.commons.utils.Constants.IntegerMaxValueAsString;
+
 @RestController
 @Validated
 public interface ProductService {
@@ -19,6 +21,7 @@ public interface ProductService {
     String CREATE_PRODUCT = "createProduct";
     String UPDATE_PRODUCT = "updateProduct";
     String GET_PRODUCTS_BY_USER = "getProductsByUser";
+    String GET_RECOMMENDED_PRODUCTS = "getRecommendedProducts";
     String GET_LIKED_PRODUCTS_BY_USER = "getLikedProductsByUser";
     String GET_PRODUCTS_BY_IDS = "getProductsByIds";
     String GET_PRODUCT_BY_ID = "getProductById";
@@ -40,16 +43,29 @@ public interface ProductService {
     ResponseEntity<String> getProductLikeStatus(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);
 
     @GetMapping(value = BASE_URL + GET_PRODUCTS_BY_USER)
-    ResponseEntity<GetProductsResponse> getProductsByUser(@RequestParam(value = "userId") Integer userId);
+    ResponseEntity<GetProductsResponse> getProductsByUser(@RequestParam(value = "userId") Integer userId,
+                                                          @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                          @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                          @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
+
+    @GetMapping(value = BASE_URL + GET_RECOMMENDED_PRODUCTS)
+    ResponseEntity<GetProductsResponse> getRecommendedProducts(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                               @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                               @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
 
     @GetMapping(value = BASE_URL + GET_LIKED_PRODUCTS_BY_USER)
-    ResponseEntity<GetProductsResponse> getLikedProductsByUser(@RequestParam(value = "userId") Integer userId);
+    ResponseEntity<GetProductsResponse> getLikedProductsByUser(@RequestParam(value = "userId") Integer userId,
+                                                               @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                               @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                               @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
+
 
     @PostMapping(value = BASE_URL + GET_PRODUCTS_BY_IDS)
     ResponseEntity<GetProductsByIdsResponse> getProductsByIds(@Valid @RequestBody GetProductsByIdsRequest request);
 
     @GetMapping(value = BASE_URL + GET_PRODUCT_BY_ID)
     ResponseEntity<ProductDTO> getProductById(@RequestParam(value = "productId") Integer productId);
+
     @PostMapping(value = BASE_URL + GET_PRODUCTS_BY_CATEGORY)
     ResponseEntity<GetProductsByCategoryResponse> getProductsByCategory(@Valid @RequestBody GetProductsByCategoryRequest request);
 

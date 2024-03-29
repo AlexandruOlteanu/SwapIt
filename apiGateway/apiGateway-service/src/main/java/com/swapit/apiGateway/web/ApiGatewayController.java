@@ -75,13 +75,18 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId) {
-        return ResponseEntity.ok(externalOperationsService.getProductsByUser(userId));
+    public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(externalOperationsService.getProductsByUser(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override
-    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer userId) {
-        return ResponseEntity.ok(externalOperationsService.getLikedProductsByUser(userId));
+    public ResponseEntity<GetProductsResponse> getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(externalOperationsService.getRecommendedProducts(chunkNumber, nrElementsPerChunk, sortCriteria));
+    }
+
+    @Override
+    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(externalOperationsService.getLikedProductsByUser(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override
@@ -105,8 +110,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(Integer userId) {
-        return ResponseEntity.ok(externalOperationsService.getConversationsPreview(userId));
+    public ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(externalOperationsService.getConversationsPreview(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override
@@ -150,8 +155,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<SearchProductsResponse> searchProductsByCategory(Integer categoryId) {
-        return ResponseEntity.ok(externalOperationsService.searchProductsByCategory(categoryId));
+    public ResponseEntity<SearchProductsResponse> searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(externalOperationsService.searchProductsByCategory(categoryId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
 }

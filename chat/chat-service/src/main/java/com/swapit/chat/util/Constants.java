@@ -1,4 +1,4 @@
-package com.swapit.chat.utils;
+package com.swapit.chat.util;
 
 public interface Constants {
 
