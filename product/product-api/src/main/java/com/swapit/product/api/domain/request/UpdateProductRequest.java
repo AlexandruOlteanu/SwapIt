@@ -1,12 +1,12 @@
 package com.swapit.product.api.domain.request;
 
-import com.swapit.product.api.domain.dto.ProductSpecificationDTO;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Jacksonized
@@ -22,5 +22,6 @@ public class UpdateProductRequest {
     private Double price;
     @NotNull
     private Integer categoryId;
-    List<ProductSpecificationDTO> productSpecifications;
+    Map<String, String> productSpecifications;
+    List<String> productImages;
 }

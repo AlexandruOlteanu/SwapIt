@@ -56,4 +56,8 @@ public class Product {
     @Fetch(FetchMode.SUBSELECT)
     private List<ProductSpecification> productSpecifications;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<ProductImage> productImages;
+
 }

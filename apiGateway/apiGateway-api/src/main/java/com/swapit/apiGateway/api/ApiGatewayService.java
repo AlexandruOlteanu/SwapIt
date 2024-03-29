@@ -68,7 +68,7 @@ public interface ApiGatewayService {
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
 
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void createProduct(@Valid @RequestBody CreateProductRequest request);
+    ResponseEntity<Integer> createProduct(@Valid @RequestBody CreateProductRequest request);
 
     @PutMapping(value = BASE_URL + UPDATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void updateProduct(@Valid @RequestBody UpdateProductRequest request);

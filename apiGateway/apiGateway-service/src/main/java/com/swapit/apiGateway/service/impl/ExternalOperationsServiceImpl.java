@@ -19,6 +19,7 @@ import com.swapit.searchEngine.api.service.domain.response.SearchProductsRespons
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.util.UserBasicDetailType;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -92,12 +93,14 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void createProduct(CreateProductRequest request) {
+    @Transactional
+    public Integer createProduct(CreateProductRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.CREATE_PRODUCT);
         log.info(url);
         try {
             Integer productId = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
             addProductInSearchDictionary(productId);
+            return productId;
         } catch (Exception e) {
             log.error("Exception in Product Creation {}", e.getMessage(), e);
             throw e;
@@ -105,6 +108,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
+    @Transactional
     public void updateProduct(UpdateProductRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_PRODUCT);
         log.info(url);

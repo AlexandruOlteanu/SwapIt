@@ -1,4 +1,4 @@
-package com.swapit.apiGateway.security.config;
+package com.swapit.apiGateway.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

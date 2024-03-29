@@ -1,5 +1,7 @@
 package com.swapit.apiGateway.security.config;
 
+import com.swapit.apiGateway.security.service.CustomAuthenticationEntryPoint;
+import com.swapit.apiGateway.security.service.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

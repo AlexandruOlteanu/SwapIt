@@ -10,6 +10,7 @@ import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
 import com.swapit.searchEngine.api.service.dto.SearchProductDTO;
+import com.swapit.searchEngine.mappers.SearchProductMapper;
 import com.swapit.searchEngine.service.ExternalOperationsService;
 import com.swapit.searchEngine.service.ProductCategorizeService;
 import com.swapit.searchEngine.service.SearchDictionaryService;
@@ -54,16 +55,7 @@ public class SearchProductsServiceImpl implements SearchProductsService {
                 .toList();
 
         List<SearchProductDTO> searchProductDTOS = new ArrayList<>(orderedProducts.stream()
-                .map(productDTO -> SearchProductDTO.builder()
-                        .productId(productDTO.getProductId())
-                        .userId(productDTO.getUserId())
-                        .creationDate(productDTO.getCreationDate())
-                        .title(productDTO.getTitle())
-                        .description(productDTO.getDescription())
-                        .categoryId(productDTO.getCategoryId())
-                        .popularity(productDTO.getPopularity())
-                        .build())
-                .toList());
+                .map(SearchProductMapper::prodDtoToSearchProdDto).toList());
         if (sortCriteria.equalsIgnoreCase(NEWEST.name())) {
             searchProductDTOS.sort(Comparator.comparing(SearchProductDTO::getCreationDate).reversed());
         }
@@ -98,16 +90,7 @@ public class SearchProductsServiceImpl implements SearchProductsService {
         GetProductsByCategoryResponse response = externalOperationsService.getProductsByCategory(request);
         assert response != null;
         List<SearchProductDTO> searchProductDTOS = response.getProducts().stream()
-                .map(productDTO -> SearchProductDTO.builder()
-                        .productId(productDTO.getProductId())
-                        .userId(productDTO.getUserId())
-                        .creationDate(productDTO.getCreationDate())
-                        .title(productDTO.getTitle())
-                        .description(productDTO.getDescription())
-                        .categoryId(productDTO.getCategoryId())
-                        .popularity(productDTO.getPopularity())
-                        .build())
-                .toList();
+                .map(SearchProductMapper::prodDtoToSearchProdDto).toList();
         return SearchProductsResponse.builder()
                 .searchProducts(searchProductDTOS)
                 .build();

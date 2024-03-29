@@ -65,8 +65,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public void createProduct(CreateProductRequest request) {
-        externalOperationsService.createProduct(request);
+    public ResponseEntity<Integer> createProduct(CreateProductRequest request) {
+        return ResponseEntity.ok(externalOperationsService.createProduct(request));
     }
 
     @Override

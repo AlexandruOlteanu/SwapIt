@@ -1,4 +1,4 @@
-package com.swapit.apiGateway.security.config;
+package com.swapit.apiGateway.security.service;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

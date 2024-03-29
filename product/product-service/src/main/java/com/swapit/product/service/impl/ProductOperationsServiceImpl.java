@@ -4,8 +4,10 @@ import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
 import com.swapit.product.domain.Product;
+import com.swapit.product.domain.ProductImage;
 import com.swapit.product.domain.ProductLike;
 import com.swapit.product.domain.ProductSpecification;
+import com.swapit.product.repository.ProductImageRepository;
 import com.swapit.product.repository.ProductLikeRepository;
 import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.repository.ProductSpecificationRepository;
@@ -30,6 +32,7 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
     private final ProductRepository productRepository;
     private final ProductSpecificationRepository productSpecificationsRepository;
     private final ProductLikeRepository productLikeRepository;
+    private final ProductImageRepository productImageRepository;
     private final Integer ZERO = 0;
 
     @Override
@@ -46,12 +49,16 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
                 .build();
         Integer productId = productRepository.save(product).getProductId();
         request.getProductSpecifications()
-                .forEach((key, value) ->
-                        productSpecificationsRepository.save(ProductSpecification.builder()
+                .forEach((key, value) -> productSpecificationsRepository.save(ProductSpecification.builder()
                                         .product(product)
                                         .key(key)
                                         .value(value)
                 .build()));
+        request.getProductImages()
+                .forEach(productImageUrl -> productImageRepository.save(ProductImage.builder()
+                                        .product(product)
+                                        .imageUrl(productImageUrl)
+                                .build()));
         return productId;
     }
 
@@ -65,36 +72,34 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
         product.setPrice(request.getPrice());
         product.setCategoryId(request.getCategoryId());
 
-        List<ProductSpecification> newSpecifications = request.getProductSpecifications().stream()
-            .filter(specification -> specification.getSpecificationId() == null)
-                    .map(specification -> ProductSpecification.builder()
-                            .key(specification.getKey())
-                            .value(specification.getValue())
-                            .product(product)
-                            .build()).toList();
-        List<ProductSpecification> existingSpecifications = request.getProductSpecifications().stream()
-            .filter(specification -> specification.getSpecificationId() != null)
-            .map(specification -> ProductSpecification.builder()
-                    .specificationId(specification.getSpecificationId())
-                    .key(specification.getKey())
-                    .value(specification.getValue())
-                    .product(product)
-                    .build()).toList();
-
-        product.getProductSpecifications().removeIf(specification ->
-                existingSpecifications.stream().noneMatch(reqSpec -> reqSpec.getSpecificationId().equals(specification.getSpecificationId())));
-
-        existingSpecifications.forEach(specification -> {
-                    ProductSpecification existingSpec = product.getProductSpecifications().stream()
-                            .filter(spec -> spec.getSpecificationId().equals(specification.getSpecificationId()))
-                            .findFirst()
-                            .orElse(null);
-                    assert existingSpec != null;
-                    existingSpec.setKey(specification.getKey());
-                    existingSpec.setValue(specification.getValue());
-                    }
-                );
-        product.getProductSpecifications().addAll(newSpecifications);
+        product.getProductSpecifications().removeIf(specification -> !request.getProductSpecifications().containsKey(specification.getKey()));
+        product.getProductImages().removeIf(productImage -> !request.getProductImages().contains(productImage.getImageUrl()));
+        List<String> existingSpecs = product.getProductSpecifications().stream()
+                        .map(ProductSpecification::getKey).toList();
+        product.getProductSpecifications().forEach(productSpecification -> {
+            if (request.getProductSpecifications().containsKey(productSpecification.getKey())) {
+                productSpecification.setValue(request.getProductSpecifications().get(productSpecification.getKey()));
+            }
+        });
+        request.getProductSpecifications().forEach((key, value) -> {
+            if (!existingSpecs.contains(key)) {
+                product.getProductSpecifications().add(ProductSpecification.builder()
+                                .key(key)
+                                .value(value)
+                                .product(product)
+                        .build());
+            }
+        });
+        List<String> existingImagesUrls = product.getProductImages().stream()
+                .map(ProductImage::getImageUrl).toList();
+        request.getProductImages().forEach(productImage -> {
+            if (!existingImagesUrls.contains(productImage)) {
+                product.getProductImages().add(ProductImage.builder()
+                                .imageUrl(productImage)
+                                .product(product)
+                        .build());
+            }
+        });
     }
 
     @Override

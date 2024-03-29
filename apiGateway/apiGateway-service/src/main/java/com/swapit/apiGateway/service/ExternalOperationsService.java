@@ -21,7 +21,7 @@ public interface ExternalOperationsService {
     LoginResponse login(LoginRequest request);
     Oauth2Response oauth2login(Oauth2Request request);
     RegisterResponse register(RegisterRequest request);
-    void createProduct(CreateProductRequest request);
+    Integer createProduct(CreateProductRequest request);
     void updateProduct(UpdateProductRequest request);
     GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     GetProductsResponse getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);

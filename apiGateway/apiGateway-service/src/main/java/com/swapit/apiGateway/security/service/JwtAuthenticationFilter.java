@@ -1,4 +1,4 @@
-package com.swapit.apiGateway.security.config;
+package com.swapit.apiGateway.security.service;
 
 import com.swapit.apiGateway.error.ErrorHandler;
 import jakarta.servlet.FilterChain;

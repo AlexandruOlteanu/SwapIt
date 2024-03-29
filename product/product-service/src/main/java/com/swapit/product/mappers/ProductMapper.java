@@ -16,6 +16,8 @@ public class ProductMapper {
                 .popularity(productDTO.getPopularity())
                 .productSpecifications(productDTO.getProductSpecifications()
                         .stream().map(ProductSpecificationMapper::prodSpecDtoToProdSpec).toList())
+                .productImages(productDTO.getProductImages()
+                        .stream().map(ProductImageMapper::prodImageDtoToProdImage).toList())
                 .build();
     }
 
@@ -31,6 +33,8 @@ public class ProductMapper {
                 .popularity(product.getPopularity())
                 .productSpecifications(product.getProductSpecifications()
                         .stream().map(ProductSpecificationMapper::prodSpecToProdSpecDto).toList())
+                .productImages(product.getProductImages()
+                        .stream().map(ProductImageMapper::prodImageToProdImageDto).toList())
                 .build();
     }
 }

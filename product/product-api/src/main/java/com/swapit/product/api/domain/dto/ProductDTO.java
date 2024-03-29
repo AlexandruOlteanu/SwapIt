@@ -20,4 +20,5 @@ public class ProductDTO {
     private Integer categoryId;
     private Integer popularity;
     List<ProductSpecificationDTO> productSpecifications;
+    List<ProductImageDTO> productImages;
 }
