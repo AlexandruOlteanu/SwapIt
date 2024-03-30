@@ -1,12 +1,10 @@
 package com.swapit.user.api.domain.response;
 
-import com.swapit.user.api.domain.dto.UserProductDTO;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Data
 @Jacksonized

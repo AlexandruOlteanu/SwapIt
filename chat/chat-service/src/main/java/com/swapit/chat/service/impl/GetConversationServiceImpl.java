@@ -2,7 +2,6 @@ package com.swapit.chat.service.impl;
 
 import com.swapit.chat.api.domain.dto.MessageDTO;
 import com.swapit.chat.api.domain.response.ConversationResponse;
-import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.chat.domain.Conversation;
 import com.swapit.chat.domain.ConversationParticipants;
 import com.swapit.chat.repository.ConversationRepository;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

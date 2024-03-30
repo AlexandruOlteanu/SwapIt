@@ -14,7 +14,7 @@
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>apiGateway</name>
-	<description>User microservice responsible for registration/authentication and profile update</description>
+	<description> Api Gateway microservice </description>
     <modules>
 		<module>apiGateway-api</module>
 		<module>apiGateway-client</module>

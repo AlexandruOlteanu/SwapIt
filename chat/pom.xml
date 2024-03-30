@@ -14,7 +14,7 @@
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>chat</name>
-	<description>User microservice responsible for registration/authentication and profile update</description>
+	<description> Chat microservice </description>
     <modules>
 		<module>chat-api</module>
 		<module>chat-client</module>

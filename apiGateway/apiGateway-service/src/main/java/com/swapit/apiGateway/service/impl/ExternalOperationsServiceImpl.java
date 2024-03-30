@@ -405,6 +405,18 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         }
     }
 
+    @Override
+    public void manualRegistrationCodesExpire() {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.MANUAL_REGISTRATION_CODES_EXPIRE);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
+        } catch (Exception e) {
+            log.error("Exception in Manual Registration Codes Expire code {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
     public void addProductInSearchDictionary(Integer productId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_PRODUCT_IN_SEARCH_DICTIONARY);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))

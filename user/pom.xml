@@ -13,7 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>user</name>
-	<description>User microservice responsible for registration/authentication and profile update</description>
+	<description> User microservice </description>
     <modules>
 		<module>user-api</module>
 		<module>user-client</module>

@@ -140,6 +140,11 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
+    public void manualRegistrationCodesExpire() {
+        externalOperationsService.manualRegistrationCodesExpire();
+    }
+
+    @Override
     public ResponseEntity<GetProductCategoriesResponse> getAllProductCategories() {
         return ResponseEntity.ok(externalOperationsService.getAllProductCategories());
     }

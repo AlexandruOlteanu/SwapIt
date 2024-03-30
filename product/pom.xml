@@ -14,7 +14,7 @@
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>product</name>
-	<description>User microservice responsible for registration/authentication and profile update</description>
+	<description> Product microservice </description>
     <modules>
 		<module>product-api</module>
 		<module>product-client</module>

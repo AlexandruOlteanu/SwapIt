@@ -6,7 +6,6 @@ import com.swapit.chat.domain.Conversation;
 import com.swapit.chat.domain.ConversationParticipants;
 import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.service.ConversationPreviewService;
-import com.swapit.chat.util.ConversationSortCriteria;
 import com.swapit.commons.encryption.EncryptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.swapit.chat.util.ChatCommonFunctions.getSortingCriteria;

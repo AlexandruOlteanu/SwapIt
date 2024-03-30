@@ -57,6 +57,7 @@ public interface ApiGatewayService {
     String GET_PRODUCTS_BY_USER = "getProductsByUser";
     String GET_LIKED_PRODUCTS_BY_USER = "getLikedProductsByUser";
     String GET_RECOMMENDED_PRODUCTS = "getRecommendedProducts";
+    String MANUAL_REGISTRATION_CODES_EXPIRE = "manualRegistrationCodesExpire";
 
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
@@ -144,6 +145,9 @@ public interface ApiGatewayService {
     // ADMIN API
     @PutMapping(value = BASE_URL + ADMIN_ACTION + ADD_NEW_PRODUCT_CATEGORY)
     void addNewProductCategory(@Valid @RequestBody AddNewProductCategoryRequest request);
+
+    @DeleteMapping(value = BASE_URL + ADMIN_ACTION + MANUAL_REGISTRATION_CODES_EXPIRE)
+    void manualRegistrationCodesExpire();
 
 
 }

@@ -10,23 +10,22 @@
 	</parent>
 
 	<groupId>com.swapit</groupId>
-	<artifactId>searchEngine</artifactId>
+	<artifactId>cronEngine</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>searchEngine</name>
-	<description> Search Engine microservice </description>
+    <name>cronEngine</name>
+	<description> Cron microservice </description>
     <modules>
-		<module>searchEngine-api</module>
-		<module>searchEngine-client</module>
-		<module>searchEngine-service</module>
+		<module>cronEngine-api</module>
+		<module>cronEngine-client</module>
+		<module>cronEngine-service</module>
 	</modules>
 
     <properties>
 		<java.version>21</java.version>
 
+		<user.version>0.0.1-SNAPSHOT</user.version>
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
-		<product.version>0.0.1-SNAPSHOT</product.version>
-		<lucene.version>9.10.0</lucene.version>
 
 	</properties>
 
@@ -34,24 +33,14 @@
 
 		<dependency>
 			<groupId>com.swapit</groupId>
-			<artifactId>commons</artifactId>
-			<version>${commons.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.swapit</groupId>
-			<artifactId>product-api</artifactId>
-			<version>${product.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.swapit</groupId>
-			<artifactId>product-client</artifactId>
-			<version>${product.version}</version>
+			<artifactId>user-api</artifactId>
+			<version>${user.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>${lucene.version}</version>
+			<groupId>com.swapit</groupId>
+			<artifactId>commons</artifactId>
+			<version>${commons.version}</version>
 		</dependency>
 
 	</dependencies>
@@ -82,18 +71,10 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.swapit.searchEngine.SearchEngineApplication</mainClass> <!-- Replace with your main class -->
+							<mainClass>com.swapit.cronEngine.cronEngineApplication</mainClass> <!-- Replace with your main class -->
 						</manifest>
 					</archive>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
