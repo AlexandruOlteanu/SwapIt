@@ -25,7 +25,7 @@
 		<jjwt.version>0.11.5</jjwt.version>
 		<hazelcast.version>5.3.6</hazelcast.version>
 		<hazelcast-hibernate.version>5.1.0</hazelcast-hibernate.version>
-
+		<springdoc-openapi-started-webmvc-ui.version>2.4.0</springdoc-openapi-started-webmvc-ui.version>
 	</properties>
 
 	<dependencyManagement>
@@ -124,6 +124,11 @@
 			<groupId>com.hazelcast</groupId>
 			<artifactId>hazelcast-hibernate53</artifactId>
 			<version>${hazelcast-hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc-openapi-started-webmvc-ui.version}</version>
 		</dependency>
 
 	</dependencies>

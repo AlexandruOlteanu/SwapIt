@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/user/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/user/**", "/v3/**", "/swagger-ui/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

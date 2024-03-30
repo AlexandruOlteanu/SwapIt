@@ -16,7 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/searchEngine/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/searchEngine/**", "/v3/**", "/swagger-ui/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
