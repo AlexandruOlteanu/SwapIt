@@ -10,7 +10,8 @@ create table users
     password       varchar(255),
     role           varchar(50)  not null,
     auth_provider  varchar(256),
-    oauth2_user_id varchar(256)
+    oauth2_user_id varchar(256),
+    user_image     varchar(1000)
 );
 
 alter table users
