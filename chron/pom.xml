@@ -10,15 +10,15 @@
 	</parent>
 
 	<groupId>com.swapit</groupId>
-	<artifactId>chat</artifactId>
+	<artifactId>chron</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>chat</name>
+    <name>chron</name>
 	<description>User microservice responsible for registration/authentication and profile update</description>
     <modules>
-		<module>chat-api</module>
-		<module>chat-client</module>
-		<module>chat-service</module>
+		<module>chron-api</module>
+		<module>chron-client</module>
+		<module>chron-service</module>
 	</modules>
 
     <properties>
@@ -71,7 +71,7 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.swapit.chat.ChatApplication</mainClass> <!-- Replace with your main class -->
+							<mainClass>com.swapit.chron.ChronApplication</mainClass> <!-- Replace with your main class -->
 						</manifest>
 					</archive>
 				</configuration>

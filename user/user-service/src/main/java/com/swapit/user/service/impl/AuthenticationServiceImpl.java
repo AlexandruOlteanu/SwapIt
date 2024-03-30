@@ -69,7 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         existingUser = userRepository.findUserByEmail(request.getEmail());
         if (existingUser.isPresent()) {
-            throw new RuntimeException("An account is already associated with an account!");
+            throw new RuntimeException("An account is already associated with this email!");
         }
         registrationCodeRepository.findByEmailAndCode(request.getEmail(), request.getRegistrationCode())
                 .orElseThrow(() -> new RuntimeException("Wrong registration code"));
@@ -128,6 +128,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public void sendRegistrationCode(SendRegistrationCodeRequest request) {
+        Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("Username already registered");
+        }
+        existingUser = userRepository.findUserByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw new RuntimeException("An account is already associated with this email!");
+        }
         String subject = "SwapIt Registration Code";
         String code = randomCodeGenerator.generateRandomCode(emailCodeLength);
         String message = "Code: " + code + "\nDon't share this code with anyone!";

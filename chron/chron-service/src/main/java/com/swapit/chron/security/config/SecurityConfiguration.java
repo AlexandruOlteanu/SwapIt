@@ -1,4 +1,4 @@
-package com.swapit.chat.security.config;
+package com.swapit.chron.security.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/chat/**", "/v3/**", "/swagger-ui/**"};
+    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/chron/**", "/v3/**", "/swagger-ui/**"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -10,5 +10,7 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 public class SendRegistrationCodeRequest {
     @NotNull
+    private String username;
+    @NotNull
     private String email;
 }

@@ -1,4 +1,4 @@
-package com.swapit.chat;
+package com.swapit.chron;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,13 +6,13 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan({
-		"com.swapit.chat",
+		"com.swapit.chron",
 		"com.swapit.commons"
 })
-public class ChatApplication {
+public class ChronApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ChatApplication.class, args);
+		SpringApplication.run(ChronApplication.class, args);
 	}
 
 }
