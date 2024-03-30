@@ -1,21 +1,17 @@
 package com.swapit.user.service.impl;
 
-import com.swapit.product.api.domain.response.GetProductsResponse;
-import com.swapit.user.api.domain.dto.UserProductDTO;
 import com.swapit.user.api.domain.request.GetSpecificUsersDetailsRequest;
 import com.swapit.user.api.domain.response.GetSpecificUsersDetailsResponse;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.util.UserBasicDetailType;
 import com.swapit.user.domain.User;
 import com.swapit.user.repository.UserRepository;
-import com.swapit.user.service.ExternalOperationsService;
 import com.swapit.user.service.GetUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -33,6 +29,7 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
                 .name(user.getName())
                 .surname(user.getSurname())
                 .email(user.getEmail())
+                .userImage(user.getUserImage())
                 .joinDate(user.getJoinDate())
                 .build();
     }
@@ -57,6 +54,7 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
             case NAME -> user.getName();
             case SURNAME -> user.getSurname();
             case USERNAME -> user.getUsername();
+            case IMAGE -> user.getUserImage();
         };
     }
 }

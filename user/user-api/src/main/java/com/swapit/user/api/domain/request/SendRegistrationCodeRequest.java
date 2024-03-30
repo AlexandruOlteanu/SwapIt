@@ -1,5 +1,6 @@
 package com.swapit.user.api.domain.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
@@ -7,10 +8,7 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 @Jacksonized
 @Builder
-public class Oauth2Request {
-    private String oauth2UserId;
-    private String userImage;
-    private String name;
-    private String surname;
+public class SendRegistrationCodeRequest {
+    @NotNull
     private String email;
 }

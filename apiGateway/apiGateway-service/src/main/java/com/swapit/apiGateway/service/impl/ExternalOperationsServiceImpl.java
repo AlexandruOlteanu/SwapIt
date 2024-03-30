@@ -4,8 +4,8 @@ import com.swapit.apiGateway.service.ExternalOperationsService;
 import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
-import com.swapit.commons.urlGenerator.UrlGeneratorService;
-import com.swapit.commons.urlGenerator.UrlGeneratorServiceImpl;
+import com.swapit.commons.generator.UrlGeneratorService;
+import com.swapit.commons.generator.impl.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
@@ -30,10 +30,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.swapit.user.api.util.UserBasicDetailType.NAME;
 import static com.swapit.user.api.util.UserBasicDetailType.SURNAME;
@@ -212,7 +211,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
                         var currentUserDetails = response.getRequestedUserDetails().get(correspondent);
                         String userName = (String) currentUserDetails.get(NAME);
                         String userSurname = (String) currentUserDetails.get(SURNAME);
-                        cp.setConversationTitle(userName + " " + userSurname);
+                        cp.setConversationTitle(Stream.of(userSurname, userName).filter(Objects::nonNull).collect(Collectors.joining(" ")));
                     });
             return conversationsPreviewResponse;
         } catch (Exception e) {
@@ -390,6 +389,18 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetProductsResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting recommended products {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void sendRegistrationCode(SendRegistrationCodeRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEND_REGISTRATION_CODE);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
+        } catch (Exception e) {
+            log.error("Exception in sending registration code {}", e.getMessage(), e);
             throw e;
         }
     }

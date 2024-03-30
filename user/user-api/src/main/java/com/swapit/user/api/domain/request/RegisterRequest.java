@@ -21,5 +21,8 @@ public class RegisterRequest {
     private String email;
     @NotNull
     private String password;
+    private String userImage;
+    @NotNull
+    private String registrationCode;
 
 }

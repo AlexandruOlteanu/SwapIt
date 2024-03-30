@@ -41,4 +41,5 @@ public interface ExternalOperationsService {
     void changeProductLikeStatus(ChangeProductLikeStatusRequest request);
     String getProductLikeStatus(Integer userId, Integer productId);
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
+    void sendRegistrationCode(SendRegistrationCodeRequest request);
 }

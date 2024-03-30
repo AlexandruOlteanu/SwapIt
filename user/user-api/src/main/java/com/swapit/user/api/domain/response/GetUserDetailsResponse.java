@@ -16,5 +16,6 @@ public class GetUserDetailsResponse {
     private String name;
     private String surname;
     private String email;
+    private String userImage;
     private ZonedDateTime joinDate;
 }

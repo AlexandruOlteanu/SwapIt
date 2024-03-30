@@ -56,6 +56,9 @@ public class User implements UserDetails {
     @Column(name = "oauth2_user_id")
     private String oauth2UserId;
 
+    @Column(name = "user_image")
+    private String userImage;
+
     @PrePersist
     public void setJoinDate() {
         this.joinDate = ZonedDateTime.now();

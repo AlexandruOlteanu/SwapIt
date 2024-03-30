@@ -13,9 +13,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration("applicationConfiguration")
+@Configuration("authSecurityConfiguration")
 @RequiredArgsConstructor
-public class ApplicationConfig {
+public class AuthConfig {
 
     private final UserRepository userRepository;
     @Bean

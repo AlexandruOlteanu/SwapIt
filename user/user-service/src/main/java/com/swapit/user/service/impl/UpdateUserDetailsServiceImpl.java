@@ -32,6 +32,7 @@ public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
              switch (key) {
                  case NAME -> user.setName(value);
                  case SURNAME -> user.setSurname(value);
+                 case IMAGE -> user.setUserImage(value);
                  default -> throw new RuntimeException("Unrecognised field value for User Update " + key);
              }
         });

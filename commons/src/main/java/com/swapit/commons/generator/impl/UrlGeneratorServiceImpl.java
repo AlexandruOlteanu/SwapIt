@@ -1,5 +1,6 @@
-package com.swapit.commons.urlGenerator;
+package com.swapit.commons.generator.impl;
 
+import com.swapit.commons.generator.UrlGeneratorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, ADD_PRODUCT_IN_SEARCH_DICTIONARY,
         SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN,
         UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
-        GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS
+        GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, SEND_REGISTRATION_CODE
     }
 
     // USER URI
@@ -34,6 +35,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String updateProtectedUserDetailsUri;
     @Value("${user.getSpecificUsersDetails.route}")
     private String getSpecificUsersDetailsUri;
+    @Value("${user.sendRegistrationCode.route}")
+    private String sendRegistrationCodeUri;
 
     // PRODUCT URI
     @Value("${product.createProduct.route}")
@@ -105,6 +108,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case GET_PRODUCTS_BY_USER -> getProductsByUserUri;
             case GET_LIKED_PRODUCTS_BY_USER -> getLikedProductsByUserUri;
             case GET_RECOMMENDED_PRODUCTS -> getRecommendedProductsUri;
+            case SEND_REGISTRATION_CODE -> sendRegistrationCodeUri;
         };
     }
 }

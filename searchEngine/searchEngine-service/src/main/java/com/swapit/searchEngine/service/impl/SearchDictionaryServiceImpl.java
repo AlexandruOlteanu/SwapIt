@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -100,11 +102,13 @@ public class SearchDictionaryServiceImpl implements SearchDictionaryService {
     }
 
     private String joinValues(String title, String description, String categoryChain) {
-        return String.join(" ", title, description, categoryChain);
+        return Stream.of(title, description, categoryChain).filter(Objects::nonNull)
+                .collect(Collectors.joining(" "));
     }
 
     private String getCategoryChain(List<String> categories) {
-        return String.join(" ", categories);
+        return categories.stream().filter(Objects::nonNull)
+                .collect(Collectors.joining(" "));
     }
 
     private List<String> processQuery(String query) {

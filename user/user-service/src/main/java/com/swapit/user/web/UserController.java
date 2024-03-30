@@ -18,6 +18,7 @@ public class UserController implements UserService {
     private final AuthenticationService authenticationService;
     private final UpdateUserDetailsService updateUserDetailsService;
     private final GetUserDetailsService getUserDetailsService;
+
     @Override
     public ResponseEntity<LoginResponse> login(LoginRequest request) {
         return ResponseEntity.ok(authenticationService.login(request));
@@ -31,6 +32,11 @@ public class UserController implements UserService {
     @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    @Override
+    public void sendRegistrationCode(SendRegistrationCodeRequest request) {
+        authenticationService.sendRegistrationCode(request);
     }
 
     @Override

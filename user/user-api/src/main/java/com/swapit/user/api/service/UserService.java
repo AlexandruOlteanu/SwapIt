@@ -16,6 +16,7 @@ public interface UserService {
     String LOGIN = "auth/login";
     String OAUTH2_LOGIN = "auth/oauth2login";
     String REGISTER = "auth/register";
+    String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String GET_USER_DETAILS = "getUserDetails";
     String GET_SPECIFIC_USERS_DETAILS = "getSpecificUsersDetails";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
@@ -29,6 +30,9 @@ public interface UserService {
 
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
+
+    @PostMapping(value = BASE_URL + SEND_REGISTRATION_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void sendRegistrationCode(@Valid @RequestBody SendRegistrationCodeRequest request);
 
     @GetMapping(value = BASE_URL + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);

@@ -37,6 +37,7 @@ public interface ApiGatewayService {
     String LOGIN = "auth/login";
     String REGISTER = "auth/register";
     String OAUTH2_LOGIN = "auth/oauth2login";
+    String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String CREATE_PRODUCT = "createProduct";
     String UPDATE_PRODUCT = "updateProduct";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
@@ -66,6 +67,9 @@ public interface ApiGatewayService {
 
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
+
+    @PostMapping(value = BASE_URL + SEND_REGISTRATION_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void sendRegistrationCode(@Valid @RequestBody SendRegistrationCodeRequest request);
 
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<Integer> createProduct(@Valid @RequestBody CreateProductRequest request);

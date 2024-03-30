@@ -34,7 +34,7 @@ import java.util.Map;
 public class ApiGatewayController implements ApiGatewayService {
 
     private static final String OAUTH2_USER_ID = "sub";
-    private static final String PICTURE = "picture";
+    private static final String USER_IMAGE = "picture";
     private static final String NAME = "family_name";
     private static final String SURNAME = "given_name";
     private static final String EMAIL = "email";
@@ -51,7 +51,7 @@ public class ApiGatewayController implements ApiGatewayService {
         Map<String, Object> attributes = auth2AuthenticationToken.getPrincipal().getAttributes();
         Oauth2Request oauth2Request = Oauth2Request.builder()
                                                 .oauth2UserId((String) attributes.get(OAUTH2_USER_ID))
-                                                .picture((String) attributes.get(PICTURE))
+                                                .userImage((String) attributes.get(USER_IMAGE))
                                                 .name((String) attributes.get(NAME))
                                                 .surname((String) attributes.get(SURNAME))
                                                 .email((String) attributes.get(EMAIL))
@@ -62,6 +62,11 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         return ResponseEntity.ok(externalOperationsService.register(request));
+    }
+
+    @Override
+    public void sendRegistrationCode(SendRegistrationCodeRequest request) {
+        externalOperationsService.sendRegistrationCode(request);
     }
 
     @Override
