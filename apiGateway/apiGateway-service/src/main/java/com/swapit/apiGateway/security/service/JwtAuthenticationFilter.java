@@ -1,6 +1,5 @@
 package com.swapit.apiGateway.security.service;
 
-import com.swapit.apiGateway.error.ErrorHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,12 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-                try {
-                    filterChain.doFilter(request, response);
-                } catch (Exception e) {
-                    ErrorHandler.handleException(e, response);
-                }
-                return;
             }
             filterChain.doFilter(request, response);
         }

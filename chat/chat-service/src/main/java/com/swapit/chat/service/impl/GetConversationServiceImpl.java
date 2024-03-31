@@ -8,6 +8,8 @@ import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.service.ConversationPreviewService;
 import com.swapit.chat.service.GetConversationService;
 import com.swapit.commons.encryption.EncryptionService;
+import com.swapit.commons.exception.ExceptionFactory;
+import com.swapit.commons.exception.ExceptionType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,13 @@ import java.util.List;
 public class GetConversationServiceImpl implements GetConversationService {
 
     private final ConversationRepository conversationRepository;
-    private final ConversationPreviewService conversationPreviewService;
     private final EncryptionService encryptionService;
+    private final ExceptionFactory exceptionFactory;
 
     @Override
     public ConversationResponse getConversation(Integer conversationId) {
         Conversation conversation = conversationRepository.findById(conversationId)
-                .orElseThrow(() -> new RuntimeException("Conversation doesn't exist"));
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.CONVERSATION_NOT_FOUND));
         Collections.reverse(conversation.getMessages());
         List<Integer> conversationParticipantsIds = conversation.getConversationParticipants()
                 .stream().map(ConversationParticipants::getUserId).toList();

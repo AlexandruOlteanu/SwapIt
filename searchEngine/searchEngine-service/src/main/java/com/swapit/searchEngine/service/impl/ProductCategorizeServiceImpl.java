@@ -1,6 +1,8 @@
 package com.swapit.searchEngine.service.impl;
 
 import com.swapit.commons.cache.CacheInvalidateService;
+import com.swapit.commons.exception.ExceptionFactory;
+import com.swapit.commons.exception.ExceptionType;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
@@ -27,6 +29,7 @@ public class ProductCategorizeServiceImpl implements ProductCategorizeService {
 
     private final ProductCategoryRepository productCategoryRepository;
     private final CacheInvalidateService cacheInvalidateService;
+    private final ExceptionFactory exceptionFactory;
 
     @Override
     public void addNewProductCategory(AddNewProductCategoryRequest request) {
@@ -34,11 +37,11 @@ public class ProductCategorizeServiceImpl implements ProductCategorizeService {
         ProductCategory parent = null;
         if (request.getParentId() != null) {
             parent = productCategoryRepository.findById(request.getParentId())
-                    .orElseThrow(() -> new RuntimeException("Parent Category doesn't exist!"));
+                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.PARENT_CATEGORY_NOT_FOUND));
         }
         Optional<ProductCategory> existingCategory = productCategoryRepository.findFirstByValue(request.getCategory());
         if (existingCategory.isPresent()) {
-            throw new RuntimeException("Product Category already exists!");
+            throw exceptionFactory.create(ExceptionType.PRODUCT_CATEGORY_ALREADY_EXISTS);
         }
         ProductCategory newProductCategory = ProductCategory.builder()
                 .value(request.getCategory())
@@ -52,7 +55,7 @@ public class ProductCategorizeServiceImpl implements ProductCategorizeService {
     @Cacheable(value = CACHE_PRODUCT_CATEGORIES)
     public GetProductCategoriesResponse getAllProductCategories() {
         List<ProductCategory> productCategories = productCategoryRepository.findAllCategories()
-                .orElseThrow();
+                .orElse(new ArrayList<>());
 
         return GetProductCategoriesResponse.builder()
                 .productCategories(processCategories(productCategories))
@@ -62,7 +65,7 @@ public class ProductCategorizeServiceImpl implements ProductCategorizeService {
     @Override
     public GetCategoryTreeResponse getCategoryTree(Integer categoryId) {
         ProductCategory productCategory = productCategoryRepository.findById(categoryId)
-                .orElseThrow();
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_CATEGORY_NOT_FOUND));
 
         return GetCategoryTreeResponse.builder()
                 .parentCategories(findParentCategories(productCategory))

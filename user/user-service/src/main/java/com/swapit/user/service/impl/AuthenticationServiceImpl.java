@@ -1,5 +1,7 @@
 package com.swapit.user.service.impl;
 
+import com.swapit.commons.exception.ExceptionFactory;
+import com.swapit.commons.exception.ExceptionType;
 import com.swapit.commons.generator.RandomCodeGenerator;
 import com.swapit.user.api.domain.request.LoginRequest;
 import com.swapit.user.api.domain.request.Oauth2Request;
@@ -47,12 +49,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final EmailSenderService emailSenderService;
     private final RandomCodeGenerator randomCodeGenerator;
     private final RegistrationCodeRepository registrationCodeRepository;
+    private final ExceptionFactory exceptionFactory;
 
     @Override
     public LoginResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         User user = userRepository.findUserByUsername(request.getUsername())
-                .orElseThrow();
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         return LoginResponse.builder()
                 .userId(user.getUserId())
                 .role(user.getRole().toString())
@@ -65,14 +68,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public RegisterResponse register(RegisterRequest request) {
         Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
         if (existingUser.isPresent()) {
-            throw new RuntimeException("Username already registered");
+            throw exceptionFactory.create(ExceptionType.USERNAME_ALREADY_EXISTS);
         }
         existingUser = userRepository.findUserByEmail(request.getEmail());
         if (existingUser.isPresent()) {
-            throw new RuntimeException("An account is already associated with this email!");
+            throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
         }
         registrationCodeRepository.findByEmailAndCode(request.getEmail(), request.getRegistrationCode())
-                .orElseThrow(() -> new RuntimeException("Wrong registration code"));
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_REGISTRATION_CODE));
         registrationCodeRepository.deleteByEmailAndCode(request.getEmail(), request.getRegistrationCode());
         User user = User.builder()
                 .username(request.getUsername())
@@ -130,11 +133,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public void sendRegistrationCode(SendRegistrationCodeRequest request) {
         Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
         if (existingUser.isPresent()) {
-            throw new RuntimeException("Username already registered");
+            throw exceptionFactory.create(ExceptionType.USERNAME_ALREADY_EXISTS);
         }
         existingUser = userRepository.findUserByEmail(request.getEmail());
         if (existingUser.isPresent()) {
-            throw new RuntimeException("An account is already associated with this email!");
+            throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
         }
         String subject = "SwapIt Registration Code";
         String code = randomCodeGenerator.generateRandomCode(emailCodeLength);

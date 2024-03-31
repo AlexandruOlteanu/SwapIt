@@ -1,5 +1,7 @@
 package com.swapit.product.service.impl;
 
+import com.swapit.commons.exception.ExceptionFactory;
+import com.swapit.commons.exception.ExceptionType;
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.swapit.product.util.ProductLikeStatus.ACTIVE;
@@ -35,6 +38,7 @@ public class GetProductsServiceImpl implements GetProductsService {
 
     private final ProductRepository productRepository;
     private final ProductLikeRepository productLikeRepository;
+    private final ExceptionFactory exceptionFactory;
 
     @Override
     public GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
@@ -76,7 +80,7 @@ public class GetProductsServiceImpl implements GetProductsService {
     @Override
     public GetProductsByIdsResponse getProductsByIds(GetProductsByIdsRequest request) {
         List<Product> products = productRepository.findAllByProductIdIn(request.getProductIds())
-                .orElseThrow(() -> new RuntimeException("No results found"));
+                .orElse(new ArrayList<>());
         List<ProductDTO> productDTOS = products.stream()
                 .map(ProductMapper::productToProductDto)
                 .toList();
@@ -88,7 +92,7 @@ public class GetProductsServiceImpl implements GetProductsService {
     @Override
     public ProductDTO getProductById(Integer productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product doesn't exist"));
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
         return ProductMapper.productToProductDto(product);
     }
 

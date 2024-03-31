@@ -1,5 +1,7 @@
 package com.swapit.product.service.impl;
 
+import com.swapit.commons.exception.ExceptionFactory;
+import com.swapit.commons.exception.ExceptionType;
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
@@ -33,6 +35,7 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
     private final ProductSpecificationRepository productSpecificationsRepository;
     private final ProductLikeRepository productLikeRepository;
     private final ProductImageRepository productImageRepository;
+    private final ExceptionFactory exceptionFactory;
     private final Integer ZERO = 0;
 
     @Override
@@ -66,7 +69,7 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
     @Transactional
     public void updateProduct(UpdateProductRequest request) {
         Product product = productRepository.findById(request.getProductId())
-                .orElseThrow();
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
         product.setTitle(request.getTitle());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
@@ -106,7 +109,7 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
     @Transactional
     public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
         Product product = productRepository.findById(request.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product doesn't exist!"));
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
         ProductLike productLike = productLikeRepository.findProductLikeByUserIdAndProductId(request.getUserId(), request.getProductId())
                 .orElse(null);
         if (productLike == null) {

@@ -12,6 +12,8 @@ import com.swapit.chat.service.MessageSendingService;
 import com.swapit.chat.util.ConversationType;
 import com.swapit.chat.util.MessageType;
 import com.swapit.commons.encryption.EncryptionService;
+import com.swapit.commons.exception.ExceptionFactory;
+import com.swapit.commons.exception.ExceptionType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,7 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     private final ConversationParticipantsRepository conversationParticipantsRepository;
     private final MessageRepository messageRepository;
     private final EncryptionService encryptionService;
+    private final ExceptionFactory exceptionFactory;
     @Override
     @Transactional
     public void sendPrivateMessage(PrivateChatMessageRequest request) throws Exception {
@@ -54,7 +57,7 @@ public class MessageSendingServiceImpl implements MessageSendingService {
         }
         else {
             conversation = conversationRepository.findById(conversationId)
-                    .orElseThrow();
+                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.CONVERSATION_NOT_FOUND));
             conversation.setLastActionAt(updatedLastAction);
         }
 

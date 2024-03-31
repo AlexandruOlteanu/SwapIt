@@ -1,5 +1,7 @@
 package com.swapit.user.service.impl;
 
+import com.swapit.commons.exception.ExceptionFactory;
+import com.swapit.commons.exception.ExceptionType;
 import com.swapit.user.api.domain.request.GetSpecificUsersDetailsRequest;
 import com.swapit.user.api.domain.response.GetSpecificUsersDetailsResponse;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
@@ -20,10 +22,12 @@ import java.util.Map;
 @Slf4j
 public class GetUserDetailsServiceImpl implements GetUserDetailsService {
     private final UserRepository userRepository;
+    private final ExceptionFactory exceptionFactory;
 
     @Override
     public GetUserDetailsResponse getUserDetails(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         return GetUserDetailsResponse.builder()
                 .username(user.getUsername())
                 .name(user.getName())
@@ -40,7 +44,8 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
         request.getRequestedUserDetails()
                 .forEach((key, value) -> {
                     Map<UserBasicDetailType, Object> currentUserDetails = new HashMap<>();
-                    User user = userRepository.findById(key).orElseThrow();
+                    User user = userRepository.findById(key)
+                            .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
                     value.forEach(userBasicDetailType -> currentUserDetails.put(userBasicDetailType, getSpecificDetail(userBasicDetailType, user)));
                     requestedDetails.put(key, currentUserDetails);
                 });
