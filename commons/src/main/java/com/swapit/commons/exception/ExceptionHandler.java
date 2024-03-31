@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletionException;
 
 @ControllerAdvice
 @Slf4j
@@ -18,12 +19,15 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String X_ERROR_CODE = "x_error_code";
     private static final String X_ERROR_MESSAGE = "x_error_message";
-    @org.springframework.web.bind.annotation.ExceptionHandler({ Exception.class })
-    public ResponseEntity<Object> handleMicroserviceThrownErrors(Exception ex) {
+    @org.springframework.web.bind.annotation.ExceptionHandler({ Throwable.class })
+    public ResponseEntity<Object> handleMicroserviceThrownErrors(Throwable ex) {
         HttpHeaders headers = new HttpHeaders();
         MicroserviceException microserviceException;
         String errorCode = null, errorMessage = null;
         HttpStatus httpStatus = null;
+        if (ex instanceof CompletionException) {
+            ex = ex.getCause();
+        }
         if (ex instanceof MicroserviceException mex) {
             headers.add(X_ERROR_CODE, mex.getErrorCode());
             headers.add(X_ERROR_MESSAGE, mex.getMessage());
@@ -56,15 +60,16 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
             restClientResponseException.getStatusCode();
             httpStatus = (HttpStatus) restClientResponseException.getStatusCode();
         }
-        if (httpStatus == null) {
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
         if (!headers.containsKey(X_ERROR_CODE)) {
             headers.add(X_ERROR_CODE, "-1");
+            errorMessage = ex.toString();
+            headers.add(X_ERROR_MESSAGE, errorMessage);
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         microserviceException = new MicroserviceException(errorCode, errorMessage, httpStatus);
         microserviceException.setStackTrace(ex.getStackTrace());
         log.error("Error: {}", ex.getMessage(), microserviceException);
+        assert httpStatus != null;
         return new ResponseEntity<>(headers, httpStatus);
     }
 }
