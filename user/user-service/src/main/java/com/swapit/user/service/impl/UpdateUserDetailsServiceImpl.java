@@ -28,8 +28,8 @@ public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
     private final ExceptionFactory exceptionFactory;
 
     @Override
-    public void updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
-        User user = userRepository.findById(request.getUserId())
+    public void updateBasicUserDetails(Integer userId, UpdateBasicUserDetailsRequest request) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         request.getUserDetails().forEach((key, value) -> {
              switch (key) {
@@ -43,10 +43,14 @@ public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
     }
 
     @Override
-    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
-        User user = userRepository.findById(request.getUserId())
+    public void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
+        } catch (Exception e) {
+            throw exceptionFactory.create(ExceptionType.WRONG_PASSWORD);
+        }
         request.getUserDetails().forEach((key, value) -> {
             switch (key) {
                 case EMAIL -> {

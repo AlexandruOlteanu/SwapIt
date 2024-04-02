@@ -1,5 +1,6 @@
 package com.swapit.apiGateway.api;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
@@ -33,6 +34,7 @@ public interface ApiGatewayService {
 
     String MEDIA_TYPE_APPLICATION_JSON = "application/json";
     String BASE_URL = "/api/v1/swapIt/apiGateway/";
+    String PUBLIC_ACCESS = "publicAccess/";
     String ADMIN_ACTION = "adminAction/";
     String LOGIN = "auth/login";
     String REGISTER = "auth/register";
@@ -78,21 +80,20 @@ public interface ApiGatewayService {
     @PutMapping(value = BASE_URL + UPDATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void updateProduct(@Valid @RequestBody UpdateProductRequest request);
 
-    @GetMapping(value = BASE_URL + GET_PRODUCTS_BY_USER)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_PRODUCTS_BY_USER)
     ResponseEntity<GetProductsResponse> getProductsByUser(@RequestParam(value = "userId") Integer userId,
                                                           @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
                                                           @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
                                                           @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
 
 
-    @GetMapping(value = BASE_URL + GET_RECOMMENDED_PRODUCTS)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_RECOMMENDED_PRODUCTS)
     ResponseEntity<GetProductsResponse> getRecommendedProducts(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
                                                                @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
                                                                @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
 
     @GetMapping(value = BASE_URL + GET_LIKED_PRODUCTS_BY_USER)
-    ResponseEntity<GetProductsResponse> getLikedProductsByUser(@RequestParam(value = "userId") Integer userId,
-                                                               @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+    ResponseEntity<GetProductsResponse> getLikedProductsByUser(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
                                                                @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
                                                                @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
 
@@ -101,17 +102,16 @@ public interface ApiGatewayService {
     void changeProductLikeStatus(@Valid @RequestBody ChangeProductLikeStatusRequest request);
 
     @GetMapping(value = BASE_URL + GET_PRODUCT_LIKE_STATUS)
-    ResponseEntity<String> getProductLikeStatus(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);
+    ResponseEntity<String> getProductLikeStatus(@RequestParam(value = "productId") Integer productId);
 
     @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request);
 
-    @GetMapping(value = BASE_URL + USER_DETAILS)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
 
     @GetMapping(value = BASE_URL + GET_CONVERSATIONS_PREVIEW)
-    ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "userId") Integer userId,
-                                                                         @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+    ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
                                                                          @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
                                                                          @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
     @GetMapping(value = BASE_URL + GET_CONVERSATION)
@@ -123,19 +123,19 @@ public interface ApiGatewayService {
     @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     void updateProtectedUserDetails(@Valid @RequestBody UpdateProtectedUserDetailsRequest request);
 
-    @GetMapping(value = BASE_URL + GET_ALL_PRODUCT_CATEGORIES)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_ALL_PRODUCT_CATEGORIES)
     ResponseEntity<GetProductCategoriesResponse> getAllProductCategories();
 
-    @PostMapping(value = BASE_URL + SEARCH_PRODUCTS, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    @PostMapping(value = BASE_URL + PUBLIC_ACCESS + SEARCH_PRODUCTS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<SearchProductsResponse> searchProducts(@Valid @RequestBody SearchProductsRequest request);
 
-    @GetMapping(value = BASE_URL + GET_PRODUCT_BY_ID)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_PRODUCT_BY_ID)
     ResponseEntity<ProductDTO> getProductById(@RequestParam(value = "productId") Integer productId);
 
-    @GetMapping(value = BASE_URL + GET_CATEGORY_TREE, produces = MEDIA_TYPE_APPLICATION_JSON)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_CATEGORY_TREE, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<GetCategoryTreeResponse> getCategoryTree(@RequestParam(value = "categoryId") Integer categoryId);
 
-    @GetMapping(value = BASE_URL + SEARCH_PRODUCTS_BY_CATEGORY)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + SEARCH_PRODUCTS_BY_CATEGORY)
     ResponseEntity<SearchProductsResponse> searchProductsByCategory(@RequestParam(value = "categoryId") Integer categoryId,
                                                                     @RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
                                                                     @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,

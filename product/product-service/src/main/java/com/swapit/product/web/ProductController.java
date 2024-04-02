@@ -22,18 +22,18 @@ public class ProductController implements ProductService {
     private final GetProductsService getProductsService;
 
     @Override
-    public ResponseEntity<Integer> createProduct(CreateProductRequest request) {
-        return ResponseEntity.ok(productOperationsService.createProduct(request));
+    public ResponseEntity<Integer> createProduct(Integer userId, CreateProductRequest request) {
+        return ResponseEntity.ok(productOperationsService.createProduct(userId, request));
     }
 
     @Override
-    public void updateProduct(UpdateProductRequest request) {
-        productOperationsService.updateProduct(request);
+    public void updateProduct(Integer userId, UpdateProductRequest request) {
+        productOperationsService.updateProduct(userId, request);
     }
 
     @Override
-    public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
-        productOperationsService.changeProductLikeStatus(request);
+    public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
+        productOperationsService.changeProductLikeStatus(userId, request);
     }
 
     @Override
@@ -44,7 +44,6 @@ public class ProductController implements ProductService {
     @Override
     public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         return ResponseEntity.ok(getProductsService.getProductsByUser(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
-
     }
 
     @Override

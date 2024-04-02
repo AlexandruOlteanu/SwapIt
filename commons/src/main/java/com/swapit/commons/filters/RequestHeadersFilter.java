@@ -28,7 +28,7 @@ public class RequestHeadersFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             Map<String, String> headersMap = createHeadersMap(request);
-            ThreadLocalContext.setContext(headersMap);
+            ThreadLocalContext.setExternalContext(headersMap);
             if (!headersMap.isEmpty()) {
                 log.info("Extracted the following headers for current context : {}", headersMap);
             }

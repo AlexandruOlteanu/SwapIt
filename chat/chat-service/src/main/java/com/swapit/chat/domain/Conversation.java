@@ -37,11 +37,11 @@ public class Conversation {
     @Column(name = "last_action_at")
     private ZonedDateTime lastActionAt;
 
-    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
-    private List<ConversationParticipants> conversationParticipants;
+    private List<ConversationParticipant> conversationParticipants;
 
-    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.ALL, orphanRemoval = true)
     @Fetch(FetchMode.SUBSELECT)
     private List<Message> messages;
 }

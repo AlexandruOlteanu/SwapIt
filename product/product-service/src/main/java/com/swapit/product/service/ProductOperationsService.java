@@ -6,8 +6,8 @@ import com.swapit.product.api.domain.request.UpdateProductRequest;
 
 public interface ProductOperationsService {
 
-    Integer createProduct(CreateProductRequest request);
-    void updateProduct(UpdateProductRequest request);
-    void changeProductLikeStatus(ChangeProductLikeStatusRequest request);
+    Integer createProduct(Integer userId, CreateProductRequest request);
+    void updateProduct(Integer userId, UpdateProductRequest request);
+    void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request);
     String getProductLikeStatus(Integer userId, Integer productId);
 }

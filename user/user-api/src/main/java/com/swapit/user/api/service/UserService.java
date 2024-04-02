@@ -41,9 +41,9 @@ public interface UserService {
     ResponseEntity<GetSpecificUsersDetailsResponse> getSpecificUsersDetails(@Valid @RequestBody GetSpecificUsersDetailsRequest request);
 
     @PutMapping(value = BASE_URL + UPDATE_BASIC_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
-    void updateBasicUserDetails(@Valid @RequestBody UpdateBasicUserDetailsRequest request);
+    void updateBasicUserDetails(@RequestParam("userId") Integer userId, @Valid @RequestBody UpdateBasicUserDetailsRequest request);
 
     @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
-    void updateProtectedUserDetails(@Valid @RequestBody UpdateProtectedUserDetailsRequest request);
+    void updateProtectedUserDetails(@RequestParam("userId") Integer userId, @Valid @RequestBody UpdateProtectedUserDetailsRequest request);
 
 }

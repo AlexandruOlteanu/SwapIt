@@ -10,7 +10,5 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 public class ChangeProductLikeStatusRequest {
     @NotNull
-    private Integer userId;
-    @NotNull
     private Integer productId;
 }

@@ -50,12 +50,12 @@ public class UserController implements UserService {
     }
 
     @Override
-    public void updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
-        updateUserDetailsService.updateBasicUserDetails(request);
+    public void updateBasicUserDetails(Integer userId, UpdateBasicUserDetailsRequest request) {
+        updateUserDetailsService.updateBasicUserDetails(userId, request);
     }
 
     @Override
-    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
-        updateUserDetailsService.updateProtectedUserDetails(request);
+    public void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request) {
+        updateUserDetailsService.updateProtectedUserDetails(userId, request);
     }
 }

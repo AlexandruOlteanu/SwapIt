@@ -14,7 +14,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @AllArgsConstructor
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
-@Table(name = "product_specifications")
+@Table(name = "product_specification")
 public class ProductSpecification {
 
     @Id

@@ -20,6 +20,7 @@ public interface ProductService {
     String BASE_URL = "/api/v1/swapIt/product/";
     String CREATE_PRODUCT = "createProduct";
     String UPDATE_PRODUCT = "updateProduct";
+    String DELETE_PRODUCT = "updateProduct";
     String GET_PRODUCTS_BY_USER = "getProductsByUser";
     String GET_RECOMMENDED_PRODUCTS = "getRecommendedProducts";
     String GET_LIKED_PRODUCTS_BY_USER = "getLikedProductsByUser";
@@ -31,13 +32,13 @@ public interface ProductService {
 
 
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<Integer> createProduct(@Valid @RequestBody CreateProductRequest request);
+    ResponseEntity<Integer> createProduct(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody CreateProductRequest request);
 
     @PutMapping(value = BASE_URL + UPDATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void updateProduct(@Valid @RequestBody UpdateProductRequest request);
+    void updateProduct(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody UpdateProductRequest request);
 
     @PostMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void changeProductLikeStatus(@Valid @RequestBody ChangeProductLikeStatusRequest request);
+    void changeProductLikeStatus(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody ChangeProductLikeStatusRequest request);
 
     @GetMapping(value = BASE_URL + GET_PRODUCT_LIKE_STATUS)
     ResponseEntity<String> getProductLikeStatus(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);

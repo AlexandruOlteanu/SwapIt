@@ -1,8 +1,20 @@
-user_id,username,name,surname,join_date,email,password,role
-2,alexandru01,Alex,Olteanu,2024-02-24 00:00:00.000000 +00:00,alexandruolteanu2001@gmail.com,$2a$10$8jFKRUpJ5/HyVXUb/X4Fr.uJTkbGaaQ3lPhBWzr906g/Pd/E/kN8q,USER
-3,andreea51,Andreea,Potcovaru,2024-02-24 00:00:00.000000 +00:00,andreeapotcovaru21@yahoo.com,$2a$10$tnqSsRlQB7A8Bt2TCb.7quMMrHKuiOE1T8rs6R4j3Ns0IExRRrKYS,USER
-4,vlad,Vladimir,Diaconu,2024-02-24 00:00:00.000000 +00:00,vd@yahoo.com,$2a$10$aPrfc6Oe3WCmPoWwvm4OCe/pxVOwa4is9kn4zerF9Gb9AoYcAFzW6,USER
-5,elvis,Presly,Elviaso,2024-02-25 00:00:00.000000 +00:00,ep@yahoo.com,$2a$10$lZmjNYGTpmaQ6PsFFlAkYuwnGoimKYoAHWw29qG0aNodd.q7oMHO6,USER
-6,raul81,Raul,Traian,2024-02-26 00:00:00.000000 +00:00,raultraian@gmail.com,$2a$10$ZXzVBT9YabXFZxXPZnxD2OArX.fS9VIPxWyAmRjKnf98l.4lXECba,USER
-7,alina,Alina,Dragomir,2024-02-26 14:47:15.498588 +00:00,alinadragomir@gmail.com,$2a$10$4jh3JxCUoo2/ra1hqVz8z.ddtq3./h22JTPohhI0EWKA/2TfyS7VS,USER
-1,tudor,Tudor,Lombek,2024-03-08 11:30:05.753062 +00:00,tudorlombek@gmail.com,$2a$10$/duclyi4iPAfqx6kwxJyse4dW.u/zoxsD.B/fEb1eYofEoJSzNBb.,USER
+user_id,username,name,surname,join_date,email,password,role,auth_provider,oauth2_user_id,user_image
+5,elvis,Presly,Elviaso,2024-02-25 00:00:00.000000 +00:00,ep@yahoo.com,$2a$10$lZmjNYGTpmaQ6PsFFlAkYuwnGoimKYoAHWw29qG0aNodd.q7oMHO6,USER,,,
+6,raul81,Raul,Traian,2024-02-26 00:00:00.000000 +00:00,raultraian@gmail.com,$2a$10$ZXzVBT9YabXFZxXPZnxD2OArX.fS9VIPxWyAmRjKnf98l.4lXECba,USER,,,
+7,alina,Alina,Dragomir,2024-02-26 14:47:15.498588 +00:00,alinadragomir@gmail.com,$2a$10$4jh3JxCUoo2/ra1hqVz8z.ddtq3./h22JTPohhI0EWKA/2TfyS7VS,USER,,,
+23,nevsquare,,Nevsquare,2024-03-30 08:11:57.488856 +00:00,nevsquare@gmail.com,,OAUTH2_USER,OAUTH2,fefesfsefesfesf,https://lh3.googleusercontent.com/a/ACg8ocInZxh5IzP49RL9WBjSMj616dIaSSqndTeSS35vehbC2Q=s96-c
+24,nevsquare1,,Nevsquare,2024-03-30 08:13:24.110742 +00:00,nevsquare@gmail.com,,OAUTH2_USER,OAUTH2,105655033292876780638,https://lh3.googleusercontent.com/a/ACg8ocInZxh5IzP49RL9WBjSMj616dIaSSqndTeSS35vehbC2Q=s96-c
+25,registerWithCode,Negruni,Vladislav,2024-03-30 11:00:48.266543 +00:00,codesquareofficial2001@gmail.com,$2a$10$E/hdK4BjUpL.v8LSSsuMbe5KoNzWMdxvHKx3powQA7y5CgjqOFChK,USER,LOCAL,,https://aowiudhgaw97fdfwd/image/1
+18,hugo_kofer,Kofer,Hugo,2024-03-25 21:38:33.504966 +00:00,hugokofer0408@gmail.com,,OAUTH2_USER,OAUTH2,107379044743696520124,
+19,vitanja,Viti,Benko,2024-03-25 21:54:54.035804 +00:00,vikiBenk.com,$2a$10$jso0YZfv9ZbgM7L08u0PwOmmfz60Phgb163N/bu/08UZSoaxKJ1Ei,USER,LOCAL,,
+2,alexandru01,Alex,Olteanu,2024-02-24 00:00:00.000000 +00:00,alexandruolteanu2001@gmail.com,$2a$10$8jFKRUpJ5/HyVXUb/X4Fr.uJTkbGaaQ3lPhBWzr906g/Pd/E/kN8q,USER,,,
+1,tudor,Tudor,YUM,2024-03-08 11:30:05.753062 +00:00,tudorlombek@gmail.com,$2a$10$/duclyi4iPAfqx6kwxJyse4dW.u/zoxsD.B/fEb1eYofEoJSzNBb.,USER,,,
+8,jigau,Jigau,Rafael,2024-03-16 20:05:37.494371 +00:00,jigau@gmail.com,$2a$10$TSK884sWy.Zu7KAMu0mOm.CqJpDmOm0/kh056xcdK5.ReeTP6oMuK,USER,,,
+17,alexandru_olteanu2,Olteanu,Alexandru,2024-03-25 17:58:15.484387 +00:00,alexandruolteanu2001@gmail.com,,OAUTH2_USER,OAUTH2,101176315408547318971,
+9,garcea,Doberman,Hunedoara,2024-03-22 22:41:53.919292 +00:00,jigau@gmail.com,$2a$10$mPqJDP5hsVi/X6zQBnsTr.GA5U/P.HVfhWt7TVjDNEMGNyhkLvmfa,USER,,,
+3,andreea51,Andreea,Hunedoara,2024-02-24 00:00:00.000000 +00:00,uauaua@gmail.com,$2a$10$0N47rEycxpfUoOHdB.jHJOnZi1k7XlghDmknxAw0bN/6AhAx8TeOa,USER,,,
+4,vlad,Vladimir,Hunedoara,2024-02-24 00:00:00.000000 +00:00,vd@yahoo.com,$2a$10$aPrfc6Oe3WCmPoWwvm4OCe/pxVOwa4is9kn4zerF9Gb9AoYcAFzW6,USER,,,
+10,gabriel_admin,Admin,Gabriel,2024-03-23 12:45:28.158760 +00:00,gabriel@gmail.com,$2a$10$Ihx259MoKylBtEqWjCs/8.KHJKOMPOWtNLnkVQkMjvzPKVoDYgDHu,ADMINISTRATOR,,,
+21,verif13,Negruni,Vladislav,2024-03-30 07:53:33.168209 +00:00,vikiBenk.com,$2a$10$aBcYtMAadnGdixJgfLWhBeFDDYSxu77n5JcAvTlO4mHRfOqlohN3a,USER,LOCAL,,https://aowiudhgaw97fdfwd/image/1
+20,newUser98,Basic,Update,2024-03-29 00:07:17.197639 +00:00,vikiBenk.com,$2a$10$v7RTdL7unpAwMUCIl8gTQOrVOfioIamkDe121xyeQmL3yk1f1YDwS,USER,LOCAL,,fuck you bitch
+22,verif1390,Basic,Update,2024-03-30 07:58:00.806886 +00:00,vikiBenk13.com,$2a$10$gL29bub.imj8/AfSr/9Y4OO7D20gcrq7Rt9TqQQMuSpiE/PQtDiXS,USER,LOCAL,,fuck you bitch

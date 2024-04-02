@@ -14,8 +14,6 @@ import java.util.Map;
 public class CreateProductRequest {
 
     @NotNull
-    private Integer userId;
-    @NotNull
     private String title;
     @NotNull
     private String description;

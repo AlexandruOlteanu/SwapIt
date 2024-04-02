@@ -13,8 +13,6 @@ import java.util.Map;
 @Builder
 public class UpdateProtectedUserDetailsRequest {
     @NotNull
-    private Integer userId;
-    @NotNull
     private String password;
     @NotNull
     Map<UserProtectedDetailType, String> userDetails;

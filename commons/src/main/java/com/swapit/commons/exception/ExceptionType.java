@@ -1,12 +1,18 @@
 package com.swapit.commons.exception;
 
 public enum ExceptionType {
+
+    // Security Exceptions
+    UNAUTHORIZED_ACTION,
+
     // User Exceptions
     USER_NOT_FOUND,
     USERNAME_ALREADY_EXISTS,
     EMAIL_ALREADY_EXISTS,
     WRONG_REGISTRATION_CODE,
     INVALID_USER_UPDATE_FIELD,
+    WRONG_USERNAME_OR_PASSWORD,
+    WRONG_PASSWORD,
 
     // Chat Exceptions
     CONVERSATION_NOT_FOUND,

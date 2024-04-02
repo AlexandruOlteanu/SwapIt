@@ -24,7 +24,7 @@ public class Message {
     @Column(name="message_id")
     private Integer messageId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "conversation_id")
     private Conversation conversation;
 

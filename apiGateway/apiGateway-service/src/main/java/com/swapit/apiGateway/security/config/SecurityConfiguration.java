@@ -23,7 +23,12 @@ import static com.swapit.user.utils.Role.ADMINISTRATOR;
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/apiGateway/auth/**", "/v3/**", "/swagger-ui/**"};
+    private static final String[] WHITE_LIST_URL = {
+            "/api/v1/swapIt/apiGateway/auth/**",
+            "/v3/**",
+            "/swagger-ui/**",
+            "/api/v1/swapIt/apiGateway/publicAccess/**"
+    };
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;

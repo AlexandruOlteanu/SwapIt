@@ -9,3 +9,4 @@ create table conversation
 
 alter table conversation
     owner to postgres;
+

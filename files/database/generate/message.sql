@@ -14,4 +14,3 @@ create table message
 alter table message
     owner to postgres;
 
-

@@ -1,6 +1,7 @@
 package com.swapit.apiGateway.web;
 
 import com.swapit.apiGateway.api.ApiGatewayService;
+import com.swapit.apiGateway.service.AuthenticatedUserContextService;
 import com.swapit.apiGateway.service.ExternalOperationsService;
 import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+import static com.swapit.apiGateway.util.AuthenticatedUserPropertyType.CONTEXT_USER_ID;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -40,6 +43,7 @@ public class ApiGatewayController implements ApiGatewayService {
     private static final String EMAIL = "email";
 
     private final ExternalOperationsService externalOperationsService;
+    private final AuthenticatedUserContextService authenticatedUserContextService;
 
     @Override
     public ResponseEntity<LoginResponse> login(LoginRequest request) {
@@ -71,12 +75,16 @@ public class ApiGatewayController implements ApiGatewayService {
 
     @Override
     public ResponseEntity<Integer> createProduct(CreateProductRequest request) {
-        return ResponseEntity.ok(externalOperationsService.createProduct(request));
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        return ResponseEntity.ok(externalOperationsService.createProduct(userId, request));
     }
 
     @Override
     public void updateProduct(UpdateProductRequest request) {
-        externalOperationsService.updateProduct(request);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.updateProduct(userId, request);
     }
 
     @Override
@@ -90,23 +98,31 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+    public ResponseEntity<GetProductsResponse> getLikedProductsByUser(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
         return ResponseEntity.ok(externalOperationsService.getLikedProductsByUser(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override
     public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
-        externalOperationsService.changeProductLikeStatus(request);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.changeProductLikeStatus(userId, request);
     }
 
     @Override
-    public ResponseEntity<String> getProductLikeStatus(Integer userId, Integer productId) {
+    public ResponseEntity<String> getProductLikeStatus(Integer productId) {
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
         return ResponseEntity.ok(externalOperationsService.getProductLikeStatus(userId, productId));
     }
 
     @Override
     public void sendPrivateMessage(PrivateChatMessageRequest request) {
-        externalOperationsService.sendPrivateMessage(request);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.sendPrivateMessage(userId, request);
     }
 
     @Override
@@ -115,23 +131,31 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+    public ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
         return ResponseEntity.ok(externalOperationsService.getConversationsPreview(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override
     public ResponseEntity<ConversationResponse> getConversation(Integer conversationId) {
-        return ResponseEntity.ok(externalOperationsService.getConversation(conversationId));
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        return ResponseEntity.ok(externalOperationsService.getConversation(userId, conversationId));
     }
 
     @Override
     public void  updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
-        externalOperationsService.updateBasicUserDetails(request);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.updateBasicUserDetails(userId, request);
     }
 
     @Override
     public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
-        externalOperationsService.updateProtectedUserDetails(request);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.updateProtectedUserDetails(userId, request);
     }
 
     @Override

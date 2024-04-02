@@ -40,8 +40,7 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public Integer createProduct(CreateProductRequest request) {
-        Integer userId = request.getUserId();
+    public Integer createProduct(Integer userId, CreateProductRequest request) {
         Product product = Product.builder()
                 .title(request.getTitle())
                 .userId(userId)
@@ -67,9 +66,12 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
 
     @Override
     @Transactional
-    public void updateProduct(UpdateProductRequest request) {
+    public void updateProduct(Integer userId, UpdateProductRequest request) {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
+        if (!product.getUserId().equals(userId)) {
+            throw exceptionFactory.create(ExceptionType.UNAUTHORIZED_ACTION);
+        }
         product.setTitle(request.getTitle());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
@@ -107,14 +109,14 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
 
     @Override
     @Transactional
-    public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
+    public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
-        ProductLike productLike = productLikeRepository.findProductLikeByUserIdAndProductId(request.getUserId(), request.getProductId())
+        ProductLike productLike = productLikeRepository.findProductLikeByUserIdAndProductId(userId, request.getProductId())
                 .orElse(null);
         if (productLike == null) {
             ProductLike newProductLike = ProductLike.builder()
-                    .userId(request.getUserId())
+                    .userId(userId)
                     .productId(request.getProductId())
                     .status(ACTIVE.name())
                     .build();

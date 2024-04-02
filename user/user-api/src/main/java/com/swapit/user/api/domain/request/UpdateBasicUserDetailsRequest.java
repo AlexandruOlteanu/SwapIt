@@ -13,7 +13,5 @@ import java.util.Map;
 @Builder
 public class UpdateBasicUserDetailsRequest {
     @NotNull
-    private Integer userId;
-    @NotNull
     Map<UserBasicDetailType, String> userDetails;
 }

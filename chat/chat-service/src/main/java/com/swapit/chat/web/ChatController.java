@@ -23,8 +23,8 @@ public class ChatController implements ChatService {
     private final ConversationPreviewService conversationPreviewService;
 
     @Override
-    public void sendPrivateMessage(PrivateChatMessageRequest request) throws Exception {
-        messageSendingService.sendPrivateMessage(request);
+    public void sendPrivateMessage(Integer userId, PrivateChatMessageRequest request) throws Exception {
+        messageSendingService.sendPrivateMessage(userId, request);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ChatController implements ChatService {
 
 
     @Override
-    public ResponseEntity<ConversationResponse> getConversation(Integer conversationId) {
-        return ResponseEntity.ok(getConversationService.getConversation(conversationId));
+    public ResponseEntity<ConversationResponse> getConversation(Integer userId, Integer conversationId) {
+        return ResponseEntity.ok(getConversationService.getConversation(userId, conversationId));
     }
 }

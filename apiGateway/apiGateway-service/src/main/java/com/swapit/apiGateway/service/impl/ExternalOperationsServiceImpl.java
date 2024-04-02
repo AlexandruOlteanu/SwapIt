@@ -93,11 +93,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
 
     @Override
     @Transactional
-    public Integer createProduct(CreateProductRequest request) {
+    public Integer createProduct(Integer userId, CreateProductRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.CREATE_PRODUCT);
-        log.info(url);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
         try {
-            Integer productId = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
+            Integer productId = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
             addProductInSearchDictionary(productId);
             return productId;
         } catch (Exception e) {
@@ -108,11 +110,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
 
     @Override
     @Transactional
-    public void updateProduct(UpdateProductRequest request) {
+    public void updateProduct(Integer userId, UpdateProductRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_PRODUCT);
-        log.info(url);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
         try {
-            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Integer.class);
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Integer.class);
             updateProductInSearchDictionary(request.getProductId());
         } catch (Exception e) {
             log.error("Exception in Product Update {}", e.getMessage(), e);
@@ -155,11 +159,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void sendPrivateMessage(PrivateChatMessageRequest request) {
+    public void sendPrivateMessage(Integer userId, PrivateChatMessageRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEND_PRIVATE_MESSAGE);
-        log.info(url);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
         try {
-            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, new HttpEntity<>(request), Void.class);
         } catch (Exception e) {
             log.error("Exception in Sending Private Message {}", e.getMessage(), e);
             throw e;
@@ -232,9 +238,10 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public ConversationResponse getConversation(Integer conversationId) {
+    public ConversationResponse getConversation(Integer userId, Integer conversationId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_CONVERSATION);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
                 .queryParamIfPresent(CONVERSATION_ID_PARAM, Optional.ofNullable(conversationId));
         log.info(uriBuilder.toUriString());
         try {
@@ -246,11 +253,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
+    public void updateBasicUserDetails(Integer userId, UpdateBasicUserDetailsRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_BASIC_USER_DETAILS);
-        log.info(url);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
         try {
-            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
         } catch (Exception e) {
             log.error("Exception in Updating Basic User Details: {}", e.getMessage(), e);
             throw e;
@@ -258,11 +267,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
+    public void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_PROTECTED_USER_DETAILS);
-        log.info(url);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
         try {
-            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
         } catch (Exception e) {
             log.error("Exception in Updating Protected User Details: {}", e.getMessage(), e);
             throw e;
@@ -351,11 +362,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
+    public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.CHANGE_PRODUCT_LIKE_STATUS);
-        log.info(url);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
         try {
-            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, new HttpEntity<>(request), Void.class);
         } catch (Exception e) {
             log.error("Exception in changing product like status {}", e.getMessage(), e);
             throw e;

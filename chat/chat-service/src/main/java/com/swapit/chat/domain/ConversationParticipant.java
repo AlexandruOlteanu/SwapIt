@@ -13,8 +13,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @AllArgsConstructor
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
-@Table(name = "conversation_participants")
-public class ConversationParticipants {
+@Table(name = "conversation_participant")
+public class ConversationParticipant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

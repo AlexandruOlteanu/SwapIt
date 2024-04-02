@@ -3,7 +3,7 @@ package com.swapit.chat.service.impl;
 import com.swapit.chat.api.domain.dto.ConversationPreviewDTO;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.chat.domain.Conversation;
-import com.swapit.chat.domain.ConversationParticipants;
+import com.swapit.chat.domain.ConversationParticipant;
 import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.service.ConversationPreviewService;
 import com.swapit.commons.encryption.EncryptionService;
@@ -51,7 +51,7 @@ public class ConversationPreviewServiceImpl implements ConversationPreviewServic
     @Override
     public ConversationPreviewDTO getConversationPreview(Conversation conversation, Integer userId) throws Exception {
         List<Integer> otherParticipantsIds = conversation.getConversationParticipants().stream()
-                .map(ConversationParticipants::getUserId)
+                .map(ConversationParticipant::getUserId)
                 .filter(participantId -> !participantId.equals(userId))
                 .toList();
         return ConversationPreviewDTO.builder()

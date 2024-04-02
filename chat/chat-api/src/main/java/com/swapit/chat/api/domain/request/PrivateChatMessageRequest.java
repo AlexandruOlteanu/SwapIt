@@ -9,8 +9,6 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @Builder
 public class PrivateChatMessageRequest {
-    private Integer conversationId;
-    private Integer senderId;
     private Integer receiverId;
     private String message;
     private String messageType;

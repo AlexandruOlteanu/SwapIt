@@ -53,7 +53,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public LoginResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        } catch (Exception e) {
+            throw exceptionFactory.create(ExceptionType.WRONG_USERNAME_OR_PASSWORD);
+        }
         User user = userRepository.findUserByUsername(request.getUsername())
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         return LoginResponse.builder()

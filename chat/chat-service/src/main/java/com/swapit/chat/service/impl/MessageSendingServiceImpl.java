@@ -3,9 +3,9 @@ package com.swapit.chat.service.impl;
 import com.pusher.rest.Pusher;
 import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.domain.Conversation;
-import com.swapit.chat.domain.ConversationParticipants;
+import com.swapit.chat.domain.ConversationParticipant;
 import com.swapit.chat.domain.Message;
-import com.swapit.chat.repository.ConversationParticipantsRepository;
+import com.swapit.chat.repository.ConversationParticipantRepository;
 import com.swapit.chat.repository.ConversationRepository;
 import com.swapit.chat.repository.MessageRepository;
 import com.swapit.chat.service.MessageSendingService;
@@ -31,21 +31,18 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     @Qualifier("pusherBean")
     private final Pusher pusher;
     private final ConversationRepository conversationRepository;
-    private final ConversationParticipantsRepository conversationParticipantsRepository;
+    private final ConversationParticipantRepository conversationParticipantRepository;
     private final MessageRepository messageRepository;
     private final EncryptionService encryptionService;
     private final ExceptionFactory exceptionFactory;
     @Override
     @Transactional
-    public void sendPrivateMessage(PrivateChatMessageRequest request) throws Exception {
-        var senderId = request.getSenderId();
+    public void sendPrivateMessage(Integer userId, PrivateChatMessageRequest request) throws Exception {
+        var senderId = userId;
         var receiverId = request.getReceiverId();
-        Integer conversationId = request.getConversationId();
         Conversation conversation;
         ZonedDateTime updatedLastAction = ZonedDateTime.now();
-        if (conversationId == null) {
-            conversationId = conversationRepository.findPrivateConversationId(senderId, receiverId).orElse(null);
-        }
+        Integer conversationId = conversationRepository.findPrivateConversationId(senderId, receiverId).orElse(null);
         if (conversationId == null) {
             conversation = conversationRepository.save(Conversation.builder()
                             .lastActionAt(updatedLastAction)
@@ -80,7 +77,7 @@ public class MessageSendingServiceImpl implements MessageSendingService {
     }
 
     private void savePrivateConversationParticipant(Integer userId, Conversation conversation) {
-        conversationParticipantsRepository.save(ConversationParticipants.builder()
+        conversationParticipantRepository.save(ConversationParticipant.builder()
                 .userId(userId)
                 .conversation(conversation)
                 .build());
