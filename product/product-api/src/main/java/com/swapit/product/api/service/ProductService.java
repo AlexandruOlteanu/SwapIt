@@ -20,7 +20,7 @@ public interface ProductService {
     String BASE_URL = "/api/v1/swapIt/product/";
     String CREATE_PRODUCT = "createProduct";
     String UPDATE_PRODUCT = "updateProduct";
-    String DELETE_PRODUCT = "updateProduct";
+    String DELETE_PRODUCT = "deleteProduct";
     String GET_PRODUCTS_BY_USER = "getProductsByUser";
     String GET_RECOMMENDED_PRODUCTS = "getRecommendedProducts";
     String GET_LIKED_PRODUCTS_BY_USER = "getLikedProductsByUser";
@@ -36,6 +36,9 @@ public interface ProductService {
 
     @PutMapping(value = BASE_URL + UPDATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void updateProduct(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody UpdateProductRequest request);
+
+    @DeleteMapping(value = BASE_URL + DELETE_PRODUCT)
+    void deleteProduct(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);
 
     @PostMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void changeProductLikeStatus(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody ChangeProductLikeStatusRequest request);
@@ -68,6 +71,9 @@ public interface ProductService {
     ResponseEntity<ProductDTO> getProductById(@RequestParam(value = "productId") Integer productId);
 
     @PostMapping(value = BASE_URL + GET_PRODUCTS_BY_CATEGORY)
-    ResponseEntity<GetProductsByCategoryResponse> getProductsByCategory(@Valid @RequestBody GetProductsByCategoryRequest request);
+    ResponseEntity<GetProductsByCategoryResponse> getProductsByCategory(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                                        @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                                        @RequestParam(value = "sortCriteria", required = false) String sortCriteria,
+                                                                        @Valid @RequestBody GetProductsByCategoryRequest request);
 
 }

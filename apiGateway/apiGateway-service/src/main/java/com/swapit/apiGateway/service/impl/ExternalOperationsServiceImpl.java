@@ -125,6 +125,22 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
+    public void deleteProduct(Integer userId, Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.DELETE_PRODUCT);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Integer.class);
+            deleteProductFromSearchDictionary(productId);
+        } catch (Exception e) {
+            log.error("Exception in deleting product {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
     public GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCTS_BY_USER);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
@@ -305,13 +321,17 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public SearchProductsResponse searchProducts(SearchProductsRequest request) {
+    public SearchProductsResponse searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEARCH_PRODUCTS);
-        log.info(url);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(CHUNK_NUMBER_PARAM, Optional.ofNullable(chunkNumber))
+                .queryParamIfPresent(NR_ELEMENTS_PER_CHUNK_PARAM, Optional.ofNullable(nrElementsPerChunk))
+                .queryParamIfPresent(SORT_CRITERIA_PARAM, Optional.ofNullable(sortCriteria));
+        log.info(uriBuilder.toUriString());
         try {
-            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), SearchProductsResponse.class).getBody();
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, new HttpEntity<>(request), SearchProductsResponse.class).getBody();
         } catch (Exception e) {
-            log.error("Exception in getting all product categories {}", e.getMessage(), e);
+            log.error("Exception in searching products {}", e.getMessage(), e);
             throw e;
         }
     }
@@ -452,6 +472,19 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, null, Void.class);
         } catch (Exception e) {
             log.error("Exception in updating product in Dictionary {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    public void deleteProductFromSearchDictionary(Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.DELETE_PRODUCT_FROM_SEARCH_DICTIONARY);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
+        } catch (Exception e) {
+            log.error("Exception in deleting product from search dictionary {}", e.getMessage(), e);
             throw e;
         }
     }

@@ -17,7 +17,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, ADD_PRODUCT_IN_SEARCH_DICTIONARY,
         SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN,
         UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
-        GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, SEND_REGISTRATION_CODE, MANUAL_REGISTRATION_CODES_EXPIRE
+        GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, SEND_REGISTRATION_CODE, MANUAL_REGISTRATION_CODES_EXPIRE,
+        DELETE_PRODUCT, DELETE_PRODUCT_FROM_SEARCH_DICTIONARY
     }
 
     // USER URI
@@ -43,6 +44,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String createProductUri;
     @Value("${product.updateProduct.route}")
     private String updateProductUri;
+    @Value("${product.deleteProduct.route}")
+    private String deleteProductUri;
     @Value("${product.getProductById.route}")
     private String getProductByIdUri;
     @Value("${product.getProductsByUser.route}")
@@ -73,6 +76,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String addProductInSearchDictionaryUri;
     @Value("${searchEngine.updateProductInSearchDictionary.route}")
     private String updateProductInSearchDictionaryUri;
+    @Value("${searchEngine.deleteProductFromSearchDictionary.route}")
+    private String deleteProductFromSearchDictionaryUri;
     @Value("${searchEngine.searchProducts.route}")
     private String searchProductsUri;
     @Value("${searchEngine.getCategoryTree.route}")
@@ -114,6 +119,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case GET_RECOMMENDED_PRODUCTS -> getRecommendedProductsUri;
             case SEND_REGISTRATION_CODE -> sendRegistrationCodeUri;
             case MANUAL_REGISTRATION_CODES_EXPIRE -> manualRegistrationCodesExpireUri;
+            case DELETE_PRODUCT -> deleteProductUri;
+            case DELETE_PRODUCT_FROM_SEARCH_DICTIONARY -> deleteProductFromSearchDictionaryUri;
         };
     }
 }

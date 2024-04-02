@@ -45,8 +45,13 @@ public class SearchEngineController implements SearchEngineService {
     }
 
     @Override
-    public ResponseEntity<SearchProductsResponse> searchProducts(SearchProductsRequest request) throws IOException {
-        return ResponseEntity.ok(searchProductsService.searchProducts(request));
+    public void deleteProductFromSearchDictionary(Integer productId) throws IOException {
+        searchDictionaryService.deleteProductFromSearchDictionary(productId);
+    }
+
+    @Override
+    public ResponseEntity<SearchProductsResponse> searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request) throws Exception {
+        return ResponseEntity.ok(searchProductsService.searchProducts(chunkNumber, nrElementsPerChunk, sortCriteria, request));
     }
 
     @Override

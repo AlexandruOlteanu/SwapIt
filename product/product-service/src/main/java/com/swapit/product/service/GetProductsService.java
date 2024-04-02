@@ -12,6 +12,6 @@ public interface GetProductsService {
     GetProductsResponse getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     GetProductsByIdsResponse getProductsByIds(GetProductsByIdsRequest request);
     ProductDTO getProductById(Integer productId);
-    GetProductsByCategoryResponse getProductsByCategory(GetProductsByCategoryRequest request);
+    GetProductsByCategoryResponse getProductsByCategory(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, GetProductsByCategoryRequest request);
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
 }

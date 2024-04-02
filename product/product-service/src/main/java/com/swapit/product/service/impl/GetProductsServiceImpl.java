@@ -97,19 +97,18 @@ public class GetProductsServiceImpl implements GetProductsService {
     }
 
     @Override
-    public GetProductsByCategoryResponse getProductsByCategory(GetProductsByCategoryRequest request) {
-        String sortCriteria = request.getSortCriteria();
+    public GetProductsByCategoryResponse getProductsByCategory(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, GetProductsByCategoryRequest request) {
         if (sortCriteria == null) {
             sortCriteria = POPULARITY.name();
         }
         Pageable pageable;
         Page<Product> data;
         if (sortCriteria.equalsIgnoreCase(RANDOM.name())) {
-            pageable = PageRequest.of(request.getChunkNumber(), request.getNrElementsPerChunk());
+            pageable = PageRequest.of(chunkNumber, nrElementsPerChunk);
             data = productRepository.findAllRandomByCategoryIdIn(request.getCategoriesIds(), pageable);
         }
         else {
-            pageable = PageRequest.of(request.getChunkNumber(), request.getNrElementsPerChunk(), Sort.by(getProductSortingCriteria(sortCriteria)).descending());
+            pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(getProductSortingCriteria(sortCriteria)).descending());
             data = productRepository.findAllByCategoryIdIn(request.getCategoriesIds(), pageable);
         }
         List<Product> products = data.getContent();

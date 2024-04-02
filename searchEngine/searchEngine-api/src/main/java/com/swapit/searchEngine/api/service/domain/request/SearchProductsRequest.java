@@ -8,13 +8,7 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @Builder
 public class SearchProductsRequest {
-    private String query;
 
-    // Batch Processing params
-    @Builder.Default
-    private Integer chunkNumber = 0;
-    @Builder.Default
-    private Integer nrElementsPerChunk = Integer.MAX_VALUE;
-    private String sortCriteria;
+    private String query;
 
 }

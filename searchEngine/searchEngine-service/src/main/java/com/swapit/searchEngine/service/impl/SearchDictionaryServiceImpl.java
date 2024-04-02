@@ -69,6 +69,17 @@ public class SearchDictionaryServiceImpl implements SearchDictionaryService {
     }
 
     @Override
+    public void deleteProductFromSearchDictionary(Integer productId) throws IOException {
+        IndexWriterConfig config = new IndexWriterConfig(standardAnalyzer);
+        IndexWriter indexWriter = new IndexWriter(directory, config);
+        String documentId = String.valueOf(productId);
+        Term term = new Term(PRODUCT_ID_KEY, documentId);
+        Query query = new TermQuery(term);
+        indexWriter.deleteDocuments(query);
+        indexWriter.close();
+    }
+
+    @Override
     public List<Pair<Integer, Integer>> searchMatchingProductsScore(String query) throws IOException {
         List<String> queryValues = processQuery(query);
         Map<Integer, Integer> productScores = new HashMap<>();

@@ -23,6 +23,7 @@ public interface ExternalOperationsService {
     RegisterResponse register(RegisterRequest request);
     Integer createProduct(Integer userId, CreateProductRequest request);
     void updateProduct(Integer userId, UpdateProductRequest request);
+    void deleteProduct(Integer userId, Integer productId);
     GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     GetProductsResponse getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void sendPrivateMessage(Integer userId, PrivateChatMessageRequest request);
@@ -34,7 +35,7 @@ public interface ExternalOperationsService {
     void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request);
     void addNewProductCategory(AddNewProductCategoryRequest request);
     GetProductCategoriesResponse getAllProductCategories();
-    SearchProductsResponse searchProducts(SearchProductsRequest request);
+    SearchProductsResponse searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request);
     ProductDTO getProductById(Integer productId);
     GetCategoryTreeResponse getCategoryTree(Integer categoryId);
     SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);

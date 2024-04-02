@@ -88,6 +88,13 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
+    public void deleteProduct(Integer productId) {
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.deleteProduct(userId, productId);
+    }
+
+    @Override
     public ResponseEntity<GetProductsResponse> getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         return ResponseEntity.ok(externalOperationsService.getProductsByUser(userId, chunkNumber, nrElementsPerChunk, sortCriteria));
     }
@@ -174,8 +181,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<SearchProductsResponse> searchProducts(SearchProductsRequest request) {
-        return ResponseEntity.ok(externalOperationsService.searchProducts(request));
+    public ResponseEntity<SearchProductsResponse> searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request) {
+        return ResponseEntity.ok(externalOperationsService.searchProducts(chunkNumber, nrElementsPerChunk, sortCriteria, request));
     }
 
     @Override

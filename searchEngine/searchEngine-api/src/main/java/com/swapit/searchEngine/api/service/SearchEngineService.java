@@ -24,7 +24,7 @@ public interface SearchEngineService {
     String GET_ALL_PRODUCT_CATEGORIES = "getAllProductCategories";
     String ADD_PRODUCT_IN_SEARCH_DICTIONARY = "addProductInSearchDictionary";
     String UPDATE_PRODUCT_IN_SEARCH_DICTIONARY = "updateProductInSearchDictionary";
-
+    String DELETE_PRODUCT_FROM_SEARCH_DICTIONARY = "deleteProductFromSearchDictionary";
     String SEARCH_PRODUCTS = "searchProducts";
     String GET_CATEGORY_TREE = "getCategoryTree";
     String SEARCH_PRODUCTS_BY_CATEGORY = "searchProductsByCategory";
@@ -41,8 +41,14 @@ public interface SearchEngineService {
     @PutMapping(value = BASE_URL + UPDATE_PRODUCT_IN_SEARCH_DICTIONARY)
     void updateProductInSearchDictionary(@RequestParam("productId") Integer productId) throws IOException;
 
+    @DeleteMapping(value = BASE_URL + DELETE_PRODUCT_FROM_SEARCH_DICTIONARY)
+    void deleteProductFromSearchDictionary(@RequestParam("productId") Integer productId) throws IOException;
+
     @PostMapping(value = BASE_URL + SEARCH_PRODUCTS, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<SearchProductsResponse> searchProducts(@Valid @RequestBody SearchProductsRequest request) throws IOException;
+    ResponseEntity<SearchProductsResponse> searchProducts(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                          @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                          @RequestParam(value = "sortCriteria", required = false) String sortCriteria,
+                                                          @Valid @RequestBody SearchProductsRequest request) throws Exception;
 
     @GetMapping(value = BASE_URL + GET_CATEGORY_TREE, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<GetCategoryTreeResponse> getCategoryTree(@RequestParam(value = "categoryId") Integer categoryId);

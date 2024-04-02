@@ -27,7 +27,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public GetProductsByCategoryResponse getProductsByCategory(GetProductsByCategoryRequest request) {
-        return productPublicService.getProductsByCategory(request).getBody();
+    public GetProductsByCategoryResponse getProductsByCategory(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, GetProductsByCategoryRequest request) {
+        return productPublicService.getProductsByCategory(chunkNumber, nrElementsPerChunk, sortCriteria, request).getBody();
     }
 }

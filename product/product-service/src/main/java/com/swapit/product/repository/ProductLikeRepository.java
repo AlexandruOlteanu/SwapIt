@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface ProductLikeRepository extends JpaRepository<ProductLike, Integer> {
     Optional<ProductLike> findProductLikeByUserIdAndProductId(Integer userId, Integer productId);
     Page<ProductLike> findAllByUserIdAndStatus(Integer userId, String status, Pageable pageable);
-
+    void deleteAllByProductId(Integer productId);
 }

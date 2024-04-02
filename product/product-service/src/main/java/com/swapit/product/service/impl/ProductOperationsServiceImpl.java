@@ -109,6 +109,18 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
 
     @Override
     @Transactional
+    public void deleteProduct(Integer userId, Integer productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
+        if (!product.getUserId().equals(userId)) {
+            throw exceptionFactory.create(ExceptionType.UNAUTHORIZED_ACTION);
+        }
+        productLikeRepository.deleteAllByProductId(productId);
+        productRepository.deleteById(productId);
+    }
+
+    @Override
+    @Transactional
     public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));

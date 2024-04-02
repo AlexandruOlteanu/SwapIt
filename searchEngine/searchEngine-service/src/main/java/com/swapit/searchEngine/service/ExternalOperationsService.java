@@ -9,5 +9,6 @@ import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
 public interface ExternalOperationsService {
     ProductDTO getProductById(Integer productId);
     GetProductsByIdsResponse getProductsByIds(GetProductsByIdsRequest request);
-    GetProductsByCategoryResponse getProductsByCategory(GetProductsByCategoryRequest request);
+    GetProductsByCategoryResponse getProductsByCategory(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria,
+                                                        GetProductsByCategoryRequest request);
 }

@@ -10,12 +10,7 @@ import java.util.List;
 @Jacksonized
 @Builder
 public class GetProductsByCategoryRequest {
+
     List<Integer> categoriesIds;
 
-    // Batch Processing params
-    @Builder.Default
-    Integer chunkNumber = 0;
-    @Builder.Default
-    Integer nrElementsPerChunk = Integer.MAX_VALUE;
-    String sortCriteria;
 }

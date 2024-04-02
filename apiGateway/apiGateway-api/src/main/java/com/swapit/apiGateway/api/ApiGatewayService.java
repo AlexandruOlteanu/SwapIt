@@ -42,6 +42,7 @@ public interface ApiGatewayService {
     String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String CREATE_PRODUCT = "createProduct";
     String UPDATE_PRODUCT = "updateProduct";
+    String DELETE_PRODUCT = "deleteProduct";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
     String USER_DETAILS = "getUserDetails";
     String GET_CONVERSATIONS_PREVIEW = "getConversationsPreview";
@@ -79,6 +80,9 @@ public interface ApiGatewayService {
 
     @PutMapping(value = BASE_URL + UPDATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void updateProduct(@Valid @RequestBody UpdateProductRequest request);
+
+    @DeleteMapping(value = BASE_URL + DELETE_PRODUCT)
+    void deleteProduct(@RequestParam(value = "productId") Integer productId);
 
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_PRODUCTS_BY_USER)
     ResponseEntity<GetProductsResponse> getProductsByUser(@RequestParam(value = "userId") Integer userId,
@@ -127,7 +131,10 @@ public interface ApiGatewayService {
     ResponseEntity<GetProductCategoriesResponse> getAllProductCategories();
 
     @PostMapping(value = BASE_URL + PUBLIC_ACCESS + SEARCH_PRODUCTS, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<SearchProductsResponse> searchProducts(@Valid @RequestBody SearchProductsRequest request);
+    ResponseEntity<SearchProductsResponse> searchProducts(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                          @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                          @RequestParam(value = "sortCriteria", required = false) String sortCriteria,
+                                                          @Valid @RequestBody SearchProductsRequest request);
 
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_PRODUCT_BY_ID)
     ResponseEntity<ProductDTO> getProductById(@RequestParam(value = "productId") Integer productId);

@@ -32,6 +32,11 @@ public class ProductController implements ProductService {
     }
 
     @Override
+    public void deleteProduct(Integer userId, Integer productId) {
+        productOperationsService.deleteProduct(userId, productId);
+    }
+
+    @Override
     public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
         productOperationsService.changeProductLikeStatus(userId, request);
     }
@@ -67,7 +72,7 @@ public class ProductController implements ProductService {
     }
 
     @Override
-    public ResponseEntity<GetProductsByCategoryResponse> getProductsByCategory(GetProductsByCategoryRequest request) {
-        return ResponseEntity.ok(getProductsService.getProductsByCategory(request));
+    public ResponseEntity<GetProductsByCategoryResponse> getProductsByCategory(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, GetProductsByCategoryRequest request) {
+        return ResponseEntity.ok(getProductsService.getProductsByCategory(chunkNumber, nrElementsPerChunk, sortCriteria, request));
     }
 }

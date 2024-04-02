@@ -36,8 +36,7 @@ public class SearchProductsServiceImpl implements SearchProductsService {
     private final ExternalOperationsService externalOperationsService;
 
     @Override
-    public SearchProductsResponse searchProducts(SearchProductsRequest request) throws IOException {
-        String sortCriteria = request.getSortCriteria();
+    public SearchProductsResponse searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request) throws Exception {
         if (sortCriteria == null) {
             sortCriteria = BEST_MATCH.name();
         }
@@ -46,7 +45,7 @@ public class SearchProductsServiceImpl implements SearchProductsService {
                 .map(Pair::getFirst)
                 .toList();
         GetProductsByIdsResponse response = Objects.requireNonNull(externalOperationsService.getProductsByIds(GetProductsByIdsRequest.builder()
-                        .productIds(productIds)
+                .productIds(productIds)
                 .build()));
         Map<Integer, ProductDTO> mappedProducts = response.getProducts().stream()
                 .collect(Collectors.toMap(ProductDTO::getProductId, Function.identity()));
@@ -65,8 +64,8 @@ public class SearchProductsServiceImpl implements SearchProductsService {
         if (sortCriteria.equalsIgnoreCase(RANDOM.name())) {
             Collections.shuffle(searchProductDTOS);
         }
-        int startIdx = request.getChunkNumber() * request.getNrElementsPerChunk();
-        int endIdx = startIdx + request.getNrElementsPerChunk();
+        int startIdx = chunkNumber * nrElementsPerChunk;
+        int endIdx = startIdx + nrElementsPerChunk;
         int listSize = searchProductDTOS.size();
         if (endIdx > listSize) endIdx = listSize;
         List<SearchProductDTO> finalSearchResults = IntStream.range(startIdx, endIdx)
@@ -81,13 +80,10 @@ public class SearchProductsServiceImpl implements SearchProductsService {
     public SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         var childCategoryTreeIds = productCategorizeService.getCategoryTree(categoryId).getChildCategories().stream()
                 .map(CategoryTreeValueDTO::getCategoryId).toList();
-        GetProductsByCategoryRequest request = GetProductsByCategoryRequest.builder()
-                .categoriesIds(childCategoryTreeIds)
-                .chunkNumber(chunkNumber)
-                .nrElementsPerChunk(nrElementsPerChunk)
-                .sortCriteria(sortCriteria)
-                .build();
-        GetProductsByCategoryResponse response = externalOperationsService.getProductsByCategory(request);
+        GetProductsByCategoryResponse response = externalOperationsService.getProductsByCategory(chunkNumber, nrElementsPerChunk, sortCriteria,
+                GetProductsByCategoryRequest.builder()
+                        .categoriesIds(childCategoryTreeIds)
+                        .build());
         assert response != null;
         List<SearchProductDTO> searchProductDTOS = response.getProducts().stream()
                 .map(SearchProductMapper::prodDtoToSearchProdDto).toList();

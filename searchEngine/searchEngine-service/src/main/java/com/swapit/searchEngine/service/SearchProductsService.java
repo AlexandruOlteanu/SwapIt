@@ -6,6 +6,6 @@ import com.swapit.searchEngine.api.service.domain.response.SearchProductsRespons
 import java.io.IOException;
 
 public interface SearchProductsService {
-    SearchProductsResponse searchProducts(SearchProductsRequest request) throws IOException;
+    SearchProductsResponse searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request) throws Exception;
     SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
 }
