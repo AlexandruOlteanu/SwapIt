@@ -5,16 +5,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.retry.annotation.EnableRetry;
 
 @SpringBootApplication
 @ComponentScan({
 		"com.swapit.user",
 		"com.swapit.commons"
 })
-@EnableFeignClients(basePackages = {
-		"com.swapit.product.service"
-})
 @EnableCaching
+@EnableRetry
 public class UserApplication {
 
 	public static void main(String[] args) {

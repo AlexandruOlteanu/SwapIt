@@ -23,7 +23,6 @@
 		<java.version>21</java.version>
 
 		<commons.version>0.0.1-SNAPSHOT</commons.version>
-		<product.version>0.0.1-SNAPSHOT</product.version>
 	</properties>
 
 	<dependencies>
@@ -31,16 +30,6 @@
 			<groupId>com.swapit</groupId>
 			<artifactId>commons</artifactId>
 			<version>${commons.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.swapit</groupId>
-			<artifactId>product-api</artifactId>
-			<version>${product.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.swapit</groupId>
-			<artifactId>product-client</artifactId>
-			<version>${product.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

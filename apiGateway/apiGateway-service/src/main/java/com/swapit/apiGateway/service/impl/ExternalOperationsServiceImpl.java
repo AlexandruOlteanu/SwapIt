@@ -53,6 +53,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     private static final String CHUNK_NUMBER_PARAM = "chunkNumber";
     private static final String NR_ELEMENTS_PER_CHUNK_PARAM = "nrElementsPerChunk";
     private static final String SORT_CRITERIA_PARAM = "sortCriteria";
+    private static final String BAN_DAYS_DURATION_PARAM = "banDaysDuration";
 
 
     @Override
@@ -446,6 +447,47 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
         } catch (Exception e) {
             log.error("Exception in Manual Registration Codes Expire code {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void banUser(Integer userId, Integer banDaysDuration) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.BAN_USER);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
+                .queryParamIfPresent(BAN_DAYS_DURATION_PARAM, Optional.ofNullable(banDaysDuration));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, null, Void.class);
+        } catch (Exception e) {
+            log.error("Exception in banning user {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void removeUserBan(Integer userId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.REMOVE_USER_BAN);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
+        } catch (Exception e) {
+            log.error("Exception in removing user ban {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void manualRemoveUsersBan() {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.MANUAL_REMOVE_USERS_BAN);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
+        } catch (Exception e) {
+            log.error("Exception in manual removing users ban {}", e.getMessage(), e);
             throw e;
         }
     }

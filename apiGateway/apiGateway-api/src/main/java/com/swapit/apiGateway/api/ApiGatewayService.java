@@ -1,6 +1,5 @@
 package com.swapit.apiGateway.api;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.swapit.chat.api.domain.request.PrivateChatMessageRequest;
 import com.swapit.chat.api.domain.response.ConversationResponse;
 import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
@@ -45,6 +44,9 @@ public interface ApiGatewayService {
     String DELETE_PRODUCT = "deleteProduct";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
     String USER_DETAILS = "getUserDetails";
+    String BAN_USER = "banUser";
+    String REMOVE_USER_BAN = "removeUserBan";
+    String MANUAL_REMOVE_USERS_BAN = "manualRemoveUsersBan";
     String GET_CONVERSATIONS_PREVIEW = "getConversationsPreview";
     String GET_CONVERSATION = "getConversation";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
@@ -156,6 +158,14 @@ public interface ApiGatewayService {
     @DeleteMapping(value = BASE_URL + ADMIN_ACTION + MANUAL_REGISTRATION_CODES_EXPIRE)
     void manualRegistrationCodesExpire();
 
+    @PostMapping(value = BASE_URL + ADMIN_ACTION + BAN_USER)
+    void banUser(@RequestParam("userId") Integer userId, @RequestParam("banDaysDuration") Integer banDaysDuration);
+
+    @DeleteMapping(value = BASE_URL + ADMIN_ACTION + REMOVE_USER_BAN)
+    void removeUserBan(@RequestParam("userId") Integer userId);
+
+    @DeleteMapping(value = BASE_URL + ADMIN_ACTION + MANUAL_REMOVE_USERS_BAN)
+    void manualRemoveUsersBan();
 
 }
 

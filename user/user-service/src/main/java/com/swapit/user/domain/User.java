@@ -1,6 +1,8 @@
 package com.swapit.user.domain;
 
-import com.swapit.user.utils.Role;
+import com.swapit.user.utils.AuthProvider;
+import com.swapit.user.utils.UserRole;
+import com.swapit.user.utils.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,16 +50,25 @@ public class User implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Column(name = "role")
+    private UserRole userRole;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "auth_provider")
-    private String authProvider;
+    private AuthProvider authProvider;
 
     @Column(name = "oauth2_user_id")
     private String oauth2UserId;
 
     @Column(name = "user_image")
     private String userImage;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private UserStatus status;
+
+    @Column(name = "ban_expiry_time")
+    private ZonedDateTime banExpiryTime;
 
     @PrePersist
     public void setJoinDate() {
@@ -66,7 +77,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(userRole.name()));
     }
 
     @Override

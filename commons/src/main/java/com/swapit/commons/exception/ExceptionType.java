@@ -13,6 +13,7 @@ public enum ExceptionType {
     INVALID_USER_UPDATE_FIELD,
     WRONG_USERNAME_OR_PASSWORD,
     WRONG_PASSWORD,
+    USER_BANNED,
 
     // Chat Exceptions
     CONVERSATION_NOT_FOUND,

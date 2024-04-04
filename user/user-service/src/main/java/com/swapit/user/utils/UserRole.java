@@ -1,6 +1,6 @@
 package com.swapit.user.utils;
 
-public enum Role {
+public enum UserRole {
     USER,
     OAUTH2_USER,
     ADMINISTRATOR

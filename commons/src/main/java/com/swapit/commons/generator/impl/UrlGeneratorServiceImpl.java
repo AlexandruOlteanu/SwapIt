@@ -18,7 +18,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN,
         UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
         GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, SEND_REGISTRATION_CODE, MANUAL_REGISTRATION_CODES_EXPIRE,
-        DELETE_PRODUCT, DELETE_PRODUCT_FROM_SEARCH_DICTIONARY
+        DELETE_PRODUCT, DELETE_PRODUCT_FROM_SEARCH_DICTIONARY, BAN_USER, REMOVE_USER_BAN, MANUAL_REMOVE_USERS_BAN
     }
 
     // USER URI
@@ -30,6 +30,10 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String userRegisterUri;
     @Value("${user.getUserDetails.route}")
     private String getUserDetailsUri;
+    @Value("${user.banUser.route}")
+    private String banUserUri;
+    @Value("${user.removeUserBan.route}")
+    private String removeUserBanUri;
     @Value("${user.updateBasicUserDetails.route}")
     private String updateBasicUserDetailsUri;
     @Value("${user.updateProtectedUserDetails.route}")
@@ -38,6 +42,10 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String getSpecificUsersDetailsUri;
     @Value("${user.sendRegistrationCode.route}")
     private String sendRegistrationCodeUri;
+    @Value("${user.manualRegistrationCodesExpire.route}")
+    private String manualRegistrationCodesExpireUri;
+    @Value("${user.manualRemoveUsersBan.route}")
+    private String manualRemoveUsersBanUri;
 
     // PRODUCT URI
     @Value("${product.createProduct.route}")
@@ -85,10 +93,6 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     @Value("${searchEngine.searchProductsByCategory.route}")
     private String searchProductsByCategoryUri;
 
-    // CRON ENGINE URI
-    @Value("${cronEngine.manualRegistrationCodesExpire.route}")
-    private String manualRegistrationCodesExpireUri;
-
     @Override
     public String getServiceURL(UrlIdentifier api) {
         return switch (api) {
@@ -121,6 +125,9 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case MANUAL_REGISTRATION_CODES_EXPIRE -> manualRegistrationCodesExpireUri;
             case DELETE_PRODUCT -> deleteProductUri;
             case DELETE_PRODUCT_FROM_SEARCH_DICTIONARY -> deleteProductFromSearchDictionaryUri;
+            case BAN_USER -> banUserUri;
+            case REMOVE_USER_BAN -> removeUserBanUri;
+            case MANUAL_REMOVE_USERS_BAN -> manualRemoveUsersBanUri;
         };
     }
 }

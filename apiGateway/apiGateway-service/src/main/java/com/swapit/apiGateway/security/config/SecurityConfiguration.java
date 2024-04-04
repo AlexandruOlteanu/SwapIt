@@ -2,6 +2,7 @@ package com.swapit.apiGateway.security.config;
 
 import com.swapit.apiGateway.security.service.CustomAuthenticationEntryPoint;
 import com.swapit.apiGateway.security.service.JwtAuthenticationFilter;
+import com.swapit.apiGateway.security.service.PostOauth2LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,11 +12,12 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
-import static com.swapit.user.utils.Role.ADMINISTRATOR;
+import static com.swapit.user.utils.UserRole.ADMINISTRATOR;
 
 @Configuration
 @EnableWebSecurity
@@ -32,19 +34,21 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final PostOauth2LoginFilter postOauth2LoginFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(WHITE_LIST_URL).permitAll();
                     req.requestMatchers("/api/v1/swapIt/apiGateway/adminAction/**").hasAnyAuthority(ADMINISTRATOR.name());
                     req.anyRequest().authenticated();
                 })
-                .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .oauth2Login(Customizer.withDefaults())
+                .addFilterAfter(postOauth2LoginFilter, OAuth2LoginAuthenticationFilter.class)
+                .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout ->
                         logout.logoutUrl("/api/v1/swapIt/apiGateway/auth/")
                                 .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()))

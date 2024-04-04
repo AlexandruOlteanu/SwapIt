@@ -176,6 +176,21 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
+    public void banUser(Integer userId, Integer banDaysDuration) {
+        externalOperationsService.banUser(userId, banDaysDuration);
+    }
+
+    @Override
+    public void removeUserBan(Integer userId) {
+        externalOperationsService.removeUserBan(userId);
+    }
+
+    @Override
+    public void manualRemoveUsersBan() {
+        externalOperationsService.manualRemoveUsersBan();
+    }
+
+    @Override
     public ResponseEntity<GetProductCategoriesResponse> getAllProductCategories() {
         return ResponseEntity.ok(externalOperationsService.getAllProductCategories());
     }

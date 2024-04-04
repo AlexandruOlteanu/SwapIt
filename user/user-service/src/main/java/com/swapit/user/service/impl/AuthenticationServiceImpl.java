@@ -18,7 +18,8 @@ import com.swapit.user.security.JwtService;
 import com.swapit.user.service.AuthenticationService;
 import com.swapit.user.service.EmailSenderService;
 import com.swapit.user.utils.AuthProvider;
-import com.swapit.user.utils.Role;
+import com.swapit.user.utils.UserRole;
+import com.swapit.user.utils.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,9 +61,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = userRepository.findUserByUsername(request.getUsername())
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
+        if (user.getStatus().equals(UserStatus.INACTIVE)) {
+            throw exceptionFactory.create(ExceptionType.USER_BANNED);
+        }
         return LoginResponse.builder()
                 .userId(user.getUserId())
-                .role(user.getRole().toString())
+                .role(user.getUserRole().toString())
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }
@@ -87,15 +91,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .surname(request.getSurname())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .authProvider(AuthProvider.LOCAL.name())
+                .userRole(UserRole.USER)
+                .status(UserStatus.ACTIVE)
+                .authProvider(AuthProvider.LOCAL)
                 .userImage(request.getUserImage())
                 .build();
 
         Integer userId = userRepository.save(user).getUserId();
         return RegisterResponse.builder()
                 .userId(userId)
-                .role(Role.USER.name())
+                .role(UserRole.USER.name())
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }
@@ -118,8 +123,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .name(request.getName())
                     .surname(request.getSurname())
                     .email(request.getEmail())
-                    .role(Role.OAUTH2_USER)
-                    .authProvider(AuthProvider.OAUTH2.name())
+                    .userRole(UserRole.OAUTH2_USER)
+                    .status(UserStatus.ACTIVE)
+                    .authProvider(AuthProvider.OAUTH2)
                     .oauth2UserId(request.getOauth2UserId())
                     .userImage(request.getUserImage())
                     .build();
@@ -128,7 +134,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return Oauth2Response.builder()
                 .userId(userId)
-                .role(Role.OAUTH2_USER.name())
+                .role(UserRole.OAUTH2_USER.name())
                 .build();
     }
 

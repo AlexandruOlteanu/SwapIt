@@ -18,6 +18,8 @@ public class UserController implements UserService {
     private final AuthenticationService authenticationService;
     private final UpdateUserDetailsService updateUserDetailsService;
     private final GetUserDetailsService getUserDetailsService;
+    private final UserRestrictionsService userRestrictionsService;
+    private final ScheduledOperationsService scheduledOperationsService;
 
     @Override
     public ResponseEntity<LoginResponse> login(LoginRequest request) {
@@ -57,5 +59,25 @@ public class UserController implements UserService {
     @Override
     public void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request) {
         updateUserDetailsService.updateProtectedUserDetails(userId, request);
+    }
+
+    @Override
+    public void banUser(Integer userId, Integer banDaysDuration) {
+        userRestrictionsService.banUser(userId, banDaysDuration);
+    }
+
+    @Override
+    public void removeUserBan(Integer userId) {
+        userRestrictionsService.removeUserBan(userId);
+    }
+
+    @Override
+    public void manualRegistrationCodesExpire() {
+        scheduledOperationsService.registrationCodesExpire();
+    }
+
+    @Override
+    public void manualRemoveUsersBan() {
+        scheduledOperationsService.removeUsersBan();
     }
 }

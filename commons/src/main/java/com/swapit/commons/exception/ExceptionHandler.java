@@ -48,8 +48,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
             httpStatus = HttpStatus.resolve(feignException.status()) != null ? HttpStatus.resolve(feignException.status()) : HttpStatus.INTERNAL_SERVER_ERROR;
         }
         if (ex instanceof RestClientResponseException restClientResponseException) {
-            headers = restClientResponseException.getResponseHeaders();
-            assert headers != null;
+            headers.addAll(Objects.requireNonNull(restClientResponseException.getResponseHeaders()));
             if (headers.containsKey(X_ERROR_CODE)) {
                 errorCode = Objects.requireNonNull(headers.get(X_ERROR_CODE)).getFirst();
             }
@@ -61,6 +60,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
         }
         if (!headers.containsKey(X_ERROR_CODE)) {
             headers.add(X_ERROR_CODE, "-1");
+            errorCode = "-1";
             errorMessage = ex.toString();
             errorMessage = errorMessage.replace('\n', ' ');
             headers.add(X_ERROR_MESSAGE, errorMessage);

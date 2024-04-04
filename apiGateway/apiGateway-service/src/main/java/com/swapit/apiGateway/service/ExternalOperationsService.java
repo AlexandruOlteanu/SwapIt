@@ -44,4 +44,7 @@ public interface ExternalOperationsService {
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void sendRegistrationCode(SendRegistrationCodeRequest request);
     void manualRegistrationCodesExpire();
+    void banUser(Integer userId, Integer banDaysDuration);
+    void removeUserBan(Integer userId);
+    void manualRemoveUsersBan();
 }

@@ -18,6 +18,10 @@ public interface UserService {
     String REGISTER = "auth/register";
     String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String GET_USER_DETAILS = "getUserDetails";
+    String BAN_USER = "banUser";
+    String MANUAL_REGISTRATION_CODES_EXPIRE = "manualRegistrationCodesExpire";
+    String MANUAL_REMOVE_USERS_BAN = "manualRemoveUsersBan";
+    String REMOVE_USER_BAN = "removeUserBan";
     String GET_SPECIFIC_USERS_DETAILS = "getSpecificUsersDetails";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
     String UPDATE_PROTECTED_USER_DETAILS = "updateProtectedUserDetails";
@@ -46,4 +50,15 @@ public interface UserService {
     @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     void updateProtectedUserDetails(@RequestParam("userId") Integer userId, @Valid @RequestBody UpdateProtectedUserDetailsRequest request);
 
+    @PostMapping(value = BASE_URL + BAN_USER)
+    void banUser(@RequestParam("userId") Integer userId, @RequestParam("banDaysDuration") Integer banDaysDuration);
+
+    @DeleteMapping(value = BASE_URL + REMOVE_USER_BAN)
+    void removeUserBan(@RequestParam("userId") Integer userId);
+
+    @DeleteMapping(value = BASE_URL + MANUAL_REGISTRATION_CODES_EXPIRE)
+    void manualRegistrationCodesExpire();
+
+    @DeleteMapping(value = BASE_URL + MANUAL_REMOVE_USERS_BAN)
+    void manualRemoveUsersBan();
 }
