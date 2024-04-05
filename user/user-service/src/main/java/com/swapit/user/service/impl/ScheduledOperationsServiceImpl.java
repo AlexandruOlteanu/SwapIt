@@ -53,7 +53,7 @@ public class ScheduledOperationsServiceImpl implements ScheduledOperationsServic
 
     @Override
     @Transactional
-    @Scheduled(cron = "${user.registration.codes.expire.scheduler}", zone = "UTC")
+    @Scheduled(cron = "${user.cron.remove.users.ban.scheduler}", zone = "UTC")
     @Retryable(retryFor = {Exception.class}, maxAttempts = 10, backoff = @Backoff(delay = 30000))
     public void removeUsersBan() {
         log.info("Starting Removing Users Ban Cron");
