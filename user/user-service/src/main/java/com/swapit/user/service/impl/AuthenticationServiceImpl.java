@@ -65,8 +65,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw exceptionFactory.create(ExceptionType.USER_BANNED);
         }
         return LoginResponse.builder()
-                .userId(user.getUserId())
-                .role(user.getUserRole().toString())
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }
@@ -97,10 +95,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .userImage(request.getUserImage())
                 .build();
 
-        Integer userId = userRepository.save(user).getUserId();
+        userRepository.save(user);
         return RegisterResponse.builder()
-                .userId(userId)
-                .role(UserRole.USER.name())
                 .jwtToken(jwtService.generateToken(user))
                 .build();
     }
@@ -134,7 +130,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return Oauth2Response.builder()
                 .userId(userId)
-                .role(UserRole.OAUTH2_USER.name())
                 .build();
     }
 

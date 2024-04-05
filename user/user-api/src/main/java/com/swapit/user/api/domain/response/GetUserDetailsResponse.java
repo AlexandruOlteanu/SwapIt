@@ -16,4 +16,5 @@ public class GetUserDetailsResponse {
     private String email;
     private String userImage;
     private ZonedDateTime joinDate;
+    private String userRole;
 }

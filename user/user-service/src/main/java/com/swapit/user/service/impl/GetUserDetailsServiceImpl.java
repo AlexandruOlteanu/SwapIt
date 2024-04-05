@@ -35,6 +35,7 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
                 .email(user.getEmail())
                 .userImage(user.getUserImage())
                 .joinDate(user.getJoinDate())
+                .userRole(user.getUserRole().name())
                 .build();
     }
 

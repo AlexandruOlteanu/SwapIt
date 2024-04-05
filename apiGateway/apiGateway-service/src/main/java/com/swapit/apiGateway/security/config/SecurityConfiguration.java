@@ -1,8 +1,8 @@
 package com.swapit.apiGateway.security.config;
 
 import com.swapit.apiGateway.security.service.CustomAuthenticationEntryPoint;
+import com.swapit.apiGateway.security.service.CustomAuthenticationSuccessHandler;
 import com.swapit.apiGateway.security.service.JwtAuthenticationFilter;
-import com.swapit.apiGateway.security.service.PostOauth2LoginFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +34,7 @@ public class SecurityConfiguration {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final PostOauth2LoginFilter postOauth2LoginFilter;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -45,8 +45,7 @@ public class SecurityConfiguration {
                     req.requestMatchers("/api/v1/swapIt/apiGateway/adminAction/**").hasAnyAuthority(ADMINISTRATOR.name());
                     req.anyRequest().authenticated();
                 })
-                .oauth2Login(Customizer.withDefaults())
-                .addFilterAfter(postOauth2LoginFilter, OAuth2LoginAuthenticationFilter.class)
+                .oauth2Login(oauth2Configurer -> oauth2Configurer.successHandler(customAuthenticationSuccessHandler))
                 .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authenticationProvider(authenticationProvider)
                 .logout(logout ->

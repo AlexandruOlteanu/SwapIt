@@ -9,5 +9,4 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 public class Oauth2Response {
     private Integer userId;
-    private String role;
 }

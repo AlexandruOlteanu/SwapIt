@@ -8,7 +8,5 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 @Builder
 public class RegisterResponse {
-    private Integer userId;
-    private String role;
     private String jwtToken;
 }

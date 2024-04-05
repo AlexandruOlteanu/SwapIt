@@ -37,13 +37,13 @@ public interface ApiGatewayService {
     String ADMIN_ACTION = "adminAction/";
     String LOGIN = "auth/login";
     String REGISTER = "auth/register";
-    String OAUTH2_LOGIN = "auth/oauth2login";
     String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String CREATE_PRODUCT = "createProduct";
     String UPDATE_PRODUCT = "updateProduct";
     String DELETE_PRODUCT = "deleteProduct";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
-    String USER_DETAILS = "getUserDetails";
+    String GET_USER_DETAILS = "getUserDetails";
+    String GET_AUTHENTICATED_USER_DETAILS = "getAuthenticatedUserDetails";
     String BAN_USER = "banUser";
     String REMOVE_USER_BAN = "removeUserBan";
     String MANUAL_REMOVE_USERS_BAN = "manualRemoveUsersBan";
@@ -67,9 +67,6 @@ public interface ApiGatewayService {
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
-
-    @PostMapping(value = BASE_URL + OAUTH2_LOGIN, produces = MEDIA_TYPE_APPLICATION_JSON)
-    ResponseEntity<Oauth2Response> oauth2login(OAuth2AuthenticationToken auth2AuthenticationToken);
 
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
@@ -113,13 +110,17 @@ public interface ApiGatewayService {
     @PostMapping(value = BASE_URL + SEND_PRIVATE_MESSAGE, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void sendPrivateMessage(@Valid @RequestBody PrivateChatMessageRequest request);
 
-    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + USER_DETAILS)
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
+
+    @GetMapping(value = BASE_URL + GET_AUTHENTICATED_USER_DETAILS)
+    ResponseEntity<GetUserDetailsResponse> getAuthenticatedUserDetails();
 
     @GetMapping(value = BASE_URL + GET_CONVERSATIONS_PREVIEW)
     ResponseEntity<ConversationsPreviewResponse> getConversationsPreview(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
                                                                          @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
                                                                          @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
+
     @GetMapping(value = BASE_URL + GET_CONVERSATION)
     ResponseEntity<ConversationResponse> getConversation(@RequestParam(value = "conversationId") Integer conversationId);
 

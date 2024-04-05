@@ -51,19 +51,6 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<Oauth2Response> oauth2login(OAuth2AuthenticationToken auth2AuthenticationToken) {
-        Map<String, Object> attributes = auth2AuthenticationToken.getPrincipal().getAttributes();
-        Oauth2Request oauth2Request = Oauth2Request.builder()
-                                                .oauth2UserId((String) attributes.get(OAUTH2_USER_ID))
-                                                .userImage((String) attributes.get(USER_IMAGE))
-                                                .name((String) attributes.get(NAME))
-                                                .surname((String) attributes.get(SURNAME))
-                                                .email((String) attributes.get(EMAIL))
-                                        .build();
-        return ResponseEntity.ok(externalOperationsService.oauth2login(oauth2Request));
-    }
-
-    @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         return ResponseEntity.ok(externalOperationsService.register(request));
     }
@@ -134,6 +121,13 @@ public class ApiGatewayController implements ApiGatewayService {
 
     @Override
     public ResponseEntity<GetUserDetailsResponse> getUserDetails(Integer userId) {
+        return ResponseEntity.ok(externalOperationsService.getUserDetails(userId));
+    }
+
+    @Override
+    public ResponseEntity<GetUserDetailsResponse> getAuthenticatedUserDetails() {
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
         return ResponseEntity.ok(externalOperationsService.getUserDetails(userId));
     }
 
