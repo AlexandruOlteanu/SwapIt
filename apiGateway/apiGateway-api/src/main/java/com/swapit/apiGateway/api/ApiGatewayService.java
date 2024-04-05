@@ -16,11 +16,9 @@ import com.swapit.searchEngine.api.service.domain.response.SearchProductsRespons
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
-import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.domain.response.RegisterResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

@@ -69,7 +69,7 @@ public class MessageSendingServiceImpl implements MessageSendingService {
         String channel = generatePrivateConversationChannelPath(receiverId, conversationId);
 
         pusher.trigger(channel, MESSAGE, request);
-        log.info("Message sent to channel: " + channel);
+        log.info("Message sent to channel: {}", channel);
     }
 
     private String generatePrivateConversationChannelPath(Integer receiver, Integer conversationId) {

@@ -29,6 +29,7 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         return GetUserDetailsResponse.builder()
+                .userId(userId)
                 .username(user.getUsername())
                 .name(user.getName())
                 .surname(user.getSurname())

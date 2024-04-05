@@ -1,7 +1,5 @@
 package com.swapit.apiGateway.security.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swapit.apiGateway.service.AuthenticatedUserContextService;
 import com.swapit.apiGateway.service.ExternalOperationsService;
 import com.swapit.user.api.domain.request.Oauth2Request;
 import com.swapit.user.api.domain.response.Oauth2Response;
@@ -22,7 +20,6 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +37,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private static final String EMAIL = "email";
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException, ServletException, IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         OAuth2User oAuth2User = ((OAuth2AuthenticationToken) authentication).getPrincipal();
         Oauth2Request oauth2Request = Oauth2Request.builder()
                 .oauth2UserId(oAuth2User.getAttribute(OAUTH2_USER_ID))

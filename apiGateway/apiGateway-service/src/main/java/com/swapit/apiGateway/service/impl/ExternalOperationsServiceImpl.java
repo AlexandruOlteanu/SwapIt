@@ -34,8 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.swapit.user.api.util.UserBasicDetailType.NAME;
-import static com.swapit.user.api.util.UserBasicDetailType.SURNAME;
+import static com.swapit.user.api.util.UserBasicDetailType.*;
 
 
 @Service
@@ -221,7 +220,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
                     .stream().filter(cp -> cp.getConversationTitle() == null)
                     .forEach(conversationPreview -> {
                             Integer correspondent = conversationPreview.getOtherParticipantsIds().getFirst();
-                            requestedUserDetails.put(correspondent, List.of(NAME, SURNAME));
+                            requestedUserDetails.put(correspondent, List.of(NAME, SURNAME, IMAGE));
                     });
             GetSpecificUsersDetailsRequest request = GetSpecificUsersDetailsRequest.builder()
                     .requestedUserDetails(requestedUserDetails)
@@ -234,6 +233,8 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
                         var currentUserDetails = response.getRequestedUserDetails().get(correspondent);
                         String userName = (String) currentUserDetails.get(NAME);
                         String userSurname = (String) currentUserDetails.get(SURNAME);
+                        String userImage = (String) currentUserDetails.get(IMAGE);
+                        cp.setConversationImage(userImage);
                         cp.setConversationTitle(Stream.of(userSurname, userName).filter(Objects::nonNull).collect(Collectors.joining(" ")));
                     });
             return conversationsPreviewResponse;

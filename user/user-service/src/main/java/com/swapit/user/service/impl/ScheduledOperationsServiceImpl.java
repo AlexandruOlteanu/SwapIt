@@ -60,7 +60,7 @@ public class ScheduledOperationsServiceImpl implements ScheduledOperationsServic
         List<User> inactiveUsers = userRepository.findAllByStatus(UserStatus.INACTIVE)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         inactiveUsers.forEach(inactiveUser -> {
-            if (inactiveUser.getBanExpiryTime().isBefore(ZonedDateTime.now())) {
+            if (inactiveUser.getBanExpiryTime() != null && inactiveUser.getBanExpiryTime().isBefore(ZonedDateTime.now())) {
                 inactiveUser.setStatus(UserStatus.ACTIVE);
                 inactiveUser.setBanExpiryTime(null);
             }

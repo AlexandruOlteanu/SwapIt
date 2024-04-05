@@ -57,6 +57,7 @@ public class ConversationPreviewServiceImpl implements ConversationPreviewServic
         return ConversationPreviewDTO.builder()
                 .otherParticipantsIds(otherParticipantsIds)
                 .conversationTitle(conversation.getConversationTitle())
+                .conversationImage(conversation.getConversationImage())
                 .sentByUser(conversation.getMessages().getLast().getSentBy().equals(userId))
                 .lastMessageSent(encryptionService.decrypt(conversation.getMessages().getLast().getValue()))
                 .lastMessageSentAt(conversation.getMessages().getLast().getSentAt())

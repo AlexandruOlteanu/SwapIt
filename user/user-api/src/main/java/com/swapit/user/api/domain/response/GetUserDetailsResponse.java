@@ -10,6 +10,7 @@ import java.time.ZonedDateTime;
 @Jacksonized
 @Builder
 public class GetUserDetailsResponse {
+    private Integer userId;
     private String username;
     private String name;
     private String surname;

@@ -4,7 +4,8 @@ create table conversation
         primary key,
     type               varchar(256),
     last_action_at     timestamp with time zone,
-    conversation_title varchar(255)
+    conversation_title varchar(255),
+    conversation_image varchar(256)
 );
 
 alter table conversation

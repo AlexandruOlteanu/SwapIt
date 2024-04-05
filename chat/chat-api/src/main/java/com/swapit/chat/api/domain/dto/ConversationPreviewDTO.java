@@ -17,4 +17,5 @@ public class ConversationPreviewDTO {
     private String conversationTitle;
     private ZonedDateTime lastMessageSentAt;
     private Integer conversationId;
+    private String conversationImage;
 }

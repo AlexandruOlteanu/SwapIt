@@ -11,5 +11,5 @@ public interface ProductCategoryRepository extends JpaRepository<ProductCategory
     Optional<ProductCategory> findFirstByValue(String value);
 
     @Query("select pc from ProductCategory pc where pc.parent is null")
-    Optional<List<ProductCategory>> findAllCategories();
+    Optional<List<ProductCategory>> findAllRootCategories();
 }

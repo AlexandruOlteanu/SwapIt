@@ -26,15 +26,13 @@ public class HazelcastConfig {
 
         config.setInstanceName(hazelcastInstanceName);
 
-        // Customize the network configuration
         NetworkConfig networkConfig = config.getNetworkConfig();
         JoinConfig joinConfig = networkConfig.getJoin();
-        joinConfig.getMulticastConfig().setEnabled(false); // Disable multicast
+        joinConfig.getMulticastConfig().setEnabled(false);
 
-        // Enable and configure TCP/IP join
         TcpIpConfig tcpIpConfig = joinConfig.getTcpIpConfig();
         tcpIpConfig.setEnabled(true);
-        tcpIpConfig.addMember(memberIp); // Specify members, for simplicity using localhost
+        tcpIpConfig.addMember(memberIp);
         CompactSerializationConfig compactSerializationConfig = config.getSerializationConfig().getCompactSerializationConfig();
         compactSerializationConfig.addSerializer(new ZonedDateTimeCompactSerializer());
 

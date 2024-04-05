@@ -34,6 +34,9 @@ public class Conversation {
     @Column(name = "conversation_title")
     private String conversationTitle;
 
+    @Column(name = "conversation_image")
+    private String conversationImage;
+
     @Column(name = "last_action_at")
     private ZonedDateTime lastActionAt;
 

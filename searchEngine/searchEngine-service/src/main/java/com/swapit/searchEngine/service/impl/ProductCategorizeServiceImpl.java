@@ -54,7 +54,7 @@ public class ProductCategorizeServiceImpl implements ProductCategorizeService {
     @Override
     @Cacheable(value = CACHE_PRODUCT_CATEGORIES)
     public GetProductCategoriesResponse getAllProductCategories() {
-        List<ProductCategory> productCategories = productCategoryRepository.findAllCategories()
+        List<ProductCategory> productCategories = productCategoryRepository.findAllRootCategories()
                 .orElse(new ArrayList<>());
 
         return GetProductCategoriesResponse.builder()

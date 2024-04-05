@@ -18,7 +18,7 @@ public class CacheInvalidateServiceImpl implements CacheInvalidateService {
     public void invalidateAllCacheWithValue(String value) {
         Cache cache = cacheManager.getCache(value);
         if (cache == null) {
-            log.error("Error, caches with value " + value + " was not found");
+            log.error("Error, caches with value {} was not found", value);
             return;
         }
         cache.clear();
@@ -29,7 +29,7 @@ public class CacheInvalidateServiceImpl implements CacheInvalidateService {
         String joinedKey = CacheKeyGenerator.generateKey(key);
         Cache cache = cacheManager.getCache(value);
         if (cache == null) {
-            log.error("Error, cache with value " + value + " and key {" + joinedKey + "} was not found");
+            log.error("Error, cache with value {} and key {{}} was not found", value, joinedKey);
             return;
         }
         cache.evictIfPresent(joinedKey);

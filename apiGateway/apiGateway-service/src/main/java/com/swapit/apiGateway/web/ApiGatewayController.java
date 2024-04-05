@@ -19,15 +19,11 @@ import com.swapit.searchEngine.api.service.domain.response.SearchProductsRespons
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
-import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.domain.response.RegisterResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 import static com.swapit.apiGateway.util.AuthenticatedUserPropertyType.CONTEXT_USER_ID;
 

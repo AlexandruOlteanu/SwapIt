@@ -15,7 +15,7 @@ import java.util.Base64;
 @RequiredArgsConstructor
 @Slf4j
 public class EncryptionServiceImpl implements EncryptionService{
-    private static final String ALGORITHM = "AES/CBC/PKCS5Padding"; // Use CBC mode and PKCS#5 Padding
+    private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     private final SecretKeySpec secretKeySpec;
 
     @Override
