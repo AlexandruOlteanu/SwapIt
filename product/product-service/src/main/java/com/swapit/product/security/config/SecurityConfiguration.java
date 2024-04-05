@@ -16,18 +16,22 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @EnableMethodSecurity
 public class SecurityConfiguration {
 
-    private static final String[] WHITE_LIST_URL = {"/api/v1/swapIt/product/**", "/v3/**", "/swagger-ui/**"};
+    private static final String[] WHITE_LIST_URL = {
+            "/api/v1/swapIt/product/**",
+            "/v3/**",
+            "/swagger-ui/**"
+    };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
-                );
-        return http.build();
+                )
+                .build();
     }
 }
