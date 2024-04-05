@@ -20,10 +20,15 @@ import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.util.UserBasicDetailType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Map;
 
 import static com.swapit.apiGateway.util.AuthenticatedUserPropertyType.CONTEXT_USER_ID;
 
@@ -118,6 +123,16 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<GetUserDetailsResponse> getUserDetails(Integer userId) {
         return ResponseEntity.ok(externalOperationsService.getUserDetails(userId));
+    }
+
+    @Override
+    public ResponseEntity<ZonedDateTime> getUserBanExpiryTime(Integer userId) {
+        Map<Integer, List<UserBasicDetailType>> requestedUserDetails = Map.of(userId, List.of(UserBasicDetailType.BAN_EXPIRY_TIME));
+        var response = externalOperationsService.getSpecificUsersDetails(GetSpecificUsersDetailsRequest.builder()
+                        .requestedUserDetails(requestedUserDetails)
+                .build());
+        ZonedDateTime banExpiryTime = ZonedDateTime.parse((CharSequence) response.getRequestedUserDetails().get(userId).get(UserBasicDetailType.BAN_EXPIRY_TIME));
+        return ResponseEntity.ok(banExpiryTime);
     }
 
     @Override

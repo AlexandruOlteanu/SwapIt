@@ -22,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
+
 import static com.swapit.commons.utils.Constants.IntegerMaxValueAsString;
 
 
@@ -41,6 +43,7 @@ public interface ApiGatewayService {
     String DELETE_PRODUCT = "deleteProduct";
     String SEND_PRIVATE_MESSAGE = "sendPrivateMessage";
     String GET_USER_DETAILS = "getUserDetails";
+    String GET_USER_BAN_EXPIRY_TIME = "getUserBanExpiryTime";
     String GET_AUTHENTICATED_USER_DETAILS = "getAuthenticatedUserDetails";
     String BAN_USER = "banUser";
     String REMOVE_USER_BAN = "removeUserBan";
@@ -110,6 +113,9 @@ public interface ApiGatewayService {
 
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
+
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_BAN_EXPIRY_TIME)
+    ResponseEntity<ZonedDateTime> getUserBanExpiryTime(@RequestParam(value = "userId") Integer userId);
 
     @GetMapping(value = BASE_URL + GET_AUTHENTICATED_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getAuthenticatedUserDetails();
