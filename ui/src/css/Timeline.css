@@ -1,0 +1,46 @@
+.vertical-timeline-element-content {
+    box-shadow: 0 0.25em 0.5em 0 rgba(0, 0, 0, 0.25), 0 0.4em 1.25em 0 rgba(0, 0, 0, 0.15) !important;
+    padding: 2em 3em !important;
+}
+
+.vertical-timeline-element-content {
+    background: var(--light);
+}
+
+.vertical-timeline::before {
+    background: var(--secondary);
+}
+
+.vertical-timeline--animate .vertical-timeline-element-content.bounce-in {
+    visibility: visible;
+    animation: cd-bounce-2 1.6s;
+}
+
+.vertical-timeline--two-columns.vertical-timeline--animate .vertical-timeline-element.vertical-timeline-element--right .vertical-timeline-element-content.bounce-in,
+.vertical-timeline--two-columns.vertical-timeline--animate .vertical-timeline-element:nth-child(even):not(.vertical-timeline-element--left) .vertical-timeline-element-content.bounce-in {
+    -webkit-animation: cd-bounce-2-inverse 1.6s;
+    animation: cd-bounce-2-inverse 1.6s;
+}
+
+.vertical-timeline--two-columns .vertical-timeline-element-icon {
+    background: var(--secondary);
+    box-shadow: 0 0 0 4px var(--secondary), inset 0 2px 0 rgba(0, 0, 0, .08), 0 3px 0 4px rgba(0, 0, 0, .05)
+}
+
+@media only screen and (min-width: 1170px) {
+    .vertical-timeline--two-columns .vertical-timeline-element-icon {
+        width: 40px;
+        height: 40px;
+        left: 50%;
+        margin-left: -20px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .vertical-timeline-element-date {
+        display: block !important;
+        float: none !important;
+        color: rgb(44, 44, 44);
+        margin-top: 1.5em;
+    }
+}

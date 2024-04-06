@@ -1,0 +1,20 @@
+.resolveSectionWidth {
+    width: 100%;
+    font-size: 1.3rem;
+}
+
+.showMobile {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    .resolveSectionWidth {
+        font-size: 1rem;
+    }
+    .showDesktop {
+        display: none !important;
+    }
+    .showMobile {
+        display: flex !important;
+    }
+}

@@ -1,0 +1,121 @@
+.faq-title {
+    font-size: 2em;
+    margin: 0.4em 0;
+}
+
+div.seperator {
+    width: 7.5em;
+    background-color: var(--primary);
+    height: 0.17em;
+    margin-left: -1.8em;
+}
+
+.faq-list>div {
+    border-bottom: 0.07em solid #ededed;
+    padding: 1.5em 0em;
+}
+
+.faq-list>div:last-child {
+    border: unset;
+}
+
+details>summary {
+    list-style: none;
+}
+
+details>summary::-webkit-details-marker {
+    display: none;
+}
+
+summary {
+    font-size: 1.4em;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: all 0.3s ease;
+}
+
+summary:hover {
+    color: var(--primary);
+}
+
+details[open] summary~* {
+    animation: sweep .5s ease-in-out;
+}
+
+@keyframes sweep {
+    0% {
+        opacity: 0;
+        margin-left: -10px
+    }
+    100% {
+        opacity: 1;
+        margin-left: 45px
+    }
+}
+
+details[open] summary {
+    color: var(--primary);
+}
+
+details[open] p {
+    border-left: 2px solid var(--primary);
+    margin-left: 45px;
+    padding-left: 25px;
+    opacity: 100;
+    transition: all 3s ease;
+}
+
+.faq-body {
+    width: 100%;
+    margin: 4em auto;
+    box-shadow: 0px 0px 16px #5b5b5b;
+    border-radius: 10px;
+    padding: 5em;
+    background-color: #fff;
+}
+
+.faq-list {
+    width: 95%;
+    margin: 1em auto;
+    padding: 2em 0;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::before {
+    content: "➤";
+    color: var(--primary);
+    display: inline-block;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-right: 5px;
+    transform: rotate(0deg);
+}
+
+details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+@media (max-width: 767.98px) {
+    .faq-body {
+        width: 90%;
+        padding: 2rem;
+    }
+    .faq-list {
+        width: 95%;
+    }
+    .faq-content {
+        font-size: 0.8125rem;
+    }
+    summary {
+        font-size: 1rem;
+    }
+}

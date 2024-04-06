@@ -1,0 +1,12 @@
+#headlineMobile {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    #headlineDesktop {
+        display: none !important;
+    }
+    #headlineMobile {
+        display: flex !important;
+    }
+}

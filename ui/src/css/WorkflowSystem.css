@@ -1,0 +1,15 @@
+#AgileMethodologyMobile,
+#headlineMobile {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    #AgileMethodologyDesktop,
+    #headlineDesktop {
+        display: none !important;
+    }
+    #AgileMethodologyMobile,
+    #headlineMobile {
+        display: flex !important;
+    }
+}

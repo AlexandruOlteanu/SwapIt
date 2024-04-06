@@ -1,0 +1,29 @@
+#headlineMobile {
+    display: none !important;
+}
+
+@media (max-width: 767.98px) {
+    #headlineDesktop {
+        display: none !important;
+    }
+
+    #headlineMobile {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .success-message-text {
+        white-space: nowrap;
+    }
+}
+
+#confirm-Contact-Button {
+    padding: '10px 20px';
+    width: '150px';
+    background: '#09dec7';
+    color: 'white';
+    border: 'none';
+    borderRadius: '5px';
+    cursor: 'pointer';
+}

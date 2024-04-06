@@ -1,0 +1,48 @@
+:root {
+    --primary: #52bcaf;
+    --secondary: #2B2E4A;
+    --light: #edeff3;
+    --dark: #1C1E32;
+}
+
+.rdtPicker {
+    background: var(--secondary);
+    color: white;
+}
+
+.rdtActive {
+    background-color: var(--primary) !important;
+}
+
+.rdtDay:hover {
+    background-color: var(--primary) !important;
+}
+
+.rdtMonth:hover {
+    background-color: var(--primary) !important;
+}
+
+.rdtYear:hover {
+    background-color: var(--primary) !important;
+}
+
+.rdtCount {
+    height: 25px !important;
+}
+
+.rdtSwitch:hover {
+    background-color: var(--primary) !important;
+}
+
+.rdtPrev:hover {
+    background-color: var(--primary) !important;
+}
+
+.rdtNext:hover {
+    background-color: var(--primary) !important;
+}
+
+.rdtBtn:hover {
+    background-color: var(--primary) !important;
+    line-height: 35px !important;
+}

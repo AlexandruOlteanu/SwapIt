@@ -1,0 +1,182 @@
+:root {
+    --primary: #52bcaf;
+    --secondary: #2B2E4A;
+    --light: #edeff3;
+    --dark: #1C1E32;
+}
+
+.section-heading {
+    position: relative;
+    z-index: 2;
+}
+
+.our-services {
+    padding-top: 80px;
+    position: relative;
+}
+
+.our-services:after {
+    content: '';
+    background-image: url(../img/services-left-dec.webp);
+    background-repeat: no-repeat;
+    position: absolute;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 1217px;
+    z-index: -1;
+}
+
+.our-services:before {
+    content: '';
+    background-image: url(../img/services-right-dec.webp);
+    background-repeat: no-repeat;
+    position: absolute;
+    right: 0;
+    top: 400px;
+    width: 161px;
+    height: 413px;
+    z-index: -1;
+}
+
+.our-services .section-heading {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.our-services .naccs {
+    position: relative;
+    z-index: 1;
+}
+
+.our-services .icon {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.our-services .naccs .menu div h4 {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    width: 100%;
+}
+
+.our-services .icon img {
+    margin-bottom: 10px;
+    max-width: 64px;
+    min-width: 64px;
+}
+
+.our-services .naccs .menu {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.our-services .naccs .menu div {
+    color: #2a2a2a;
+    margin: 0px;
+    width: 15%;
+    font-size: 20px;
+    font-weight: 700;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    border-radius: 15px;
+}
+
+.our-services .naccs .menu div .thumb {
+    display: inline-block;
+    width: 100%;
+    padding: 30px 0px;
+    background-color: #fff;
+}
+
+.our-services .naccs .menu div.active {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.our-services ul.nacc {
+    height: 100% !important;
+    position: relative;
+    min-height: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.our-services ul.nacc li {
+    opacity: 0;
+    transform: translateX(-50px);
+    position: absolute;
+    list-style: none;
+}
+
+.active-section {
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px 10px 10px 10px;
+}
+
+.our-services ul.nacc li {
+    width: 100%;
+}
+
+.our-services ul.nacc li .right-image img {
+    max-width: 420px;
+    float: right;
+}
+
+.our-services .nacc .thumb h4 {
+    color: #2a2a2a;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 35px;
+    margin-bottom: 25px;
+}
+
+.our-services .nacc .thumb .main-white-button {
+    text-align: right;
+    margin-top: 40px;
+}
+
+.our-services .nacc .thumb .main-white-button a {
+    background-color: #8d99af;
+    color: #fff;
+}
+
+.our-services .nacc .thumb .main-white-button a i {
+    background-color: #fff;
+    color: #8d99af;
+}
+
+.our-services .left-text h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #52bcaf !important;
+}
+
+.our-services .left-text p {
+    margin-bottom: 30px;
+}
+
+@media (max-width: 991.98px) {
+    .our-services .naccs .menu div {
+        font-size: 15px;
+        font-weight: 500;
+    }
+    .our-services .icon img {
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .our-services .naccs .menu div {
+        font-size: 0px;
+    }
+    .our-services .icon img {
+        padding-right: 20px;
+    }
+}
