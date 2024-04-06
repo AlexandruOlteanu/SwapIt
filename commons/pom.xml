@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.3</version>
+		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
@@ -17,29 +17,17 @@
 	<name>commons</name>
 	<description> SwapIt common library for database interaction and common dependency</description>
 	<properties>
-		<java.version>21</java.version>
-
-		<spring-cloud.version>2023.0.0</spring-cloud.version>
+		<java.version>22</java.version>
 
 		<!-- External Libraries Dependencies -->
 		<jjwt.version>0.11.5</jjwt.version>
 		<hazelcast.version>5.3.6</hazelcast.version>
 		<hazelcast-hibernate.version>5.1.0</hazelcast-hibernate.version>
 		<springdoc-openapi-started-webmvc-ui.version>2.4.0</springdoc-openapi-started-webmvc-ui.version>
+		<openfeign.version>4.1.0</openfeign.version>
+		<config.server.version>4.1.1</config.server.version>
+		<loadbalancer.version>4.1.2</loadbalancer.version>
 	</properties>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 
 	<dependencies>
 
@@ -50,6 +38,7 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
+			<version>${config.server.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -105,10 +94,12 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>${openfeign.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+			<version>${loadbalancer.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
