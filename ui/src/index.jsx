@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import SwapIt from './SwapIt';
+import { Provider } from 'react-redux';
+import Store from './redux/Store';
 import reportWebVitals from './reportWebVitals';
 
 const SwapItApp = ReactDOM.createRoot(document.getElementById('SwapIt'));
 SwapItApp.render(
     <React.StrictMode>
-        <SwapIt />
+        <Provider store={Store}>
+            <SwapIt />
+        </Provider>,
     </React.StrictMode>
 );
 

@@ -29,7 +29,7 @@ function FooterSection() {
 
     return (
         <React.Fragment>
-            <div className="container-fluid bg-secondary py-5 px-sm-3 px-md-5" style={{ marginTop: '90px' }}>
+            <div className="container-fluid bg-secondary py-5 px-sm-3 px-md-5">
                 <div className="row pt-5">
                     <div className="col-lg-3 col-md-6 mb-5">
                         <h4 className=" text-light mb-4">Get In Touch</h4>

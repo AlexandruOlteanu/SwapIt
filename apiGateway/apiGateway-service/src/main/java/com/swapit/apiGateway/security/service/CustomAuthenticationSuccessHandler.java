@@ -30,6 +30,8 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private final ExternalOperationsService externalOperationsService;
     @Value("${apiGateway.ui.userBanPage.redirect.uri}")
     private String uiUserBanPage;
+    @Value("${ui.successfulAuthentication.route}")
+    private String successfulAuthenticationUri;
     private static final String OAUTH2_USER_ID = "sub";
     private static final String USER_IMAGE = "picture";
     private static final String NAME = "family_name";
@@ -57,6 +59,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
             response.sendRedirect(uiUserBanPage);
             return;
         }
-        super.onAuthenticationSuccess(request, response, authentication);
+        response.sendRedirect(successfulAuthenticationUri);
+//        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

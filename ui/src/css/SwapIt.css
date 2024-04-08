@@ -9969,9 +9969,8 @@ h6,
 
 .navbar-dark .navbar-nav .nav-link {
     padding: 30px 15px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    letter-spacing: 1px;
+    font-size: 1rem;
+    font-weight: 400;
     color: var(--light);
     outline: none;
 }

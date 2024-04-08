@@ -32,8 +32,8 @@ const Home = () => {
             <Preloader />
             <TopbarSection />
             <NavbarSection />
-            <GoogleSignInButton />
-            <ImageUploadAndDisplay />
+            {/* <GoogleSignInButton />
+            <ImageUploadAndDisplay /> */}
             <SearchSection />
 
             <HorizontalTimeline
