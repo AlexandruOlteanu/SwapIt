@@ -1,5 +1,6 @@
 package com.swapit.user.security;
 
+import com.swapit.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -34,6 +35,8 @@ public class JwtService {
     @Getter
     private Key signingKey;
 
+    private static String USER_ROLE_JWT_KEY = "user_role";
+
     @PostConstruct
     public void init() {
         this.signingKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -49,7 +52,9 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
+        User user = (User) userDetails;
         Map<String, Object> claims = new HashMap<>();
+        claims.put(USER_ROLE_JWT_KEY, user.getUserRole());
         return createToken(claims, userDetails.getUsername());
     }
 

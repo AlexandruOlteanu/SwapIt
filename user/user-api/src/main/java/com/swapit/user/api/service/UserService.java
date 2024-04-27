@@ -17,9 +17,11 @@ public interface UserService {
     String OAUTH2_LOGIN = "auth/oauth2login";
     String REGISTER = "auth/register";
     String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
+    String SEND_PASSWORD_RESET_CODE = "auth/sendPasswordResetCode";
+    String PASSWORD_RESET = "auth/passwordReset";
     String GET_USER_DETAILS = "getUserDetails";
     String BAN_USER = "banUser";
-    String MANUAL_REGISTRATION_CODES_EXPIRE = "manualRegistrationCodesExpire";
+    String MANUAL_SECURITY_CODES_EXPIRE = "manualSecurityCodesExpire";
     String MANUAL_REMOVE_USERS_BAN = "manualRemoveUsersBan";
     String REMOVE_USER_BAN = "removeUserBan";
     String GET_SPECIFIC_USERS_DETAILS = "getSpecificUsersDetails";
@@ -37,6 +39,12 @@ public interface UserService {
 
     @PostMapping(value = BASE_URL + SEND_REGISTRATION_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void sendRegistrationCode(@Valid @RequestBody SendRegistrationCodeRequest request);
+
+    @PostMapping(value = BASE_URL + SEND_PASSWORD_RESET_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void sendPasswordResetCode(@Valid @RequestBody SendPasswordResetCodeRequest request);
+
+    @PutMapping(value = BASE_URL + PASSWORD_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void passwordReset(@Valid @RequestBody PasswordResetRequest request);
 
     @GetMapping(value = BASE_URL + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
@@ -56,8 +64,8 @@ public interface UserService {
     @DeleteMapping(value = BASE_URL + REMOVE_USER_BAN)
     void removeUserBan(@RequestParam("userId") Integer userId);
 
-    @DeleteMapping(value = BASE_URL + MANUAL_REGISTRATION_CODES_EXPIRE)
-    void manualRegistrationCodesExpire();
+    @DeleteMapping(value = BASE_URL + MANUAL_SECURITY_CODES_EXPIRE)
+    void manualSecurityCodesExpire();
 
     @DeleteMapping(value = BASE_URL + MANUAL_REMOVE_USERS_BAN)
     void manualRemoveUsersBan();

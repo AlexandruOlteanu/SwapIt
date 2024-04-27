@@ -3,21 +3,19 @@ package com.swapit.user.service.impl;
 import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
 import com.swapit.commons.generator.RandomCodeGenerator;
-import com.swapit.user.api.domain.request.LoginRequest;
-import com.swapit.user.api.domain.request.Oauth2Request;
-import com.swapit.user.api.domain.request.RegisterRequest;
-import com.swapit.user.api.domain.request.SendRegistrationCodeRequest;
+import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.domain.response.RegisterResponse;
-import com.swapit.user.domain.RegistrationCode;
+import com.swapit.user.domain.SecurityCode;
 import com.swapit.user.domain.User;
-import com.swapit.user.repository.RegistrationCodeRepository;
+import com.swapit.user.repository.SecurityCodeRepository;
 import com.swapit.user.repository.UserRepository;
 import com.swapit.user.security.JwtService;
 import com.swapit.user.service.AuthenticationService;
 import com.swapit.user.service.EmailSenderService;
 import com.swapit.user.utils.AuthProvider;
+import com.swapit.user.utils.SecurityCodeType;
 import com.swapit.user.utils.UserRole;
 import com.swapit.user.utils.UserStatus;
 import jakarta.transaction.Transactional;
@@ -49,7 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final EmailSenderService emailSenderService;
     private final RandomCodeGenerator randomCodeGenerator;
-    private final RegistrationCodeRepository registrationCodeRepository;
+    private final SecurityCodeRepository securityCodeRepository;
     private final ExceptionFactory exceptionFactory;
 
     @Override
@@ -80,9 +78,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (existingUser.isPresent()) {
             throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
         }
-        registrationCodeRepository.findByEmailAndCode(request.getEmail(), request.getRegistrationCode())
-                .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_REGISTRATION_CODE));
-        registrationCodeRepository.deleteByEmailAndCode(request.getEmail(), request.getRegistrationCode());
+        securityCodeRepository.findByEmailAndCodeAndCodeType(request.getEmail(), request.getRegistrationCode(), SecurityCodeType.REGISTRATION)
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_SECURITY_CODE));
+        securityCodeRepository.deleteByEmailAndCodeAndCodeType(request.getEmail(), request.getRegistrationCode(), SecurityCodeType.REGISTRATION);
         User user = User.builder()
                 .username(request.getUsername())
                 .name(request.getName())
@@ -148,11 +146,42 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String code = randomCodeGenerator.generateRandomCode(emailCodeLength);
         String message = "Code: " + code + "\nDon't share this code with anyone!";
         emailSenderService.sendSimpleEmail(request.getEmail(), subject, message);
-        registrationCodeRepository.deleteByEmail(request.getEmail());
-        registrationCodeRepository.save(RegistrationCode.builder()
+        securityCodeRepository.deleteByEmailAndCodeType(request.getEmail(), SecurityCodeType.REGISTRATION);
+        securityCodeRepository.save(SecurityCode.builder()
                         .email(request.getEmail())
                         .code(code)
+                        .codeType(SecurityCodeType.REGISTRATION)
                 .build());
+    }
+
+    @Override
+    @Transactional
+    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
+        Optional<User> existingUser = userRepository.findUserByEmail(request.getEmail());
+        if (existingUser.isEmpty()) {
+            throw exceptionFactory.create(ExceptionType.USER_NOT_FOUND);
+        }
+        String subject = "SwapIt Password Reset Code";
+        String code = randomCodeGenerator.generateRandomCode(emailCodeLength);
+        String message = "Code: " + code + "\nDon't share this code with anyone!";
+        emailSenderService.sendSimpleEmail(request.getEmail(), subject, message);
+        securityCodeRepository.deleteByEmailAndCodeType(request.getEmail(), SecurityCodeType.PASSWORD_RESET);
+        securityCodeRepository.save(SecurityCode.builder()
+                        .email(request.getEmail())
+                        .code(code)
+                        .codeType(SecurityCodeType.PASSWORD_RESET)
+                .build());
+    }
+
+    @Override
+    @Transactional
+    public void passwordReset(PasswordResetRequest request) {
+        User existingUser = userRepository.findUserByEmail(request.getEmail())
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
+        securityCodeRepository.findByEmailAndCodeAndCodeType(request.getEmail(), request.getSecurityCode(), SecurityCodeType.PASSWORD_RESET)
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_SECURITY_CODE));
+        securityCodeRepository.deleteByEmailAndCodeType(request.getEmail(), SecurityCodeType.PASSWORD_RESET);
+        existingUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
     }
 
     private String generateNewUsername(String surname, String name) {

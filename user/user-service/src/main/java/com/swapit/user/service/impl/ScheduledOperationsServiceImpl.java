@@ -2,9 +2,9 @@ package com.swapit.user.service.impl;
 
 import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
-import com.swapit.user.domain.RegistrationCode;
+import com.swapit.user.domain.SecurityCode;
 import com.swapit.user.domain.User;
-import com.swapit.user.repository.RegistrationCodeRepository;
+import com.swapit.user.repository.SecurityCodeRepository;
 import com.swapit.user.repository.UserRepository;
 import com.swapit.user.service.ScheduledOperationsService;
 import com.swapit.user.utils.UserStatus;
@@ -25,30 +25,30 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class ScheduledOperationsServiceImpl implements ScheduledOperationsService {
-    @Value("${user.cron.registration.codes.maxTime.seconds}")
+    @Value("${user.cron.security.codes.maxTime.seconds}")
     private Integer maxSeconds;
 
-    private final RegistrationCodeRepository registrationCodeRepository;
+    private final SecurityCodeRepository securityCodeRepository;
     private final UserRepository userRepository;
     private final ExceptionFactory exceptionFactory;
 
     @Override
     @Transactional
-    @Scheduled(cron = "${user.cron.registration.codes.expire.scheduler}", zone = "UTC")
+    @Scheduled(cron = "${user.cron.security.codes.expire.scheduler}", zone = "UTC")
     @Retryable(retryFor = {Exception.class}, maxAttempts = 10, backoff = @Backoff(delay = 10000))
-    public void registrationCodesExpire() {
-        log.info("Starting Registration Codes Expire Cron");
-        List<RegistrationCode> registrationCodes = registrationCodeRepository.findAll();
+    public void securityCodesExpire() {
+        log.info("Starting Security Codes Expire Cron");
+        List<SecurityCode> securityCodes = securityCodeRepository.findAll();
         ZonedDateTime now = ZonedDateTime.now();
-        registrationCodes.forEach(registrationCode -> {
-            ZonedDateTime createdAt = registrationCode.getCreatedAt();
+        securityCodes.forEach(securityCode -> {
+            ZonedDateTime createdAt = securityCode.getCreatedAt();
 
             Duration duration = Duration.between(createdAt, now);
             if (duration.toSeconds() > maxSeconds) {
-                registrationCodeRepository.deleteById(registrationCode.getId());
+                securityCodeRepository.deleteById(securityCode.getId());
             }
         });
-        log.info("Successfully Finished Registration Codes Expire Cron");
+        log.info("Successfully Finished Security Codes Expire Cron");
     }
 
     @Override

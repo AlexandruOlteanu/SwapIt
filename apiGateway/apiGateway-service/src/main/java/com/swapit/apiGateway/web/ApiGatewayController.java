@@ -171,13 +171,23 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
+    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
+        externalOperationsService.sendPasswordResetCode(request);
+    }
+
+    @Override
+    public void passwordReset(PasswordResetRequest request) {
+        externalOperationsService.passwordReset(request);
+    }
+
+    @Override
     public void addNewProductCategory(AddNewProductCategoryRequest request) {
         externalOperationsService.addNewProductCategory(request);
     }
 
     @Override
-    public void manualRegistrationCodesExpire() {
-        externalOperationsService.manualRegistrationCodesExpire();
+    public void manualSecurityCodesExpire() {
+        externalOperationsService.manualSecurityCodesExpire();
     }
 
     @Override

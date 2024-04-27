@@ -299,6 +299,30 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
+    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEND_PASSWORD_RESET_CODE);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in sending password reset code {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void passwordReset(PasswordResetRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.PASSWORD_RESET);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in password reset process {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
     public void addNewProductCategory(AddNewProductCategoryRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_NEW_PRODUCT_CATEGORY);
         log.info(url);
@@ -441,13 +465,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void manualRegistrationCodesExpire() {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.MANUAL_REGISTRATION_CODES_EXPIRE);
+    public void manualSecurityCodesExpire() {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.MANUAL_SECURITY_CODES_EXPIRE);
         log.info(url);
         try {
             restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
         } catch (Exception e) {
-            log.error("Exception in Manual Registration Codes Expire code {}", e.getMessage(), e);
+            log.error("Exception in Manual Security Codes Expire code {}", e.getMessage(), e);
             throw e;
         }
     }

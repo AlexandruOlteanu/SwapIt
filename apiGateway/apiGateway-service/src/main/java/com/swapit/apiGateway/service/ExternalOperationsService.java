@@ -33,6 +33,8 @@ public interface ExternalOperationsService {
     ConversationResponse getConversation(Integer userId, Integer conversationId);
     void updateBasicUserDetails(Integer userId, UpdateBasicUserDetailsRequest request);
     void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request);
+    void sendPasswordResetCode(SendPasswordResetCodeRequest request);
+    void passwordReset(PasswordResetRequest request);
     void addNewProductCategory(AddNewProductCategoryRequest request);
     GetProductCategoriesResponse getAllProductCategories();
     SearchProductsResponse searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request);
@@ -43,7 +45,7 @@ public interface ExternalOperationsService {
     String getProductLikeStatus(Integer userId, Integer productId);
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void sendRegistrationCode(SendRegistrationCodeRequest request);
-    void manualRegistrationCodesExpire();
+    void manualSecurityCodesExpire();
     void banUser(Integer userId, Integer banDaysDuration);
     void removeUserBan(Integer userId);
     void manualRemoveUsersBan();

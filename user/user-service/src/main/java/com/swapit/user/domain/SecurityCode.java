@@ -1,5 +1,6 @@
 package com.swapit.user.domain;
 
+import com.swapit.user.utils.SecurityCodeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,8 +16,8 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
-@Table(name = "registration_code")
-public class RegistrationCode {
+@Table(name = "security_code")
+public class SecurityCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -30,6 +31,11 @@ public class RegistrationCode {
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
+
+    @Column(name = "code_type")
+    @Enumerated(EnumType.STRING)
+    private SecurityCodeType codeType;
+
     @PrePersist
     public void setCreatedAt() {
         this.createdAt = ZonedDateTime.now();

@@ -42,6 +42,16 @@ public class UserController implements UserService {
     }
 
     @Override
+    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
+        authenticationService.sendPasswordResetCode(request);
+    }
+
+    @Override
+    public void passwordReset(PasswordResetRequest request) {
+        authenticationService.passwordReset(request);
+    }
+
+    @Override
     public ResponseEntity<GetUserDetailsResponse> getUserDetails(Integer userId) {
         return ResponseEntity.ok(getUserDetailsService.getUserDetails(userId));
     }
@@ -72,8 +82,8 @@ public class UserController implements UserService {
     }
 
     @Override
-    public void manualRegistrationCodesExpire() {
-        scheduledOperationsService.registrationCodesExpire();
+    public void manualSecurityCodesExpire() {
+        scheduledOperationsService.securityCodesExpire();
     }
 
     @Override
