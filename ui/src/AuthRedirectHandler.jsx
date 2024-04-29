@@ -10,6 +10,7 @@ const AuthRedirectHandler = () => {
                 const response = await ApiBackendService.getAuthenticatedUserDetails({}, {});
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userRole', response.userRole);
+                console.log("Alex");
                 console.log(response);
                 window.location.href = '/';
             } catch (error) {

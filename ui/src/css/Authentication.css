@@ -22,18 +22,7 @@ body {
     border-radius: 6px;
     background: #FFF;
 }
-.form.signup{
-    opacity: 0;
-    pointer-events: none;
-}
-.forms.show-signup .form.signup{
-    opacity: 1;
-    pointer-events: auto;
-}
-.forms.show-signup .form.login{
-    opacity: 0;
-    pointer-events: none;
-}
+
 header{
     font-size: 28px;
     font-weight: 600;
@@ -89,12 +78,12 @@ form{
 }
 .field button{
     color: #fff;
-    background-color: #0171d3;
+    background-color: #52bcaf;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 .field button:hover{
-    background-color: #016dcb;
+    background-color: #74d5ca;
 }
 .form-link{
     text-align: center;
