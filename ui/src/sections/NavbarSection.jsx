@@ -1,14 +1,18 @@
-import React, { useEffect, lazy } from 'react'
+import React, { useEffect, useState, lazy } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 import Logo from '../logo/Logo.webp'
 
 import '../css/NavbarSection.css'
+import ApiBackendService from '../apiBackend/ApiBackendService';
 
 const HamburgerButton = lazy(() => import('../js/HamburgerButton'));
 
 function NavbarSection() {
 
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const [username, setUsername] = useState('');
+    const navigate = useNavigate();
 
     function openMenuSection(id) {
         let menuSection = document.querySelector(id);
@@ -47,6 +51,17 @@ function NavbarSection() {
         });
     }, []);
 
+    const handleUserIconClick = async () => {
+        if (!isLoggedIn) {
+            navigate('/user/auth');
+        }
+        
+        const userData = await ApiBackendService.getAuthenticatedUserDetails({});
+        setUsername(userData.username);
+        const userId = userData.userId;
+        navigate(`/users/${userData.username}`, {state: {userId}});
+    };
+
     return (
         <div className='position-sticky'>
             {/* Navbar Start */}
@@ -77,9 +92,9 @@ function NavbarSection() {
                                 {isLoggedIn && (
                                     <div className="col-xl-2 col-lg-4 col-md-6 px-2">
                                         <div className="nav-item nav-link">
-                                            <a href="/users/USERNAME">
+                                            <a onClick={handleUserIconClick}>
                                                 <div className="iconContainer">
-                                                    <i className="fa-solid fa-user fa-2x" style={{ color: 'var(--primary)' }}></i>
+                                                    <i className="fa-solid fa-user fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
                                                 </div>
                                             </a>
                                         </div>

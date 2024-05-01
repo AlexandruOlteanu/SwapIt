@@ -6,6 +6,7 @@ const NavbarSection = lazy(() => import('./sections/NavbarSection'));
 const SearchSection = lazy(() => import('./sections/SearchSection'));
 const ContactSection = lazy(() => import('./sections/ContactSection'));
 const FooterSection = lazy(() => import('./sections/FooterSection'));
+const BackToTopButton = lazy(() => import('./js/BackToTopButton'));
 
 const Home = () => {
     return (
@@ -19,7 +20,7 @@ const Home = () => {
 
             <FooterSection />
 
-            {/* <BackToTopButton /> */}
+            <BackToTopButton />
 
         </React.Fragment>
     );
