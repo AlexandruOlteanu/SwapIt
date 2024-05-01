@@ -46,6 +46,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     private final RestTemplate restTemplate;
     private final UrlGeneratorService urlGeneratorService;
     private static final String USER_ID_PARAM = "userId";
+    private static final String USERNAME_PARAM = "username";
     private static final String CONVERSATION_ID_PARAM = "conversationId";
     private static final String PRODUCT_ID_PARAM = "productId";
     private static final String CATEGORY_ID_PARAM = "categoryId";
@@ -198,6 +199,20 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetUserDetailsResponse.class).getBody();
         } catch (Exception e) {
             log.error("Exception in getting user details {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public GetUserDetailsResponse getUserDetailsByUsername(String username) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_USER_DETAILS_BY_USERNAME);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USERNAME_PARAM, Optional.ofNullable(username));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetUserDetailsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting user details by username {}", e.getMessage(), e);
             throw e;
         }
     }

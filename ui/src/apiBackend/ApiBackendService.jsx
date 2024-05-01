@@ -84,6 +84,14 @@ class ApiService {
       params: params
     }, true);
   }
+
+  getUserDetailsByUsername(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_USER_DETAILS_BY_USERNAME, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
 }
 
 export default new ApiService();

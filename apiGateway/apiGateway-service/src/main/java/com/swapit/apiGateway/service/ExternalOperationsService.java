@@ -28,6 +28,7 @@ public interface ExternalOperationsService {
     GetProductsResponse getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void sendPrivateMessage(Integer userId, PrivateChatMessageRequest request);
     GetUserDetailsResponse getUserDetails(Integer userId);
+    GetUserDetailsResponse getUserDetailsByUsername(String username);
     ConversationsPreviewResponse getConversationsPreview(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     GetSpecificUsersDetailsResponse getSpecificUsersDetails(GetSpecificUsersDetailsRequest request);
     ConversationResponse getConversation(Integer userId, Integer conversationId);

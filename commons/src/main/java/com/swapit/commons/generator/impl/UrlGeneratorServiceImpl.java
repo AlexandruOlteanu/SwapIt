@@ -19,7 +19,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
         GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, SEND_REGISTRATION_CODE, MANUAL_SECURITY_CODES_EXPIRE,
         DELETE_PRODUCT, DELETE_PRODUCT_FROM_SEARCH_DICTIONARY, BAN_USER, REMOVE_USER_BAN, MANUAL_REMOVE_USERS_BAN,
-        SEND_PASSWORD_RESET_CODE, PASSWORD_RESET
+        SEND_PASSWORD_RESET_CODE, PASSWORD_RESET, GET_USER_DETAILS_BY_USERNAME
     }
 
     // USER URI
@@ -31,6 +31,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String userRegisterUri;
     @Value("${user.getUserDetails.route}")
     private String getUserDetailsUri;
+    @Value("${user.getUserDetailsByUsername.route}")
+    private String getUserDetailsByUsernameUri;
     @Value("${user.banUser.route}")
     private String banUserUri;
     @Value("${user.removeUserBan.route}")
@@ -135,6 +137,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case MANUAL_REMOVE_USERS_BAN -> manualRemoveUsersBanUri;
             case SEND_PASSWORD_RESET_CODE -> sendPasswordResetCodeUri;
             case PASSWORD_RESET -> passwordResetUri;
+            case GET_USER_DETAILS_BY_USERNAME -> getUserDetailsByUsernameUri;
         };
     }
 }

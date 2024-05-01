@@ -7,5 +7,5 @@ import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 public interface GetUserDetailsService {
     GetUserDetailsResponse getUserDetails(Integer userId);
     GetSpecificUsersDetailsResponse getSpecificUsersDetails(GetSpecificUsersDetailsRequest request);
-
+    GetUserDetailsResponse getUserDetailsByUsername(String username);
 }

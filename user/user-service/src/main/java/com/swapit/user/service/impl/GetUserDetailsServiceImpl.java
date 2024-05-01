@@ -56,6 +56,22 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
                 .build();
     }
 
+    @Override
+    public GetUserDetailsResponse getUserDetailsByUsername(String username) {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
+        return GetUserDetailsResponse.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .name(user.getName())
+                .surname(user.getSurname())
+                .email(user.getEmail())
+                .userImage(user.getUserImage())
+                .joinDate(user.getJoinDate())
+                .userRole(user.getUserRole().name())
+                .build();
+    }
+
     private Object getSpecificDetail(UserBasicDetailType userBasicDetailType, User user) {
         return switch (userBasicDetailType) {
             case NAME -> user.getName();

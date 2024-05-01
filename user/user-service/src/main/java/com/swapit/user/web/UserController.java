@@ -57,6 +57,11 @@ public class UserController implements UserService {
     }
 
     @Override
+    public ResponseEntity<GetUserDetailsResponse> getUserDetailsByUsername(String username) {
+        return ResponseEntity.ok(getUserDetailsService.getUserDetailsByUsername(username));
+    }
+
+    @Override
     public ResponseEntity<GetSpecificUsersDetailsResponse> getSpecificUsersDetails(GetSpecificUsersDetailsRequest request) {
         return ResponseEntity.ok(getUserDetailsService.getSpecificUsersDetails(request));
     }

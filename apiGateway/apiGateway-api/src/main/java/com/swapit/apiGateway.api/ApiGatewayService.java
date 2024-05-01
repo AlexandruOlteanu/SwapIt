@@ -45,6 +45,7 @@ public interface ApiGatewayService {
     String REGISTER = "auth/register";
     String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String GET_USER_DETAILS = "getUserDetails";
+    String GET_USER_DETAILS_BY_USERNAME = "getUserDetailsByUsername";
     String GET_USER_BAN_EXPIRY_TIME = "getUserBanExpiryTime";
     String GET_AUTHENTICATED_USER_DETAILS = "getAuthenticatedUserDetails";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
@@ -99,6 +100,9 @@ public interface ApiGatewayService {
 
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
+
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_DETAILS_BY_USERNAME)
+    ResponseEntity<GetUserDetailsResponse> getUserDetailsByUsername(@RequestParam(value = "username") String username);
 
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_BAN_EXPIRY_TIME)
     ResponseEntity<ZonedDateTime> getUserBanExpiryTime(@RequestParam(value = "userId") Integer userId);

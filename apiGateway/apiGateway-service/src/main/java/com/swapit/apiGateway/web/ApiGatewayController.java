@@ -37,12 +37,6 @@ import static com.swapit.apiGateway.util.AuthenticatedUserPropertyType.CONTEXT_U
 @Slf4j
 public class ApiGatewayController implements ApiGatewayService {
 
-    private static final String OAUTH2_USER_ID = "sub";
-    private static final String USER_IMAGE = "picture";
-    private static final String NAME = "family_name";
-    private static final String SURNAME = "given_name";
-    private static final String EMAIL = "email";
-
     private final ExternalOperationsService externalOperationsService;
     private final AuthenticatedUserContextService authenticatedUserContextService;
 
@@ -123,6 +117,11 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<GetUserDetailsResponse> getUserDetails(Integer userId) {
         return ResponseEntity.ok(externalOperationsService.getUserDetails(userId));
+    }
+
+    @Override
+    public ResponseEntity<GetUserDetailsResponse> getUserDetailsByUsername(String username) {
+        return ResponseEntity.ok(externalOperationsService.getUserDetailsByUsername(username));
     }
 
     @Override

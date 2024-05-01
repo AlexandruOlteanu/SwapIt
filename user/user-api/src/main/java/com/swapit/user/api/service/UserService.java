@@ -20,6 +20,7 @@ public interface UserService {
     String SEND_PASSWORD_RESET_CODE = "auth/sendPasswordResetCode";
     String PASSWORD_RESET = "auth/passwordReset";
     String GET_USER_DETAILS = "getUserDetails";
+    String GET_USER_DETAILS_BY_USERNAME = "getUserDetailsByUsername";
     String BAN_USER = "banUser";
     String MANUAL_SECURITY_CODES_EXPIRE = "manualSecurityCodesExpire";
     String MANUAL_REMOVE_USERS_BAN = "manualRemoveUsersBan";
@@ -48,6 +49,9 @@ public interface UserService {
 
     @GetMapping(value = BASE_URL + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
+
+    @GetMapping(value = BASE_URL + GET_USER_DETAILS_BY_USERNAME)
+    ResponseEntity<GetUserDetailsResponse> getUserDetailsByUsername(@RequestParam(value = "username") String username);
 
     @PostMapping(value = BASE_URL + GET_SPECIFIC_USERS_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<GetSpecificUsersDetailsResponse> getSpecificUsersDetails(@Valid @RequestBody GetSpecificUsersDetailsRequest request);
