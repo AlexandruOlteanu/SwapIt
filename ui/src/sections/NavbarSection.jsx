@@ -74,6 +74,17 @@ function NavbarSection() {
                                         )}
                                     </div>
                                 </div>
+                                {isLoggedIn && (
+                                    <div className="col-xl-2 col-lg-4 col-md-6 px-2">
+                                        <div className="nav-item nav-link">
+                                            <a href="/users/USERNAME">
+                                                <div className="iconContainer">
+                                                    <i className="fa-solid fa-user fa-2x" style={{ color: 'var(--primary)' }}></i>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </nav>

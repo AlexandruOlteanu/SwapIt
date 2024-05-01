@@ -75,6 +75,7 @@ const Authentication = () => {
                 }
             }, 100);
             try {
+                setSignUpError('');
                 const response = await ApiBackendService.sendRegistrationCode({}, registrationCodeData);
                 console.log('Security code sent');
             } catch (error) {

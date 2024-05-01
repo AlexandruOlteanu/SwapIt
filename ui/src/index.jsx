@@ -10,7 +10,7 @@ SwapItApp.render(
     <React.StrictMode>
         <Provider store={Store}>
             <SwapIt />
-        </Provider>,
+        </Provider>
     </React.StrictMode>
 );
 
