@@ -14,29 +14,11 @@ const BackToTopButton = lazy(() => import('../js/BackToTopButton'));
 
 const UserProfile = () => {
     const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
-    const [isDirectMessagingMinimized, setIsDirectMessagingMinimized] = useState(false);
-    const [isMusicPlayerShown, setIsMusicPlayerShown] = useState(false);
-    const [isTimerShown, setIsTimerShown] = useState(false);
 
     const toggleSidebar = () => {
         setIsSidebarMinimized(!isSidebarMinimized);
     };
 
-    const minimizeDirectMessaging = () => {
-        setIsDirectMessagingMinimized(true);
-    };
-
-    const toggleDirectMessaging = () => {
-        setIsDirectMessagingMinimized(!isDirectMessagingMinimized);
-    };
-
-    const toggleMusicPlayer = () => {
-        setIsMusicPlayerShown(!isMusicPlayerShown);
-    };
-
-    const toggleTimerDisplay = () => {
-        setIsTimerShown(!isTimerShown);
-    };
     const { username } = useParams();
     const [userData, setUserData] = useState({
         userId: -1,
