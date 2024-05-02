@@ -23,7 +23,6 @@ const Authentication = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [registrationCode, setRegistrationCode] = useState('');
     const [isCodeSent, setIsCodeSent] = useState(false);
-    const [showSignup, setShowSignup] = useState(false);
     const [loginError, setLoginError] = useState('');
     const [signupError, setSignUpError] = useState('');
     const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');

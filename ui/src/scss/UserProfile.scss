@@ -135,6 +135,12 @@ $animation-duration: 0.5s;
                     transition-delay: 0s;
                     animation: animate-sidebar-text $animation-duration;
                 }
+                .user-data {
+                    height: 0px;
+                    overflow: hidden;
+                    transition-delay: 0s;
+                    animation: animate-sidebar-text $animation-duration;
+                }
 
                 .social-links {
                     max-height: 200px;

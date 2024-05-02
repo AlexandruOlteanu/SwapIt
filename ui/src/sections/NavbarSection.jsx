@@ -55,11 +55,11 @@ function NavbarSection() {
         if (!isLoggedIn) {
             navigate('/user/auth');
         }
-        
+
         const userData = await ApiBackendService.getAuthenticatedUserDetails({});
         setUsername(userData.username);
         const userId = userData.userId;
-        navigate(`/users/${userData.username}`, {state: {userId}});
+        navigate(`/users/${userData.username}`, { state: { userId } });
     };
 
     return (
@@ -90,15 +90,27 @@ function NavbarSection() {
                                     </div>
                                 </div>
                                 {isLoggedIn && (
-                                    <div className="col-xl-2 col-lg-4 col-md-6 px-2">
-                                        <div className="nav-item nav-link">
-                                            <a onClick={handleUserIconClick}>
-                                                <div className="iconContainer">
-                                                    <i className="fa-solid fa-user fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
-                                                </div>
-                                            </a>
+                                    <>
+                                        <div className="col-xl-2 col-lg-4 col-md-6 px-2">
+                                            <div className="nav-item nav-link">
+                                                <a onClick={handleUserIconClick}>
+                                                    <div className="iconContainer">
+                                                        <i className="fa fa-solid fa-plus fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                        <div className="col-xl-2 col-lg-4 col-md-6 px-2 ml-4">
+                                            <div className="nav-item nav-link">
+                                                <a onClick={handleUserIconClick}>
+                                                    <div className="iconContainer">
+                                                        <i className="fa fa-regular fa-user fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </>
                                 )}
                             </div>
                         </div>

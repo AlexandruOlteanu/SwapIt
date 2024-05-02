@@ -1,0 +1,9 @@
+.user-profile-button {
+    background-color: var(--secondary) !important;
+    cursor: pointer;
+}
+
+.user-profile-button:hover {
+    background-color: #44a0b1 !important;
+    cursor: pointer;
+}
