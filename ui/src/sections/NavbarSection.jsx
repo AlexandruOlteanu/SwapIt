@@ -53,7 +53,7 @@ function NavbarSection() {
 
     const handleUserIconClick = async () => {
         if (!isLoggedIn) {
-            navigate('/user/auth');
+            window.location.href = '/user/auth';
         }
 
         const userData = await ApiBackendService.getAuthenticatedUserDetails({});

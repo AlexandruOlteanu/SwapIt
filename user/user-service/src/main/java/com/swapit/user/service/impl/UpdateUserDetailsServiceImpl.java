@@ -36,6 +36,10 @@ public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
                  case NAME -> user.setName(value);
                  case SURNAME -> user.setSurname(value);
                  case IMAGE -> user.setUserImage(value);
+                 case ADDRESS -> user.setAddress(value);
+                 case COUNTRY -> user.setCountry(value);
+                 case STATE_REGION -> user.setStateRegion(value);
+                 case PHONE_NUMBER -> user.setPhoneNumber(value);
                  default -> throw exceptionFactory.create(ExceptionType.INVALID_USER_UPDATE_FIELD);
              }
         });

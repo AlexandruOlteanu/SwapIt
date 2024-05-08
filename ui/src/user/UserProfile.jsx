@@ -1,5 +1,9 @@
-import React, { useEffect, useState, lazy } from 'react';
+import React, { useEffect, useState, useRef, lazy } from 'react';
 import { useParams } from 'react-router-dom';
+import { storage } from '../firebase-config';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
+import Cookies from 'js-cookie';
 
 import Preloader from '../js/Preloader';
 import ApiBackendService from '../apiBackend/ApiBackendService';
@@ -14,10 +18,30 @@ const BackToTopButton = lazy(() => import('../js/BackToTopButton'));
 
 
 const UserProfile = () => {
+    const fileInputRef = useRef(null);
+    const [password, setPassword] = useState('');
     const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
     const [isUserProfileAuth, setIsUserProfileAuth] = useState(false);
     const [isOauth2User, setIsOauth2User] = useState(false);
-    const [activeSection, setActiveSection] = useState("");
+    const [activeSection, setActiveSection] = useState("updateProfile");
+
+    //Errors
+    const [updateProfileError, setUpdateProfileError] = useState('');
+    const [changeEmailError, setChangeEmailError] = useState('');
+    const [changePasswordError, setChangePasswordError] = useState('');
+
+    //Success message
+    const [updateProfileSuccess, setUpdateProfileSuccess] = useState('');
+    const [changeEmailSuccess, setChangeEmailSuccess] = useState('');
+    const [changePasswordSuccess, setChangePasswordSuccess] = useState('');
+
+    // Change Email Section
+    const [newEmail, setNewEmail] = useState('');
+    const [repeatNewEmail, setRepeatNewEmail] = useState('');
+
+    // Change Password Section
+    const [newPassword, setNewPassword] = useState('');
+    const [repeatNewPassword, setRepeatNewPassword] = useState('');
 
 
     const toggleSidebar = () => {
@@ -33,7 +57,25 @@ const UserProfile = () => {
         email: '',
         userImage: '',
         joinDate: '',
-        userRole: ''
+        userRole: '',
+        address: '',
+        phoneNumber: '',
+        country: '',
+        stateRegion: ''
+    });
+    const [modifiedUserData, setModifiedUserData] = useState({
+        userId: -1,
+        username: '',
+        name: '',
+        surname: '',
+        email: '',
+        userImage: '',
+        joinDate: '',
+        userRole: '',
+        address: '',
+        phoneNumber: '',
+        country: '',
+        stateRegion: ''
     });
     const [authUserData, setAuthUserData] = useState({
         userId: -1,
@@ -43,7 +85,11 @@ const UserProfile = () => {
         email: '',
         userImage: '',
         joinDate: '',
-        userRole: ''
+        userRole: '',
+        address: '',
+        phoneNumber: '',
+        country: '',
+        stateRegion: ''
     });
 
     useEffect(() => {
@@ -63,6 +109,7 @@ const UserProfile = () => {
             try {
                 const response = await ApiBackendService.getAuthenticatedUserDetails({});
                 setAuthUserData(response);
+                setModifiedUserData(response);
                 console.log(response);
             } catch (error) {
                 console.error('Failed to fetch auth user details:', error);
@@ -89,6 +136,128 @@ const UserProfile = () => {
         }
     }, [userData, authUserData]);
 
+    const handleLogout = () => {
+        ApiBackendService.logout({});
+        localStorage.clear();
+        sessionStorage.clear();
+        Cookies.remove('JSESSIONID');
+        window.location.href = "/";
+    };
+
+    const changeProfilePicture = async (e) => {
+        const file = e.target.files[0];
+        const imageRef = ref(storage, `images/${uuidv4()}`);
+        uploadBytes(imageRef, file).then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((url) => {
+                console.log('Image URL:', url);
+                const data = {
+                    userDetails: {
+                        IMAGE: url
+                    }
+                };
+                // Update user image in the backend
+                ApiBackendService.updateBasicUserDetails({}, data).then(() => {
+                    setUserData(prevUserData => ({
+                        ...prevUserData,
+                        userImage: url
+                    }));
+                }).catch(error => {
+                    console.error('Failed to update user image:', error);
+                });
+            });
+        });
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setModifiedUserData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const handleUserProfileUpdateSubmit = async (e) => {
+        e.preventDefault();
+        const data = {
+            userDetails: {
+                NAME: modifiedUserData.name,
+                SURNAME: modifiedUserData.surname,
+                PHONE_NUMBER: modifiedUserData.phoneNumber,
+                COUNTRY: modifiedUserData.country,
+                STATE_REGION: modifiedUserData.stateRegion,
+                ADDRESS: modifiedUserData.address
+            }
+        };
+        try {
+            setUpdateProfileError('');
+            await ApiBackendService.updateBasicUserDetails({}, data).then(() => {
+                setUserData(prevUserData => ({
+                    ...prevUserData,
+                    name: modifiedUserData.name,
+                    surname: modifiedUserData.surname,
+                    phoneNumber: modifiedUserData.phoneNumber,
+                    country: modifiedUserData.country,
+                    stateRegion: modifiedUserData.stateRegion,
+                    address: modifiedUserData.address
+                }));
+            });
+            setUpdateProfileSuccess('Succesfully Updated Profile!')
+        } catch (error) {
+            console.error('Failed to update profile: ', error.message);
+            setUpdateProfileError(error.message);
+            setUpdateProfileSuccess('');
+        }
+        console.log(modifiedUserData);
+    };
+
+    const handleChangeEmail = async (e) => {
+        e.preventDefault();
+        if (newEmail !== repeatNewEmail) {
+            setChangeEmailError('Emails don\'t match');
+            return;
+        }
+        const data = {
+            userDetails: {
+                EMAIL: newEmail
+            },
+            password: password
+        };
+        try {
+            setChangeEmailError('');
+            await ApiBackendService.updateProtectedUserDetails({}, data)
+            setChangeEmailSuccess('Succesfully Changed Your Email!');
+            userData.email = newEmail;
+        } catch (error) {
+            console.error('Failed change email:', error.message);
+            setChangeEmailError(error.message);
+            setChangeEmailSuccess('');
+        }
+    };
+
+    const handleChangePassword = async (e) => {
+        e.preventDefault();
+        if (newPassword !== repeatNewPassword) {
+            setChangePasswordError('Passwords don\'t match');
+            return;
+        }
+        const data = {
+            userDetails: {
+                PASSWORD: newPassword
+            },
+            password: password
+        };
+        try {
+            setChangePasswordError('');
+            await ApiBackendService.updateProtectedUserDetails({}, data)
+            setChangePasswordSuccess('Succesfully Changed Your Password!');
+        } catch (error) {
+            console.error('Failed change password:', error.message);
+            setChangePasswordError(error.message);
+            setChangePasswordSuccess('');
+        }
+    };
+
+
     return (
         <React.Fragment>
             <Preloader />
@@ -98,10 +267,16 @@ const UserProfile = () => {
             <div className="main-container">
                 <div className={isSidebarMinimized ? "left-sidebar minimize" : "left-sidebar"}>
                     <div className="inner">
-                        <div className="user-profile" onClick={toggleSidebar}>
+                        <div className="user-profile">
                             <div className="user-background" style={{ backgroundImage: `url(${userData.userImage})` }}></div>
-                            <div className="user-image">
+                            <div className="user-image" onClick={() => fileInputRef.current.click()}>
                                 <img src={userData.userImage} alt="User" />
+                                <input
+                                    type="file"
+                                    style={{ display: 'none' }}
+                                    onChange={changeProfilePicture}
+                                    ref={fileInputRef}
+                                />
                             </div>
                             <div className="user-info">
                                 <p className="user-name"> @{userData.username} </p>
@@ -127,7 +302,7 @@ const UserProfile = () => {
                             <hr className="pl-4" style={{ border: '1px solid white', margin: '20px 8px' }} />
                             <div className="d-flex user-profile-button ml-2 mr-2 p-2 align-items-center br-10">
                                 <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
-                                    <i class="fa-solid fa-bag-shopping"></i>
+                                    <i className="fa-solid fa-bag-shopping"></i>
                                 </div>
                                 {isUserProfileAuth && (
                                     <div className="text-light m-0 ml-n2"> My Products </div>
@@ -138,23 +313,37 @@ const UserProfile = () => {
                             </div>
                             {isUserProfileAuth && (
                                 <>
+                                    <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("favouriteProducts")}>
+                                        <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                            <i className="fa-solid fa-heart"></i>
+                                        </div>
+                                        <div className="text-light m-0 ml-n2"> Favourite Products </div>
+                                    </div>
                                     <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("updateProfile")}>
                                         <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
-                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            <i className="fa-solid fa-pen-to-square"></i>
                                         </div>
                                         <div className="text-light m-0 ml-n2"> Update Profile </div>
                                     </div>
-                                    <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10">
-                                        <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
-                                            <i class="fa-solid fa-envelope-circle-check"></i>
+                                    {!isOauth2User && (
+                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("changeEmail")}>
+                                            <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                                <i className="fa-solid fa-envelope-circle-check"></i>
+                                            </div>
+                                            <div className="text-light m-0 ml-n2"> Change Email </div>
                                         </div>
-                                        <div className="text-light m-0 ml-n2"> Change Email </div>
-                                    </div>
-                                    <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10">
+                                    )}
+                                    <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("changePassword")}>
                                         <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
-                                            <i class="fa-solid fa-shield-halved"></i>
+                                            <i className="fa-solid fa-shield-halved"></i>
                                         </div>
                                         <div className="text-light m-0 ml-n2"> Reset Password </div>
+                                    </div>
+                                    <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={handleLogout}>
+                                        <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                            <i className="fa-solid fa-right-from-bracket"></i>
+                                        </div>
+                                        <div className="text-light m-0 ml-n2"> Logout </div>
                                     </div>
                                 </>
 
@@ -167,15 +356,158 @@ const UserProfile = () => {
                         {isSidebarMinimized && (<i className="fa-solid fa-arrow-right"> </i>)}
                     </div>
                 </div>
-                <div className="right-sidebar">
-                    {activeSection === "updateProfile" && (
-                        <div className="update-profile-section">
-                            {/* Add the form or component you want to display here */}
-                            <h1>Update Profile</h1>
-                            {/* More update profile content goes here */}
+                <div className="right-sidebar" style={{ display: 'flex', width: '70%' }}>
+                    {activeSection === "updateProfile" && isUserProfileAuth && (
+                        <div className="container rounded mt-5 ml-5 mb-5" style={{ flex: '1 -1 0%', overflow: 'auto', width: '30%' }}>
+                            <div className="row" style={{ height: '100%' }}>
+                                {/* Profile Form */}
+                                <div className="border-right">
+                                    <div className="p-3 py-5">
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <h4 className="text-light">Profile Settings</h4>
+                                        </div>
+                                        {/* Form Fields */}
+                                        <div className="row mt-2">
+                                            <div className="col-md-6">
+                                                <label className="labels">Name</label>
+                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                    value={modifiedUserData.name} name="name" onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-6 mb-2">
+                                                <label className="labels">Surname</label>
+                                                <input type="text" className="form-control" value={modifiedUserData.surname}
+                                                    placeholder="Enter value" name="surname" onChange={handleChange}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="row mt-2">
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">Phone Number</label>
+                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                    value={modifiedUserData.phoneNumber} name="phoneNumber" onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">Country</label>
+                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                    value={modifiedUserData.country} name="country" onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">State / Region</label>
+                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                    value={modifiedUserData.stateRegion} name="stateRegion" onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-12">
+                                                <label className="labels">Address</label>
+                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                    value={modifiedUserData.address} name="address" onChange={handleChange}
+                                                />
+                                            </div>
+                                        </div>
+                                        {updateProfileError && <div className="error-message">{updateProfileError}</div>}
+                                        {updateProfileSuccess && <div className="success-message">{updateProfileSuccess}</div>}
+                                        <div className="mt-4">
+                                            <button className="btn btn-primary profile-button" type="button" onClick={handleUserProfileUpdateSubmit}>
+                                                Save Profile
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     )}
-                    {/* Similarly, add conditions for other sections if needed */}
+
+                    {activeSection === "changeEmail" && !isOauth2User && isUserProfileAuth && (
+                        <div className="container rounded mt-5 ml-5 mb-5" style={{ flex: '1 -1 0%', overflow: 'auto', width: '30%' }}>
+                            <div className="row" style={{ height: '100%' }}>
+                                {/* Profile Form */}
+                                <div className="border-right">
+                                    <div className="p-3 py-5">
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <h4 className="text-light">Change Email</h4>
+                                        </div>
+                                        {/* Form Fields */}
+                                        <div className="row mt-3">
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">Current Email</label>
+                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                    value={userData.email} name="name"
+                                                    disabled="true"
+                                                />
+                                            </div>
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">New Email</label>
+                                                <input type="text" className="form-control" placeholder="Enter value" name="surname" onChange={(e) => setNewEmail(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">Repeat New Email</label>
+                                                <input type="text" className="form-control" placeholder="Enter value" name="phoneNumber" onChange={(e) => setRepeatNewEmail(e.target.value)} />
+                                            </div>
+                                            <div className="col-md-12">
+                                                <label className="labels">Password</label>
+                                                <input type="password" className="form-control" placeholder="Enter value" name="phoneNumber" onChange={(e) => setPassword(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        {changeEmailError && <div className="error-message">{changeEmailError}</div>}
+                                        {changeEmailSuccess && <div className="success-message">{changeEmailSuccess}</div>}
+                                        <div className="mt-4">
+                                            <button className="btn btn-primary profile-button" type="button" onClick={handleChangeEmail}>
+                                                Change Email
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeSection === "changePassword" && isUserProfileAuth &&  (
+                        <div className="container rounded mt-5 ml-5 mb-5" style={{ flex: '1 -1 0%', overflow: 'auto', width: '30%' }}>
+                            <div className="row" style={{ height: '100%' }}>
+                                {/* Profile Form */}
+                                <div className="border-right">
+                                    <div className="p-3 py-5">
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <h4 className="text-light">Reset Password</h4>
+                                        </div>
+                                        {/* Form Fields */}
+                                        <div className="row mt-3">
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">Old Password</label>
+                                                <input type="password" className="form-control" placeholder="Enter value" name="oldPassword" onChange={(e) => setPassword(e.target.value)}/>
+                                            </div>
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">New Password</label>
+                                                <input type="password" className="form-control" placeholder="Enter value" name="newPassword" onChange={(e) => setNewPassword(e.target.value)} />
+                                            </div>
+                                            <div className="col-md-12">
+                                                <label className="labels">Repeat New Password</label>
+                                                <input type="password" className="form-control" placeholder="Enter value" name="repeatNewPassword" onChange={(e) => setRepeatNewPassword(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        {changePasswordError && <div className="error-message">{changePasswordError}</div>}
+                                        {changePasswordSuccess && <div className="success-message">{changePasswordSuccess}</div>}
+                                        <div className="mt-4">
+                                            <button className="btn btn-primary profile-button" type="button" onClick={handleChangePassword}>
+                                                Reset Password
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <div className='ml-5' style={{ flex: 1, overflow: 'auto', width: '100%' }}>
+                        {/* Content of the new column goes here */}
+                        <h4>New Column Content</h4>
+                        <p>Details and additional settings or information can be displayed here.</p>
+                    </div>
                 </div>
             </div>
             <FooterSection />

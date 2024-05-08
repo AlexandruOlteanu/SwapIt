@@ -205,19 +205,13 @@ $animation-duration: 0.5s;
     }
 
     .right-sidebar {
-        flex-grow: 1;
-        max-width: 100px;
         border-left: 1px solid $border-color;
 
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
 
         .btn {
-            border-top: 1px solid $border-color;
             height: 50px;
             line-height: 50px;
-            width: 100%;
+            width: 30%;
             text-align: center;
             cursor: pointer;
 

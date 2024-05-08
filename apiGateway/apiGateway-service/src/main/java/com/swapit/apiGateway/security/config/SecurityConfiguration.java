@@ -46,9 +46,6 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2Configurer -> oauth2Configurer.successHandler(customAuthenticationSuccessHandler))
                 .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authenticationProvider(authenticationProvider)
-                .logout(logout ->
-                        logout.logoutUrl("/api/v1/swapIt/apiGateway/auth/")
-                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()))
                 .build();
     }
 }

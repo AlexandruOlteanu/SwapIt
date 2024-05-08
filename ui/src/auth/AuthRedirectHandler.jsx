@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 
 
@@ -10,8 +11,6 @@ const AuthRedirectHandler = () => {
                 const response = await ApiBackendService.getAuthenticatedUserDetails({});
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userRole', response.userRole);
-                console.log("Alex");
-                console.log(response);
                 window.location.href = '/';
             } catch (error) {
                 console.error('Error fetching user role:', error);

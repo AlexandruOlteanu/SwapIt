@@ -17,6 +17,7 @@
     "aws-sdk": "^2.1588.0",
     "classnames": "^2.3.2",
     "firebase": "^10.10.0",
+    "js-cookie": "^3.0.5",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
     "react-datetime": "^3.2.0",

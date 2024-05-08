@@ -41,6 +41,7 @@ class ApiService {
     return this.fetchWithAuth(process.env.REACT_APP_LOGIN_URI, {
       method: 'POST',
       body: JSON.stringify(data),
+      credentials: 'include',
       params: params
     }, true);
   }
@@ -49,6 +50,7 @@ class ApiService {
     return this.fetchWithAuth(process.env.REACT_APP_REGISTER_URI, {
       method: 'PUT',
       body: JSON.stringify(data),
+      credentials: 'include',
       params: params
     }, true);
   }
@@ -57,6 +59,7 @@ class ApiService {
     return this.fetchWithAuth(process.env.REACT_APP_SEND_REGISTRATION_CODE_URI, {
       method: 'POST',
       body: JSON.stringify(data),
+      credentials: 'include',
       params: params
     }, false);
   }
@@ -65,6 +68,7 @@ class ApiService {
     return this.fetchWithAuth(process.env.REACT_APP_SEND_PASSWORD_RESET_CODE_URI, {
       method: 'POST',
       body: JSON.stringify(data),
+      credentials: 'include',
       params: params
     }, false);
   }
@@ -73,6 +77,7 @@ class ApiService {
     return this.fetchWithAuth(process.env.REACT_APP_PASSWORD_RESET_URI, {
       method: 'PUT',
       body: JSON.stringify(data),
+      credentials: 'include',
       params: params
     }, false);
   }
@@ -91,6 +96,32 @@ class ApiService {
       credentials: 'include',
       params: params
     }, true);
+  }
+
+  logout(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_LOGOUT_URI, {
+      method: 'POST',
+      credentials: 'include',
+      params: params
+    }, false);
+  }
+
+  updateBasicUserDetails(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_BASIC_USER_DETAILS, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, false);
+  }
+
+  updateProtectedUserDetails(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_PROTECTED_USER_DETAILS, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, false);
   }
 }
 

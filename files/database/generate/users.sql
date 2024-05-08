@@ -13,7 +13,11 @@ create table users
     oauth2_user_id  varchar(256),
     user_image      varchar(1000),
     status          varchar(256) not null,
-    ban_expiry_time timestamp with time zone
+    ban_expiry_time timestamp with time zone,
+    country         varchar(256),
+    state_region    varchar(256),
+    address         varchar(256),
+    phone_number    varchar(256)
 );
 
 alter table users

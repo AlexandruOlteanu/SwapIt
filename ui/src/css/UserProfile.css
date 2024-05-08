@@ -7,3 +7,37 @@
     background-color: #44a0b1 !important;
     cursor: pointer;
 }
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: var(--primary) !important;
+}
+
+.profile-button {
+    background: var(--primary) !important;
+    width: 40% !important;
+    line-height: 0px !important;
+    height: 40px !important;
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: var(--primary_hover) !important;
+}
+
+.labels {
+    font-size: 15px
+}
+
+.error-message {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+.success-message {
+    color: #8BC34A;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}

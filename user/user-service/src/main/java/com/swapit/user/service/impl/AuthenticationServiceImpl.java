@@ -38,6 +38,8 @@ import java.util.stream.Stream;
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
 
+    private final String NA = "N/A";
+
     @Value("${email.code.length}")
     private Integer emailCodeLength;
 
@@ -91,6 +93,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .status(UserStatus.ACTIVE)
                 .authProvider(AuthProvider.LOCAL)
                 .userImage(request.getUserImage())
+                .address(NA)
+                .country(NA)
+                .stateRegion(NA)
+                .phoneNumber(NA)
                 .build();
 
         userRepository.save(user);
@@ -123,6 +129,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .authProvider(AuthProvider.OAUTH2)
                     .oauth2UserId(request.getOauth2UserId())
                     .userImage(request.getUserImage())
+                    .address(NA)
+                    .country(NA)
+                    .stateRegion(NA)
+                    .phoneNumber(NA)
                     .build();
             userId = userRepository.save(newUser).getUserId();
         }

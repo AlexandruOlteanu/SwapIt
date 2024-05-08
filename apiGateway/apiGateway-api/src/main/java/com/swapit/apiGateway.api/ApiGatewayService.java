@@ -43,6 +43,7 @@ public interface ApiGatewayService {
 
     String LOGIN = "auth/login";
     String REGISTER = "auth/register";
+    String LOGOUT = "auth/logout";
     String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String GET_USER_DETAILS = "getUserDetails";
     String GET_USER_DETAILS_BY_USERNAME = "getUserDetailsByUsername";
@@ -93,6 +94,9 @@ public interface ApiGatewayService {
 
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
+
+    @PostMapping(value = BASE_URL + LOGOUT)
+    void logout();
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
     @PostMapping(value = BASE_URL + SEND_REGISTRATION_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)

@@ -46,6 +46,18 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "country")
+    private String country;
+
+    @Column(name = "state_region")
+    private String stateRegion;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "password")
     private String password;
 

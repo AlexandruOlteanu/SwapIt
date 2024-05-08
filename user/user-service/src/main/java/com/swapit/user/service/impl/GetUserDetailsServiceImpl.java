@@ -37,6 +37,10 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
                 .userImage(user.getUserImage())
                 .joinDate(user.getJoinDate())
                 .userRole(user.getUserRole().name())
+                .address(user.getAddress())
+                .country(user.getCountry())
+                .stateRegion(user.getStateRegion())
+                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 
@@ -69,6 +73,10 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
                 .userImage(user.getUserImage())
                 .joinDate(user.getJoinDate())
                 .userRole(user.getUserRole().name())
+                .address(user.getAddress())
+                .country(user.getCountry())
+                .stateRegion(user.getStateRegion())
+                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 
@@ -79,6 +87,10 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
             case USERNAME -> user.getUsername();
             case IMAGE -> user.getUserImage();
             case BAN_EXPIRY_TIME -> user.getBanExpiryTime();
+            case ADDRESS -> user.getAddress();
+            case COUNTRY -> user.getCountry();
+            case STATE_REGION -> user.getStateRegion();
+            case PHONE_NUMBER -> user.getPhoneNumber();
         };
     }
 }

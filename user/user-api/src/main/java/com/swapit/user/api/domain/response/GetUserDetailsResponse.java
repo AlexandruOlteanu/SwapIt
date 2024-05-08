@@ -18,4 +18,8 @@ public class GetUserDetailsResponse {
     private String userImage;
     private ZonedDateTime joinDate;
     private String userRole;
+    private String address;
+    private String phoneNumber;
+    private String country;
+    private String stateRegion;
 }

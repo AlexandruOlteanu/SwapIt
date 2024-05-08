@@ -9,7 +9,6 @@ const GoogleSignInButton = () => {
 
         if (error) {
             console.error('OAuth2 Error:', error, errorDescription);
-            // Here you can handle the error, e.g., display an error message to the user
         }
     }, []);
 

@@ -24,6 +24,7 @@ import com.swapit.user.api.util.UserBasicDetailType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.ZonedDateTime;
@@ -48,6 +49,11 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         return ResponseEntity.ok(externalOperationsService.register(request));
+    }
+
+    @Override
+    public void logout() {
+        SecurityContextHolder.clearContext();
     }
 
     @Override
