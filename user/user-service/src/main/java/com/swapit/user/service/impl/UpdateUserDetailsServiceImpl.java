@@ -72,16 +72,14 @@ public class UpdateUserDetailsServiceImpl implements UpdateUserDetailsService {
     public void emailReset(Integer userId, EmailResetRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
-        if (VERIFY_DATA.equals(request.getProcessPhase())) {
-            try {
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
-            } catch (Exception e) {
-                throw exceptionFactory.create(ExceptionType.WRONG_PASSWORD);
-            }
-            Optional<User> existingUser = userRepository.findUserByEmail(request.getNewEmail());
-            if (existingUser.isPresent()) {
-                throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
-            }
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), request.getPassword()));
+        } catch (Exception e) {
+            throw exceptionFactory.create(ExceptionType.WRONG_PASSWORD);
+        }
+        Optional<User> existingUser = userRepository.findUserByEmail(request.getNewEmail());
+        if (existingUser.isPresent()) {
+            throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
         }
         if (SEND_SECURITY_CODE.equals(request.getProcessPhase())) {
             securityCodeService.sendSecurityCode(SendSecurityCodeRequest.builder()

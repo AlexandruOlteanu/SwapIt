@@ -67,15 +67,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public RegisterResponse register(RegisterRequest request) {
-        if (RegisterProcessPhase.VERIFY_DATA.equals(request.getProcessPhase())) {
-            Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
-            if (existingUser.isPresent()) {
-                throw exceptionFactory.create(ExceptionType.USERNAME_ALREADY_EXISTS);
-            }
-            existingUser = userRepository.findUserByEmail(request.getEmail());
-            if (existingUser.isPresent()) {
-                throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
-            }
+
+        Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
+        if (existingUser.isPresent()) {
+            throw exceptionFactory.create(ExceptionType.USERNAME_ALREADY_EXISTS);
+        }
+        existingUser = userRepository.findUserByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
         }
 
         if (RegisterProcessPhase.SEND_SECURITY_CODE.equals(request.getProcessPhase())) {
@@ -143,10 +142,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public void forgottenPasswordReset(ForgottenPasswordResetRequest request) {
-        if (VERIFY_DATA.equals(request.getProcessPhase())) {
-            userRepository.findUserByEmail(request.getEmail())
-                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
-        }
+        userRepository.findUserByEmail(request.getEmail())
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
 
         if (SEND_SECURITY_CODE.equals(request.getProcessPhase())) {
             securityCodeService.sendSecurityCode(SendSecurityCodeRequest.builder()
