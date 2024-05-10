@@ -4,7 +4,6 @@ import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.util.SecurityCodeType;
-import com.swapit.user.domain.SecurityCode;
 import com.swapit.user.domain.User;
 import com.swapit.user.repository.SecurityCodeRepository;
 import com.swapit.user.repository.UserRepository;

@@ -35,8 +35,8 @@ public class JwtService {
     @Getter
     private Key signingKey;
 
-    private static String USER_ROLE_JWT_KEY = "user_role";
-    private static String USER_ID_JWT_KEY = "user_id";
+    private static final String USER_ROLE_JWT_KEY = "user_role";
+    private static final String USER_ID_JWT_KEY = "user_id";
 
     @PostConstruct
     public void init() {

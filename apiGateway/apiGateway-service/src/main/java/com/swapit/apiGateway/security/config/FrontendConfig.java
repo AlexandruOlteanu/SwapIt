@@ -1,6 +1,5 @@
 package com.swapit.apiGateway.security.config;
 
-import com.swapit.commons.exception.ExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

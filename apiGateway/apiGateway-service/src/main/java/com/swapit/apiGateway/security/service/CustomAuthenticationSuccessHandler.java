@@ -39,7 +39,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     private static final String EMAIL = "email";
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         OAuth2User oAuth2User = ((OAuth2AuthenticationToken) authentication).getPrincipal();
         Oauth2Request oauth2Request = Oauth2Request.builder()
                 .oauth2UserId(oAuth2User.getAttribute(OAUTH2_USER_ID))

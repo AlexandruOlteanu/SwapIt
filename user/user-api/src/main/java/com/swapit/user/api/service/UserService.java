@@ -4,7 +4,6 @@ import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

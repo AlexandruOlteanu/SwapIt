@@ -29,7 +29,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserRepository userRepository;
     private final String AUTHORIZATION = "Authorization";
     private final String BEARER = "Bearer ";
-    private static String USER_ID_JWT_KEY = "user_id";
+    private static final String USER_ID_JWT_KEY = "user_id";
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {

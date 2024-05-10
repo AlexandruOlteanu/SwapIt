@@ -2,19 +2,16 @@ package com.swapit.user.service.impl;
 
 import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
-import com.swapit.commons.generator.RandomCodeGenerator;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.domain.response.RegisterResponse;
 import com.swapit.user.api.util.RegisterProcessPhase;
-import com.swapit.user.domain.SecurityCode;
 import com.swapit.user.domain.User;
 import com.swapit.user.repository.SecurityCodeRepository;
 import com.swapit.user.repository.UserRepository;
 import com.swapit.user.security.JwtService;
 import com.swapit.user.service.AuthenticationService;
-import com.swapit.user.service.EmailSenderService;
 import com.swapit.user.service.SecurityCodeService;
 import com.swapit.user.utils.AuthProvider;
 import com.swapit.user.api.util.SecurityCodeType;
@@ -23,7 +20,6 @@ import com.swapit.user.utils.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +32,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.swapit.user.api.util.ForgottenPasswordResetProcessPhase.*;
-import static com.swapit.user.api.util.SecurityCodeType.FORGOTTEN_PASSWORD_RESET;
 import static com.swapit.user.api.util.SecurityCodeType.REGISTRATION;
 
 @Service
