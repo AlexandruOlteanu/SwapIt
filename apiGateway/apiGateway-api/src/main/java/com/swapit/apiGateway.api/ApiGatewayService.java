@@ -44,15 +44,15 @@ public interface ApiGatewayService {
     String LOGIN = "auth/login";
     String REGISTER = "auth/register";
     String LOGOUT = "auth/logout";
-    String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
     String GET_USER_DETAILS = "getUserDetails";
     String GET_USER_DETAILS_BY_USERNAME = "getUserDetailsByUsername";
     String GET_USER_BAN_EXPIRY_TIME = "getUserBanExpiryTime";
     String GET_AUTHENTICATED_USER_DETAILS = "getAuthenticatedUserDetails";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
-    String UPDATE_PROTECTED_USER_DETAILS = "updateProtectedUserDetails";
-    String SEND_PASSWORD_RESET_CODE = "auth/sendPasswordResetCode";
-    String PASSWORD_RESET = "auth/passwordReset";
+    String FORGOTTEN_PASSWORD_RESET = "auth/forgottenPasswordReset";
+    String PASSWORD_RESET = "passwordReset";
+    String USERNAME_RESET = "usernameReset";
+    String EMAIL_RESET = "emailReset";
 
     // USER ADMIN URI
     String BAN_USER = "banUser";
@@ -98,9 +98,20 @@ public interface ApiGatewayService {
     @PostMapping(value = BASE_URL + LOGOUT)
     void logout();
 
+    @PutMapping(value = BASE_URL + FORGOTTEN_PASSWORD_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void forgottenPasswordReset(@Valid @RequestBody ForgottenPasswordResetRequest request);
+
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
-    @PostMapping(value = BASE_URL + SEND_REGISTRATION_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendRegistrationCode(@Valid @RequestBody SendRegistrationCodeRequest request);
+    @PutMapping(value = BASE_URL + PASSWORD_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void passwordReset(@Valid @RequestBody PasswordResetRequest request);
+
+    @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
+    @PutMapping(value = BASE_URL + EMAIL_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void emailReset(@Valid @RequestBody EmailResetRequest request);
+
+    @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
+    @PutMapping(value = BASE_URL + USERNAME_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void usernameReset(@Valid @RequestBody UsernameResetRequest request);
 
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
@@ -119,17 +130,6 @@ public interface ApiGatewayService {
     @PutMapping(value = BASE_URL + UPDATE_BASIC_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     void updateBasicUserDetails(@Valid @RequestBody UpdateBasicUserDetailsRequest request);
 
-    @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
-    @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
-    void updateProtectedUserDetails(@Valid @RequestBody UpdateProtectedUserDetailsRequest request);
-
-    @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
-    @PostMapping(value = BASE_URL + SEND_PASSWORD_RESET_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendPasswordResetCode(@Valid @RequestBody SendPasswordResetCodeRequest request);
-
-    @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
-    @PutMapping(value = BASE_URL + PASSWORD_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void passwordReset(@Valid @RequestBody PasswordResetRequest request);
 
     // USER ADMIN API
 

@@ -31,7 +31,6 @@ const Authentication = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [passwordResetError, setPasswordResetError] = useState('');
-    const [showForgotPassword, setShowForgotPassword] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -62,39 +61,35 @@ const Authentication = () => {
             setSignUpError("Passwords do not match.");
             return;
         }
+        const data = {
+            username: username,
+            name: name,
+            surname: surname,
+            email: email,
+            password: password,
+            userImage: null,
+            securityCode: null,
+            processPhase: "VERIFY_DATA"
+        }
         if (!isCodeSent) {
-            const registrationCodeData = {
-                username: username,
-                email: email,
-            };
-            let shouldSetCodeSent = true;
-            setTimeout(() => {
-                if (shouldSetCodeSent) {
-                    setIsCodeSent(true);
-                }
-            }, 100);
             try {
                 setSignUpError('');
-                const response = await ApiBackendService.sendRegistrationCode({}, registrationCodeData);
+                await ApiBackendService.register({}, data);
+                setIsCodeSent(true);
+                data.processPhase = "SEND_SECURITY_CODE";
+                await ApiBackendService.register({}, data);
                 console.log('Security code sent');
             } catch (error) {
-                shouldSetCodeSent = false;
                 console.error('Failed to send security code', error.message);
                 setSignUpError(error.message);
             }
         } else {
             try {
                 setUserImage(process.env.REACT_APP_DEFAULT_PROFILE_IMAGE);
-                const signupData = {
-                    username: username,
-                    name: name,
-                    surname: surname,
-                    email: email,
-                    password: password,
-                    userImage: userImage,
-                    registrationCode: registrationCode
-                };
-                const registerResponse = await ApiBackendService.register({}, signupData);
+                data.userImage = process.env.REACT_APP_DEFAULT_PROFILE_IMAGE;
+                data.securityCode = registrationCode;
+                data.processPhase = "FINALIZE";
+                const registerResponse = await ApiBackendService.register({}, data);
                 console.log('Signup verified', registerResponse);
                 localStorage.setItem(process.env.REACT_APP_JWT_TOKEN, registerResponse.jwtToken);
                 window.location.href = "/user/authHandler";
@@ -105,47 +100,47 @@ const Authentication = () => {
         }
     };
 
-    const handleSendResetCode = async (e) => {
+    const handleForgottenPasswordResetCode = async (e) => {
         e.preventDefault();
-        let shouldSetResetCodeSent = true;
-        setTimeout(() => {
-            if (shouldSetResetCodeSent) {
+        const data = {
+            email: forgotPasswordEmail,
+            newPassword: null,
+            securityCode: null,
+            processPhase: "VERIFY_DATA"
+        }
+        if (!isResetCodeSent) {
+            try {
+                setPasswordResetError('');
+                await ApiBackendService.forgottenPasswordReset({}, data);
                 setIsResetCodeSent(true);
+                data.processPhase = "SEND_SECURITY_CODE";
+                await ApiBackendService.forgottenPasswordReset({}, data);
+                console.log('Reset code sent');
+            } catch (error) {
+                console.error('Failed to send reset code', error.message);
+                setPasswordResetError(error.message);
             }
-        }, 100);
-        try {
-            setPasswordResetError('');
-            await ApiBackendService.sendPasswordResetCode({}, { email: forgotPasswordEmail });
-            console.log('Reset code sent');
-        } catch (error) {
-            shouldSetResetCodeSent = false;
-            console.error('Failed to send reset code', error.message);
-            setPasswordResetError(error.message);
-        }
-    };
+        } else {
+            if (newPassword !== confirmNewPassword) {
+                setPasswordResetError("Passwords do not match.");
+                return;
+            }
+            try {
+                setPasswordResetError('');
+                data.securityCode = resetCode;
+                data.newPassword = newPassword;
+                data.processPhase = "FINALIZE";
 
-    const handleResetPassword = async (e) => {
-        e.preventDefault();
-        if (newPassword !== confirmNewPassword) {
-            setPasswordResetError("Passwords do not match.");
-            return;
+                await ApiBackendService.forgottenPasswordReset({}, data);
+                console.log('Password successfully reset');
+                setIsResetCodeSent(false);
+                setActiveForm('succesPasswordReset');
+            } catch (error) {
+                console.error('Failed to reset password', error.message);
+                setPasswordResetError(error.message);
+            }
         }
-        try {
-            setPasswordResetError('');
-            const resetData = {
-                email: forgotPasswordEmail,
-                securityCode: resetCode,
-                newPassword: newPassword
-            };
-            const response = await ApiBackendService.passwordReset({}, resetData);
-            console.log('Password successfully reset', response);
-            setIsResetCodeSent(false);
-            setShowForgotPassword(false);
-            setActiveForm('succesPasswordReset');
-        } catch (error) {
-            console.error('Failed to reset password', error.message);
-            setPasswordResetError(error.message);
-        }
+        
     };
 
     const clearForms = (e) => {
@@ -283,7 +278,7 @@ const Authentication = () => {
                         <div className="form-content">
                             <header>Reset Password</header>
                             {!isResetCodeSent ? (
-                                <form onSubmit={handleSendResetCode}>
+                                <form onSubmit={handleForgottenPasswordResetCode}>
                                     <div className="field input-field">
                                         <input type="email" placeholder="Your email" className="input" value={forgotPasswordEmail} onChange={(e) => setForgotPasswordEmail(e.target.value)} />
                                     </div>
@@ -296,7 +291,7 @@ const Authentication = () => {
                                     </div>
                                 </form>
                             ) : (
-                                <form onSubmit={handleResetPassword}>
+                                <form onSubmit={handleForgottenPasswordResetCode}>
                                     <div className="field input-field">
                                         <input type="text" placeholder="Reset Code" className="input" value={resetCode} onChange={(e) => setResetCode(e.target.value)} />
                                     </div>

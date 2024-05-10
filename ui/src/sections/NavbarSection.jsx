@@ -59,7 +59,7 @@ function NavbarSection() {
         const userData = await ApiBackendService.getAuthenticatedUserDetails({});
         setUsername(userData.username);
         const userId = userData.userId;
-        navigate(`/users/${userData.username}`, { state: { userId } });
+        navigate(`/users/${userData.username}`);
     };
 
     return (

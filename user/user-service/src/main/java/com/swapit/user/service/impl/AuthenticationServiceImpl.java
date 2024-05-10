@@ -7,6 +7,7 @@ import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.util.RegisterProcessPhase;
 import com.swapit.user.domain.SecurityCode;
 import com.swapit.user.domain.User;
 import com.swapit.user.repository.SecurityCodeRepository;
@@ -14,8 +15,9 @@ import com.swapit.user.repository.UserRepository;
 import com.swapit.user.security.JwtService;
 import com.swapit.user.service.AuthenticationService;
 import com.swapit.user.service.EmailSenderService;
+import com.swapit.user.service.SecurityCodeService;
 import com.swapit.user.utils.AuthProvider;
-import com.swapit.user.utils.SecurityCodeType;
+import com.swapit.user.api.util.SecurityCodeType;
 import com.swapit.user.utils.UserRole;
 import com.swapit.user.utils.UserStatus;
 import jakarta.transaction.Transactional;
@@ -33,23 +35,21 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.swapit.user.api.util.ForgottenPasswordResetProcessPhase.*;
+import static com.swapit.user.api.util.SecurityCodeType.FORGOTTEN_PASSWORD_RESET;
+import static com.swapit.user.api.util.SecurityCodeType.REGISTRATION;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-    private final String NA = "N/A";
-
-    @Value("${email.code.length}")
-    private Integer emailCodeLength;
-
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final EmailSenderService emailSenderService;
-    private final RandomCodeGenerator randomCodeGenerator;
     private final SecurityCodeRepository securityCodeRepository;
+    private final SecurityCodeService securityCodeService;
     private final ExceptionFactory exceptionFactory;
 
     @Override
@@ -72,37 +72,45 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     @Transactional
     public RegisterResponse register(RegisterRequest request) {
-        Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
-        if (existingUser.isPresent()) {
-            throw exceptionFactory.create(ExceptionType.USERNAME_ALREADY_EXISTS);
+        if (RegisterProcessPhase.VERIFY_DATA.equals(request.getProcessPhase())) {
+            Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
+            if (existingUser.isPresent()) {
+                throw exceptionFactory.create(ExceptionType.USERNAME_ALREADY_EXISTS);
+            }
+            existingUser = userRepository.findUserByEmail(request.getEmail());
+            if (existingUser.isPresent()) {
+                throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
+            }
         }
-        existingUser = userRepository.findUserByEmail(request.getEmail());
-        if (existingUser.isPresent()) {
-            throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
-        }
-        securityCodeRepository.findByEmailAndCodeAndCodeType(request.getEmail(), request.getRegistrationCode(), SecurityCodeType.REGISTRATION)
-                .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_SECURITY_CODE));
-        securityCodeRepository.deleteByEmailAndCodeAndCodeType(request.getEmail(), request.getRegistrationCode(), SecurityCodeType.REGISTRATION);
-        User user = User.builder()
-                .username(request.getUsername())
-                .name(request.getName())
-                .surname(request.getSurname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .userRole(UserRole.USER)
-                .status(UserStatus.ACTIVE)
-                .authProvider(AuthProvider.LOCAL)
-                .userImage(request.getUserImage())
-                .address(NA)
-                .country(NA)
-                .stateRegion(NA)
-                .phoneNumber(NA)
-                .build();
 
-        userRepository.save(user);
-        return RegisterResponse.builder()
-                .jwtToken(jwtService.generateToken(user))
-                .build();
+        if (RegisterProcessPhase.SEND_SECURITY_CODE.equals(request.getProcessPhase())) {
+            securityCodeService.sendSecurityCode(SendSecurityCodeRequest.builder()
+                            .email(request.getEmail())
+                            .securityCodeType(REGISTRATION)
+                    .build());
+        }
+
+        if (RegisterProcessPhase.FINALIZE.equals(request.getProcessPhase())) {
+            securityCodeRepository.findByEmailAndCodeAndCodeType(request.getEmail(), request.getSecurityCode(), REGISTRATION)
+                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_SECURITY_CODE));
+            securityCodeRepository.deleteByEmailAndCodeAndCodeType(request.getEmail(), request.getSecurityCode(), REGISTRATION);
+            User user = User.builder()
+                    .username(request.getUsername())
+                    .name(request.getName())
+                    .surname(request.getSurname())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .userRole(UserRole.USER)
+                    .status(UserStatus.ACTIVE)
+                    .authProvider(AuthProvider.LOCAL)
+                    .userImage(request.getUserImage())
+                    .build();
+            user = userRepository.save(user);
+            return RegisterResponse.builder()
+                    .jwtToken(jwtService.generateToken(user))
+                    .build();
+        }
+        return RegisterResponse.builder().build();
     }
 
     @Override
@@ -114,7 +122,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             existingUser.setEmail(request.getEmail());
             existingUser.setName(request.getName());
             existingUser.setSurname(request.getSurname());
-            existingUser.setUserImage(request.getUserImage());
             userRepository.save(existingUser);
             userId = existingUser.getUserId();
         } else {
@@ -129,10 +136,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .authProvider(AuthProvider.OAUTH2)
                     .oauth2UserId(request.getOauth2UserId())
                     .userImage(request.getUserImage())
-                    .address(NA)
-                    .country(NA)
-                    .stateRegion(NA)
-                    .phoneNumber(NA)
                     .build();
             userId = userRepository.save(newUser).getUserId();
         }
@@ -144,55 +147,27 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     @Transactional
-    public void sendRegistrationCode(SendRegistrationCodeRequest request) {
-        Optional<User> existingUser = userRepository.findUserByUsername(request.getUsername());
-        if (existingUser.isPresent()) {
-            throw exceptionFactory.create(ExceptionType.USERNAME_ALREADY_EXISTS);
+    public void forgottenPasswordReset(ForgottenPasswordResetRequest request) {
+        if (VERIFY_DATA.equals(request.getProcessPhase())) {
+            userRepository.findUserByEmail(request.getEmail())
+                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         }
-        existingUser = userRepository.findUserByEmail(request.getEmail());
-        if (existingUser.isPresent()) {
-            throw exceptionFactory.create(ExceptionType.EMAIL_ALREADY_EXISTS);
-        }
-        String subject = "SwapIt Registration Code";
-        String code = randomCodeGenerator.generateRandomCode(emailCodeLength);
-        String message = "Code: " + code + "\nDon't share this code with anyone!";
-        emailSenderService.sendSimpleEmail(request.getEmail(), subject, message);
-        securityCodeRepository.deleteByEmailAndCodeType(request.getEmail(), SecurityCodeType.REGISTRATION);
-        securityCodeRepository.save(SecurityCode.builder()
-                        .email(request.getEmail())
-                        .code(code)
-                        .codeType(SecurityCodeType.REGISTRATION)
-                .build());
-    }
 
-    @Override
-    @Transactional
-    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
-        Optional<User> existingUser = userRepository.findUserByEmail(request.getEmail());
-        if (existingUser.isEmpty()) {
-            throw exceptionFactory.create(ExceptionType.USER_NOT_FOUND);
+        if (SEND_SECURITY_CODE.equals(request.getProcessPhase())) {
+            securityCodeService.sendSecurityCode(SendSecurityCodeRequest.builder()
+                            .email(request.getEmail())
+                            .securityCodeType(SecurityCodeType.FORGOTTEN_PASSWORD_RESET)
+                    .build());
         }
-        String subject = "SwapIt Password Reset Code";
-        String code = randomCodeGenerator.generateRandomCode(emailCodeLength);
-        String message = "Code: " + code + "\nDon't share this code with anyone!";
-        emailSenderService.sendSimpleEmail(request.getEmail(), subject, message);
-        securityCodeRepository.deleteByEmailAndCodeType(request.getEmail(), SecurityCodeType.PASSWORD_RESET);
-        securityCodeRepository.save(SecurityCode.builder()
-                        .email(request.getEmail())
-                        .code(code)
-                        .codeType(SecurityCodeType.PASSWORD_RESET)
-                .build());
-    }
 
-    @Override
-    @Transactional
-    public void passwordReset(PasswordResetRequest request) {
-        User existingUser = userRepository.findUserByEmail(request.getEmail())
-                .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
-        securityCodeRepository.findByEmailAndCodeAndCodeType(request.getEmail(), request.getSecurityCode(), SecurityCodeType.PASSWORD_RESET)
-                .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_SECURITY_CODE));
-        securityCodeRepository.deleteByEmailAndCodeType(request.getEmail(), SecurityCodeType.PASSWORD_RESET);
-        existingUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        if (FINALIZE.equals(request.getProcessPhase())) {
+            User user = userRepository.findUserByEmail(request.getEmail())
+                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
+            securityCodeRepository.findByEmailAndCodeAndCodeType(request.getEmail(), request.getSecurityCode(), SecurityCodeType.FORGOTTEN_PASSWORD_RESET)
+                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.WRONG_SECURITY_CODE));
+            securityCodeRepository.deleteByEmailAndCodeType(request.getEmail(), SecurityCodeType.FORGOTTEN_PASSWORD_RESET);
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        }
     }
 
     private String generateNewUsername(String surname, String name) {

@@ -1,6 +1,7 @@
 package com.swapit.user.api.domain.request;
 
 
+import com.swapit.user.api.util.RegisterProcessPhase;
 import lombok.Builder;
 import lombok.Data;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,6 @@ public class RegisterRequest {
     @NotNull
     private String password;
     private String userImage;
-    @NotNull
-    private String registrationCode;
-
+    private String securityCode;
+    private RegisterProcessPhase processPhase;
 }

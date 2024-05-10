@@ -17,9 +17,9 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, ADD_PRODUCT_IN_SEARCH_DICTIONARY,
         SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN,
         UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
-        GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, SEND_REGISTRATION_CODE, MANUAL_SECURITY_CODES_EXPIRE,
+        GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, MANUAL_SECURITY_CODES_EXPIRE,
         DELETE_PRODUCT, DELETE_PRODUCT_FROM_SEARCH_DICTIONARY, BAN_USER, REMOVE_USER_BAN, MANUAL_REMOVE_USERS_BAN,
-        SEND_PASSWORD_RESET_CODE, PASSWORD_RESET, GET_USER_DETAILS_BY_USERNAME
+        GET_USER_DETAILS_BY_USERNAME, FORGOTTEN_PASSWORD_RESET, PASSWORD_RESET, USERNAME_RESET, EMAIL_RESET
     }
 
     // USER URI
@@ -43,12 +43,14 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String updateProtectedUserDetailsUri;
     @Value("${user.getSpecificUsersDetails.route}")
     private String getSpecificUsersDetailsUri;
-    @Value("${user.sendRegistrationCode.route}")
-    private String sendRegistrationCodeUri;
-    @Value("${user.sendPasswordResetCode.route}")
-    private String sendPasswordResetCodeUri;
+    @Value("${user.forgottenPasswordReset.route}")
+    private String forgottenPasswordResetUri;
     @Value("${user.passwordReset.route}")
     private String passwordResetUri;
+    @Value("${user.usernameReset.route}")
+    private String usernameResetUri;
+    @Value("${user.emailReset.route}")
+    private String emailResetUri;
     @Value("${user.manualSecurityCodesExpire.route}")
     private String manualSecurityCodesExpireUri;
     @Value("${user.manualRemoveUsersBan.route}")
@@ -128,16 +130,17 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case GET_PRODUCTS_BY_USER -> getProductsByUserUri;
             case GET_LIKED_PRODUCTS_BY_USER -> getLikedProductsByUserUri;
             case GET_RECOMMENDED_PRODUCTS -> getRecommendedProductsUri;
-            case SEND_REGISTRATION_CODE -> sendRegistrationCodeUri;
             case MANUAL_SECURITY_CODES_EXPIRE -> manualSecurityCodesExpireUri;
             case DELETE_PRODUCT -> deleteProductUri;
             case DELETE_PRODUCT_FROM_SEARCH_DICTIONARY -> deleteProductFromSearchDictionaryUri;
             case BAN_USER -> banUserUri;
             case REMOVE_USER_BAN -> removeUserBanUri;
             case MANUAL_REMOVE_USERS_BAN -> manualRemoveUsersBanUri;
-            case SEND_PASSWORD_RESET_CODE -> sendPasswordResetCodeUri;
-            case PASSWORD_RESET -> passwordResetUri;
             case GET_USER_DETAILS_BY_USERNAME -> getUserDetailsByUsernameUri;
+            case FORGOTTEN_PASSWORD_RESET -> forgottenPasswordResetUri;
+            case PASSWORD_RESET -> passwordResetUri;
+            case USERNAME_RESET -> usernameResetUri;
+            case EMAIL_RESET -> emailResetUri;
         };
     }
 }

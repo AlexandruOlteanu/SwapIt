@@ -55,24 +55,6 @@ class ApiService {
     }, true);
   }
 
-  sendRegistrationCode(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_SEND_REGISTRATION_CODE_URI, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      credentials: 'include',
-      params: params
-    }, false);
-  }
-
-  sendPasswordResetCode(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_SEND_PASSWORD_RESET_CODE_URI, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      credentials: 'include',
-      params: params
-    }, false);
-  }
-
   passwordReset(params, data) {
     return this.fetchWithAuth(process.env.REACT_APP_PASSWORD_RESET_URI, {
       method: 'PUT',
@@ -83,7 +65,7 @@ class ApiService {
   }
 
   getAuthenticatedUserDetails(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_GET_AUTHENTICATED_USER_DETAILS, {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_AUTHENTICATED_USER_DETAILS_URI, {
       method: 'GET',
       credentials: 'include',
       params: params
@@ -91,7 +73,7 @@ class ApiService {
   }
 
   getUserDetailsByUsername(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_GET_USER_DETAILS_BY_USERNAME, {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_USER_DETAILS_BY_USERNAME_URI, {
       method: 'GET',
       credentials: 'include',
       params: params
@@ -107,7 +89,7 @@ class ApiService {
   }
 
   updateBasicUserDetails(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_BASIC_USER_DETAILS, {
+    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_BASIC_USER_DETAILS_URI, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify(data),
@@ -115,8 +97,35 @@ class ApiService {
     }, false);
   }
 
-  updateProtectedUserDetails(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_PROTECTED_USER_DETAILS, {
+  forgottenPasswordReset(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_FORGOTTEN_PASSWORD_RESET_URI, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, false);
+  }
+
+  passwordReset(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_PASSWORD_RESET_URI, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, false);
+  }
+
+  usernameReset(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_USERNAME_RESET_URI, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, false);
+  }
+
+  emailReset(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_EMAIL_RESET_URI, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify(data),

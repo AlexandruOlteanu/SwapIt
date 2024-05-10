@@ -4,6 +4,7 @@ import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +17,10 @@ public interface UserService {
     String LOGIN = "auth/login";
     String OAUTH2_LOGIN = "auth/oauth2login";
     String REGISTER = "auth/register";
-    String SEND_REGISTRATION_CODE = "auth/sendRegistrationCode";
-    String SEND_PASSWORD_RESET_CODE = "auth/sendPasswordResetCode";
-    String PASSWORD_RESET = "auth/passwordReset";
+    String FORGOTTEN_PASSWORD_RESET = "auth/forgottenPasswordReset";
+    String PASSWORD_RESET = "passwordReset";
+    String USERNAME_RESET = "usernameReset";
+    String EMAIL_RESET = "emailReset";
     String GET_USER_DETAILS = "getUserDetails";
     String GET_USER_DETAILS_BY_USERNAME = "getUserDetailsByUsername";
     String BAN_USER = "banUser";
@@ -27,7 +29,6 @@ public interface UserService {
     String REMOVE_USER_BAN = "removeUserBan";
     String GET_SPECIFIC_USERS_DETAILS = "getSpecificUsersDetails";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
-    String UPDATE_PROTECTED_USER_DETAILS = "updateProtectedUserDetails";
 
     @PostMapping(value = BASE_URL + LOGIN, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request);
@@ -38,14 +39,17 @@ public interface UserService {
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
 
-    @PostMapping(value = BASE_URL + SEND_REGISTRATION_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendRegistrationCode(@Valid @RequestBody SendRegistrationCodeRequest request);
-
-    @PostMapping(value = BASE_URL + SEND_PASSWORD_RESET_CODE, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void sendPasswordResetCode(@Valid @RequestBody SendPasswordResetCodeRequest request);
+    @PutMapping(value = BASE_URL + FORGOTTEN_PASSWORD_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void forgottenPasswordReset(@Valid @RequestBody ForgottenPasswordResetRequest request);
 
     @PutMapping(value = BASE_URL + PASSWORD_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void passwordReset(@Valid @RequestBody PasswordResetRequest request);
+    void passwordReset(@RequestParam("userId") Integer userId, @Valid @RequestBody PasswordResetRequest request);
+
+    @PutMapping(value = BASE_URL + EMAIL_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void emailReset(@RequestParam("userId") Integer userId, @Valid @RequestBody EmailResetRequest request);
+
+    @PutMapping(value = BASE_URL + USERNAME_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void usernameReset(@RequestParam("userId") Integer userId, @Valid @RequestBody UsernameResetRequest request);
 
     @GetMapping(value = BASE_URL + GET_USER_DETAILS)
     ResponseEntity<GetUserDetailsResponse> getUserDetails(@RequestParam(value = "userId") Integer userId);
@@ -58,9 +62,6 @@ public interface UserService {
 
     @PutMapping(value = BASE_URL + UPDATE_BASIC_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     void updateBasicUserDetails(@RequestParam("userId") Integer userId, @Valid @RequestBody UpdateBasicUserDetailsRequest request);
-
-    @PutMapping(value = BASE_URL + UPDATE_PROTECTED_USER_DETAILS, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
-    void updateProtectedUserDetails(@RequestParam("userId") Integer userId, @Valid @RequestBody UpdateProtectedUserDetailsRequest request);
 
     @PostMapping(value = BASE_URL + BAN_USER)
     void banUser(@RequestParam("userId") Integer userId, @RequestParam("banDaysDuration") Integer banDaysDuration);

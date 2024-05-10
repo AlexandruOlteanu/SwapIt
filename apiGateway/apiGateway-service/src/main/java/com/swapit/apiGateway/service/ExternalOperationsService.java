@@ -33,9 +33,6 @@ public interface ExternalOperationsService {
     GetSpecificUsersDetailsResponse getSpecificUsersDetails(GetSpecificUsersDetailsRequest request);
     ConversationResponse getConversation(Integer userId, Integer conversationId);
     void updateBasicUserDetails(Integer userId, UpdateBasicUserDetailsRequest request);
-    void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request);
-    void sendPasswordResetCode(SendPasswordResetCodeRequest request);
-    void passwordReset(PasswordResetRequest request);
     void addNewProductCategory(AddNewProductCategoryRequest request);
     GetProductCategoriesResponse getAllProductCategories();
     SearchProductsResponse searchProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, SearchProductsRequest request);
@@ -45,9 +42,12 @@ public interface ExternalOperationsService {
     void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request);
     String getProductLikeStatus(Integer userId, Integer productId);
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
-    void sendRegistrationCode(SendRegistrationCodeRequest request);
     void manualSecurityCodesExpire();
     void banUser(Integer userId, Integer banDaysDuration);
     void removeUserBan(Integer userId);
     void manualRemoveUsersBan();
+    void forgottenPasswordReset(ForgottenPasswordResetRequest request);
+    void passwordReset(Integer userId, PasswordResetRequest request);
+    void emailReset(Integer userId, EmailResetRequest request);
+    void usernameReset(Integer userId, UsernameResetRequest request);
 }

@@ -29,19 +29,26 @@ const UserProfile = () => {
     const [updateProfileError, setUpdateProfileError] = useState('');
     const [changeEmailError, setChangeEmailError] = useState('');
     const [changePasswordError, setChangePasswordError] = useState('');
+    const [changeUsernameError, setChangeUsernameError] = useState('');
 
     //Success message
     const [updateProfileSuccess, setUpdateProfileSuccess] = useState('');
     const [changeEmailSuccess, setChangeEmailSuccess] = useState('');
     const [changePasswordSuccess, setChangePasswordSuccess] = useState('');
+    const [changeUsernameSuccess, setChangeUsernameSuccess] = useState('');
 
     // Change Email Section
     const [newEmail, setNewEmail] = useState('');
     const [repeatNewEmail, setRepeatNewEmail] = useState('');
+    const [emailSecurityCode, setEmailSecurityCode] = useState('');
+    const [isEmailSecurityCodeSent, setIsEmailSecurityCodeSent] = useState(false);
 
     // Change Password Section
     const [newPassword, setNewPassword] = useState('');
     const [repeatNewPassword, setRepeatNewPassword] = useState('');
+
+    // Change Username Section
+    const [newUsername, setNewUsername] = useState('');
 
 
     const toggleSidebar = () => {
@@ -212,25 +219,38 @@ const UserProfile = () => {
 
     const handleChangeEmail = async (e) => {
         e.preventDefault();
-        if (newEmail !== repeatNewEmail) {
-            setChangeEmailError('Emails don\'t match');
-            return;
-        }
         const data = {
-            userDetails: {
-                EMAIL: newEmail
-            },
-            password: password
+            newEmail: newEmail,
+            password: password,
+            securityCode: null,
+            processPhase: "VERIFY_DATA"
         };
-        try {
-            setChangeEmailError('');
-            await ApiBackendService.updateProtectedUserDetails({}, data)
-            setChangeEmailSuccess('Succesfully Changed Your Email!');
-            userData.email = newEmail;
-        } catch (error) {
-            console.error('Failed change email:', error.message);
-            setChangeEmailError(error.message);
-            setChangeEmailSuccess('');
+        if (!isEmailSecurityCodeSent) {
+            try {
+                setChangeEmailError('');
+                await ApiBackendService.emailReset({}, data);
+                setChangeEmailSuccess('Succesfully sent reset code to the new email!');
+                setIsEmailSecurityCodeSent(true);
+                data.processPhase = "SEND_SECURITY_CODE";
+                await ApiBackendService.emailReset({}, data);
+            } catch (error) {
+                console.error('Failed to send security code: ', error.message);
+                setChangeEmailError(error.message);
+                setChangeEmailSuccess('');
+            }
+        } else {
+            try {
+                setChangeEmailError('');
+                data.securityCode = emailSecurityCode;
+                data.processPhase = "FINALIZE"
+                await ApiBackendService.emailReset({}, data)
+                setChangeEmailSuccess('Succesfully Changed Your Email!');
+                userData.email = newEmail;
+            } catch (error) {
+                console.error('Failed change email:', error.message);
+                setChangeEmailError(error.message);
+                setChangeEmailSuccess('');
+            }
         }
     };
 
@@ -241,14 +261,12 @@ const UserProfile = () => {
             return;
         }
         const data = {
-            userDetails: {
-                PASSWORD: newPassword
-            },
-            password: password
+            password: password,
+            newPassword: newPassword
         };
         try {
             setChangePasswordError('');
-            await ApiBackendService.updateProtectedUserDetails({}, data)
+            await ApiBackendService.passwordReset({}, data)
             setChangePasswordSuccess('Succesfully Changed Your Password!');
         } catch (error) {
             console.error('Failed change password:', error.message);
@@ -256,6 +274,30 @@ const UserProfile = () => {
             setChangePasswordSuccess('');
         }
     };
+
+    const handleChangeUsername = async (e) => {
+        e.preventDefault();
+        const data = {
+            newUsername: newUsername,
+            password: password
+        };
+        try {
+            setChangeUsernameError('');
+            await ApiBackendService.usernameReset({}, data)
+            setChangeUsernameSuccess('Succesfully Changed Your Username!');
+            userData.username = newUsername;
+        } catch (error) {
+            console.error('Failed change password:', error.message);
+            setChangeUsernameError(error.message);
+            setChangeUsernameSuccess('');
+        }
+    };
+
+    const handleUserImageClick = () => {
+        if (isUserProfileAuth) {
+            fileInputRef.current.click();
+        }
+    }
 
 
     return (
@@ -269,14 +311,16 @@ const UserProfile = () => {
                     <div className="inner">
                         <div className="user-profile">
                             <div className="user-background" style={{ backgroundImage: `url(${userData.userImage})` }}></div>
-                            <div className="user-image" onClick={() => fileInputRef.current.click()}>
+                            <div className="user-image" onClick={handleUserImageClick}>
                                 <img src={userData.userImage} alt="User" />
-                                <input
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    onChange={changeProfilePicture}
-                                    ref={fileInputRef}
-                                />
+                                {isUserProfileAuth && (
+                                    <input
+                                        type="file"
+                                        style={{ display: 'none' }}
+                                        onChange={changeProfilePicture}
+                                        ref={fileInputRef}
+                                    />
+                                )}
                             </div>
                             <div className="user-info">
                                 <p className="user-name"> @{userData.username} </p>
@@ -326,13 +370,19 @@ const UserProfile = () => {
                                         <div className="text-light m-0 ml-n2"> Update Profile </div>
                                     </div>
                                     {!isOauth2User && (
-                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("changeEmail")}>
+                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => {setActiveSection("changeEmail"); setIsEmailSecurityCodeSent(false)}}>
                                             <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
                                                 <i className="fa-solid fa-envelope-circle-check"></i>
                                             </div>
                                             <div className="text-light m-0 ml-n2"> Change Email </div>
                                         </div>
                                     )}
+                                    <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("changeUsername")}>
+                                        <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                            <i className="fa-solid fa-file-signature"></i>
+                                        </div>
+                                        <div className="text-light m-0 ml-n2"> Change Username </div>
+                                    </div>
                                     <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("changePassword")}>
                                         <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
                                             <i className="fa-solid fa-shield-halved"></i>
@@ -370,39 +420,39 @@ const UserProfile = () => {
                                         <div className="row mt-2">
                                             <div className="col-md-6">
                                                 <label className="labels">Name</label>
-                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                <input type="text" className="form-control" placeholder=""
                                                     value={modifiedUserData.name} name="name" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-6 mb-2">
                                                 <label className="labels">Surname</label>
                                                 <input type="text" className="form-control" value={modifiedUserData.surname}
-                                                    placeholder="Enter value" name="surname" onChange={handleChange}
+                                                    placeholder="" name="surname" onChange={handleChange}
                                                 />
                                             </div>
                                         </div>
                                         <div className="row mt-2">
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">Phone Number</label>
-                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                <input type="text" className="form-control" placeholder=""
                                                     value={modifiedUserData.phoneNumber} name="phoneNumber" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">Country</label>
-                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                <input type="text" className="form-control" placeholder=""
                                                     value={modifiedUserData.country} name="country" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">State / Region</label>
-                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                <input type="text" className="form-control" placeholder=""
                                                     value={modifiedUserData.stateRegion} name="stateRegion" onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-12">
                                                 <label className="labels">Address</label>
-                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                <input type="text" className="form-control" placeholder=""
                                                     value={modifiedUserData.address} name="address" onChange={handleChange}
                                                 />
                                             </div>
@@ -433,31 +483,38 @@ const UserProfile = () => {
                                         <div className="row mt-3">
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">Current Email</label>
-                                                <input type="text" className="form-control" placeholder="Enter value"
+                                                <input type="text" className="form-control" placeholder=""
                                                     value={userData.email} name="name"
                                                     disabled="true"
                                                 />
                                             </div>
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">New Email</label>
-                                                <input type="text" className="form-control" placeholder="Enter value" name="surname" onChange={(e) => setNewEmail(e.target.value)}
+                                                <input type="email" className="form-control" placeholder="" name="newEmail" onChange={(e) => setNewEmail(e.target.value)}
                                                 />
                                             </div>
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">Repeat New Email</label>
-                                                <input type="text" className="form-control" placeholder="Enter value" name="phoneNumber" onChange={(e) => setRepeatNewEmail(e.target.value)} />
+                                                <input type="email" className="form-control" placeholder="" name="repeatNewEmail" onChange={(e) => setRepeatNewEmail(e.target.value)} />
                                             </div>
                                             <div className="col-md-12">
                                                 <label className="labels">Password</label>
-                                                <input type="password" className="form-control" placeholder="Enter value" name="phoneNumber" onChange={(e) => setPassword(e.target.value)}
+                                                <input type="password" className="form-control" placeholder="" name="password" onChange={(e) => setPassword(e.target.value)}
                                                 />
                                             </div>
+                                            {isEmailSecurityCodeSent && (
+                                                <div className="col-md-12">
+                                                    <label className="labels">Security Code</label>
+                                                    <input type="text" className="form-control" placeholder="" name="password" onChange={(e) => setEmailSecurityCode(e.target.value)}
+                                                    />
+                                                </div>
+                                            )}
                                         </div>
                                         {changeEmailError && <div className="error-message">{changeEmailError}</div>}
                                         {changeEmailSuccess && <div className="success-message">{changeEmailSuccess}</div>}
                                         <div className="mt-4">
                                             <button className="btn btn-primary profile-button" type="button" onClick={handleChangeEmail}>
-                                                Change Email
+                                                {!isEmailSecurityCodeSent ? "Change Email" : "Verify Email"}
                                             </button>
                                         </div>
                                     </div>
@@ -466,7 +523,49 @@ const UserProfile = () => {
                         </div>
                     )}
 
-                    {activeSection === "changePassword" && isUserProfileAuth &&  (
+                    {activeSection === "changeUsername" && isUserProfileAuth && (
+                        <div className="container rounded mt-5 ml-5 mb-5" style={{ flex: '1 -1 0%', overflow: 'auto', width: '30%' }}>
+                            <div className="row" style={{ height: '100%' }}>
+                                {/* Profile Form */}
+                                <div className="border-right">
+                                    <div className="p-3 py-5">
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <h4 className="text-light">Change Username</h4>
+                                        </div>
+                                        {/* Form Fields */}
+                                        <div className="row mt-3">
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">Current Username</label>
+                                                <input type="text" className="form-control" placeholder=""
+                                                    value={userData.username} name="username"
+                                                    disabled="true"
+                                                />
+                                            </div>
+                                            <div className="col-md-12 mb-2">
+                                                <label className="labels">New Username</label>
+                                                <input type="email" className="form-control" placeholder="" name="newEmail" onChange={(e) => setNewUsername(e.target.value)}
+                                                />
+                                            </div>
+                                            <div className="col-md-12">
+                                                <label className="labels">Password</label>
+                                                <input type="password" className="form-control" placeholder="" name="password" onChange={(e) => setPassword(e.target.value)}
+                                                />
+                                            </div>
+                                        </div>
+                                        {changeUsernameError && <div className="error-message">{changeUsernameError}</div>}
+                                        {changeUsernameSuccess && <div className="success-message">{changeUsernameSuccess}</div>}
+                                        <div className="mt-4">
+                                            <button className="btn btn-primary profile-button" type="button" onClick={handleChangeUsername}>
+                                                Change Username
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {activeSection === "changePassword" && isUserProfileAuth && (
                         <div className="container rounded mt-5 ml-5 mb-5" style={{ flex: '1 -1 0%', overflow: 'auto', width: '30%' }}>
                             <div className="row" style={{ height: '100%' }}>
                                 {/* Profile Form */}
@@ -479,15 +578,15 @@ const UserProfile = () => {
                                         <div className="row mt-3">
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">Old Password</label>
-                                                <input type="password" className="form-control" placeholder="Enter value" name="oldPassword" onChange={(e) => setPassword(e.target.value)}/>
+                                                <input type="password" className="form-control" placeholder="" name="oldPassword" onChange={(e) => setPassword(e.target.value)} />
                                             </div>
                                             <div className="col-md-12 mb-2">
                                                 <label className="labels">New Password</label>
-                                                <input type="password" className="form-control" placeholder="Enter value" name="newPassword" onChange={(e) => setNewPassword(e.target.value)} />
+                                                <input type="password" className="form-control" placeholder="" name="newPassword" onChange={(e) => setNewPassword(e.target.value)} />
                                             </div>
                                             <div className="col-md-12">
                                                 <label className="labels">Repeat New Password</label>
-                                                <input type="password" className="form-control" placeholder="Enter value" name="repeatNewPassword" onChange={(e) => setRepeatNewPassword(e.target.value)}
+                                                <input type="password" className="form-control" placeholder="" name="repeatNewPassword" onChange={(e) => setRepeatNewPassword(e.target.value)}
                                                 />
                                             </div>
                                         </div>

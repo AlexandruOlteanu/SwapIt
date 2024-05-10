@@ -1,6 +1,6 @@
 package com.swapit.user.domain;
 
-import com.swapit.user.utils.SecurityCodeType;
+import com.swapit.user.api.util.SecurityCodeType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

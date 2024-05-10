@@ -36,6 +36,7 @@ public class JwtService {
     private Key signingKey;
 
     private static String USER_ROLE_JWT_KEY = "user_role";
+    private static String USER_ID_JWT_KEY = "user_id";
 
     @PostConstruct
     public void init() {
@@ -55,6 +56,7 @@ public class JwtService {
         User user = (User) userDetails;
         Map<String, Object> claims = new HashMap<>();
         claims.put(USER_ROLE_JWT_KEY, user.getUserRole());
+        claims.put(USER_ID_JWT_KEY, user.getUserId());
         return createToken(claims, userDetails.getUsername());
     }
 
@@ -71,16 +73,10 @@ public class JwtService {
         long currentTimeMillis = System.currentTimeMillis();
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
                 .setIssuedAt(new Date(currentTimeMillis))
                 .setExpiration(new Date(currentTimeMillis + expirationMs))
                 .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

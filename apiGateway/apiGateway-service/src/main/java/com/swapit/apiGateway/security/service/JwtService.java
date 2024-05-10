@@ -41,6 +41,11 @@ public class JwtService {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    public <T> T getClaimFromTokenByName(String token, String claimName, Class<T> claimType) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimType.cast(claims.get(claimName));
+    }
+
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
@@ -71,12 +76,7 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
-    }
-
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         final Date expiration = getClaimFromToken(token, Claims::getExpiration);
         return expiration.before(new Date());
     }

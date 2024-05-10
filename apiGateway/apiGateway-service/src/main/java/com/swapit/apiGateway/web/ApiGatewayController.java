@@ -57,8 +57,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public void sendRegistrationCode(SendRegistrationCodeRequest request) {
-        externalOperationsService.sendRegistrationCode(request);
+    public void forgottenPasswordReset(ForgottenPasswordResetRequest request) {
+        externalOperationsService.forgottenPasswordReset(request);
     }
 
     @Override
@@ -169,20 +169,24 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public void updateProtectedUserDetails(UpdateProtectedUserDetailsRequest request) {
+    public void passwordReset(PasswordResetRequest request) {
         var attributes = authenticatedUserContextService.getUserProperties();
         Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
-        externalOperationsService.updateProtectedUserDetails(userId, request);
+        externalOperationsService.passwordReset(userId, request);
     }
 
     @Override
-    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
-        externalOperationsService.sendPasswordResetCode(request);
+    public void emailReset(EmailResetRequest request) {
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.emailReset(userId, request);
     }
 
     @Override
-    public void passwordReset(PasswordResetRequest request) {
-        externalOperationsService.passwordReset(request);
+    public void usernameReset(UsernameResetRequest request) {
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.usernameReset(userId, request);
     }
 
     @Override

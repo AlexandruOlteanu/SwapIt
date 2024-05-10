@@ -300,44 +300,6 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.UPDATE_PROTECTED_USER_DETAILS);
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
-        log.info(uriBuilder.toUriString());
-        try {
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
-        } catch (Exception e) {
-            log.error("Exception in Updating Protected User Details: {}", e.getMessage(), e);
-            throw e;
-        }
-    }
-
-    @Override
-    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEND_PASSWORD_RESET_CODE);
-        log.info(url);
-        try {
-            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class).getBody();
-        } catch (Exception e) {
-            log.error("Exception in sending password reset code {}", e.getMessage(), e);
-            throw e;
-        }
-    }
-
-    @Override
-    public void passwordReset(PasswordResetRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.PASSWORD_RESET);
-        log.info(url);
-        try {
-            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
-        } catch (Exception e) {
-            log.error("Exception in password reset process {}", e.getMessage(), e);
-            throw e;
-        }
-    }
-
-    @Override
     public void addNewProductCategory(AddNewProductCategoryRequest request) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_NEW_PRODUCT_CATEGORY);
         log.info(url);
@@ -468,18 +430,6 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void sendRegistrationCode(SendRegistrationCodeRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.SEND_REGISTRATION_CODE);
-        log.info(url);
-        try {
-            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
-        } catch (Exception e) {
-            log.error("Exception in sending registration code {}", e.getMessage(), e);
-            throw e;
-        }
-    }
-
-    @Override
     public void manualSecurityCodesExpire() {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.MANUAL_SECURITY_CODES_EXPIRE);
         log.info(url);
@@ -531,6 +481,61 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             throw e;
         }
     }
+
+    @Override
+    public void forgottenPasswordReset(ForgottenPasswordResetRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.FORGOTTEN_PASSWORD_RESET);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), Void.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in forgottenPasswordReset {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void passwordReset(Integer userId, PasswordResetRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.PASSWORD_RESET);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class);
+        } catch (Exception e) {
+            log.error("Exception in password reset {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void emailReset(Integer userId, EmailResetRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.EMAIL_RESET);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class);
+        } catch (Exception e) {
+            log.error("Exception in email reset {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void usernameReset(Integer userId, UsernameResetRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.USERNAME_RESET);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class);
+        } catch (Exception e) {
+            log.error("Exception in username reset {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
 
     public void addProductInSearchDictionary(Integer productId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_PRODUCT_IN_SEARCH_DICTIONARY);

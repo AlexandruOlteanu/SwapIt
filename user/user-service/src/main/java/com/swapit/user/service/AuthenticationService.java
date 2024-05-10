@@ -10,7 +10,5 @@ public interface AuthenticationService {
     LoginResponse login(LoginRequest request);
     RegisterResponse register(RegisterRequest request);
     Oauth2Response oauth2login(Oauth2Request request);
-    void sendRegistrationCode(SendRegistrationCodeRequest request);
-    void sendPasswordResetCode(SendPasswordResetCodeRequest request);
-    void passwordReset(PasswordResetRequest request);
+    void forgottenPasswordReset(ForgottenPasswordResetRequest request);
 }

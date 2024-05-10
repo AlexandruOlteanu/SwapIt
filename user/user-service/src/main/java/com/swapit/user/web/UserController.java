@@ -37,18 +37,23 @@ public class UserController implements UserService {
     }
 
     @Override
-    public void sendRegistrationCode(SendRegistrationCodeRequest request) {
-        authenticationService.sendRegistrationCode(request);
+    public void forgottenPasswordReset(ForgottenPasswordResetRequest request) {
+        authenticationService.forgottenPasswordReset(request);
     }
 
     @Override
-    public void sendPasswordResetCode(SendPasswordResetCodeRequest request) {
-        authenticationService.sendPasswordResetCode(request);
+    public void passwordReset(Integer userId, PasswordResetRequest request) {
+        updateUserDetailsService.passwordReset(userId, request);
     }
 
     @Override
-    public void passwordReset(PasswordResetRequest request) {
-        authenticationService.passwordReset(request);
+    public void emailReset(Integer userId, EmailResetRequest request) {
+        updateUserDetailsService.emailReset(userId, request);
+    }
+
+    @Override
+    public void usernameReset(Integer userId, UsernameResetRequest request) {
+        updateUserDetailsService.usernameReset(userId, request);
     }
 
     @Override
@@ -69,11 +74,6 @@ public class UserController implements UserService {
     @Override
     public void updateBasicUserDetails(Integer userId, UpdateBasicUserDetailsRequest request) {
         updateUserDetailsService.updateBasicUserDetails(userId, request);
-    }
-
-    @Override
-    public void updateProtectedUserDetails(Integer userId, UpdateProtectedUserDetailsRequest request) {
-        updateUserDetailsService.updateProtectedUserDetails(userId, request);
     }
 
     @Override

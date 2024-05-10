@@ -1,7 +1,7 @@
 package com.swapit.user.repository;
 
 import com.swapit.user.domain.SecurityCode;
-import com.swapit.user.utils.SecurityCodeType;
+import com.swapit.user.api.util.SecurityCodeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
