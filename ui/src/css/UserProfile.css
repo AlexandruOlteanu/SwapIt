@@ -15,7 +15,6 @@
 
 .profile-button {
     background: var(--primary) !important;
-    width: 45% !important;
     line-height: 0px !important;
     height: 40px !important;
     box-shadow: none;

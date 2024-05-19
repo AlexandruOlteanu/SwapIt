@@ -9,10 +9,10 @@ import Preloader from '../js/Preloader';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import '../scss/UserProfile.scss';
 import '../css/UserProfile.css'
+import CategoriesMenu from '../sections/CategoriesMenu';
 
 const TopbarSection = lazy(() => import('../sections/TopbarSection'));
 const NavbarSection = lazy(() => import('../sections/NavbarSection'));
-const SearchSection = lazy(() => import('../sections/SearchSection'));
 const FooterSection = lazy(() => import('../sections/FooterSection'));
 const BackToTopButton = lazy(() => import('../js/BackToTopButton'));
 
@@ -305,7 +305,7 @@ const UserProfile = () => {
             <Preloader />
             <TopbarSection />
             <NavbarSection />
-            <SearchSection />
+            <CategoriesMenu />
             <div className="main-container">
                 <div className={isSidebarMinimized ? "left-sidebar minimize" : "left-sidebar"}>
                     <div className="inner">

@@ -1,0 +1,120 @@
+.main-container-categories {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+.product-categories-section {
+    position: relative;
+    display: inline-block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .product-categories-header {
+    padding: 10px 20px;
+    background-color: var(--secondary);
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    font-size: 14px; /* Adjusted font size */
+  }
+  
+  .product-categories-header:hover {
+    background-color: var(--primary_hover);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .categories-menu {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: linear-gradient(135deg, var(--dark), var(--secondary));
+    border: 1px solid var(--primary);
+    z-index: 1000;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .main-categories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 250px; /* Increased width of the main categories menu */
+  }
+  
+  .category-item {
+    padding: 10px;
+    background: transparent;
+    border-bottom: 1px solid var(--primary);
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 14px; /* Adjusted font size */
+  }
+  
+  .category-item:hover {
+    background: var(--primary);
+    color: var(--dark);
+  }
+  
+  .subcategories {
+    background: linear-gradient(135deg, var(--secondary), var(--dark));
+    border-left: 1px solid var(--primary);
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    width: 750px; /* Adjusted width to accommodate grid */
+    display: flex; /* Flex to create grid layout */
+    flex-wrap: wrap;
+    border-radius: 0 0 10px 10px;
+    position: absolute; /* Ensure the subcategories are positioned correctly */
+    left: 250px; /* Adjusted to match the width of main categories */
+    top: 0;
+  }
+  
+  .subcategory-item {
+    padding: 10px;
+    width: 25%; /* 4 items per row */
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--primary);
+    transition: background-color 0.3s, color 0.3s;
+    font-size: 14px; /* Adjusted font size */
+  }
+  
+  .subcategory-item:hover {
+    background: var(--secondary);
+    color: var(--light);
+  }
+  
+  .subcategory-name {
+    font-weight: bold; /* Make the main subcategory titles bold */
+    color: var(--light); /* Ensure the text is light */
+    font-size: 14px; /* Adjusted font size */
+    text-decoration: none; /* Ensure no underline by default */
+  }
+  
+  .subcategory-name:hover {
+    cursor: pointer;
+    text-decoration: underline; /* Underline effect on hover */
+  }
+  
+  .sub-subcategories {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sub-subcategory-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    color: var(--light); /* Ensure the text is light */
+    font-size: 14px; /* Adjusted font size */
+  }
+  
+  .sub-subcategory-item:hover {
+    background: var(--primary_hover);
+    color: var(--dark); /* Change text color on hover for contrast */
+  }
