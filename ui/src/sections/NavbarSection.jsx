@@ -80,17 +80,18 @@ function NavbarSection() {
                         </div>
 
                         <div className="collapse navbar-collapse justify-content-between px-3 menu menu-3" id="navbarCollapse">
-                            <div className="navbar-nav ml-auto py-0">
-                                <div className="nav-item dropdown">
-                                </div>
+                            <div className="navbar-nav ml-auto py-0 justify-content-end">
                                 {!isLoggedIn && (
-                                    <div className="col-xl-2 col-lg-4 col-md-6 px-2">
-                                        <div className="nav-item nav-link">
-                                            <a href="/user/auth">
-                                                <button className="btn btn-primary btn-block" type="submit" style={{ width: "120px", borderRadius: '10px' }}>Sign In</button>
-                                            </a>
+                                    <>
+                                        <div className="col-xl-12 col-lg-4 col-md-6 px-2">
+                                            <div className="nav-item nav-link">
+                                                <a href="/user/auth">
+                                                    <button className="btn btn-primary btn-block" type="submit" style={{ width: "120px", borderRadius: '10px' }}>Sign In</button>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </>
+
                                 )}
 
                                 {isLoggedIn && (
@@ -99,17 +100,17 @@ function NavbarSection() {
                                             <div className="nav-item nav-link">
                                                 <a onClick={handleUserIconClick}>
                                                     <div className="iconContainer">
-                                                        <i className="fa fa-solid fa-plus-circle fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                        <i className="fa fa-solid fa-plus-circle navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
                                                         <span className="profile-text">Add Product</span>
                                                     </div>
                                                 </a>
                                             </div>
                                         </div>
-                                        <div className="col-lg-4 col-md-6 px-2 ml-4">
+                                        <div className="col-lg-4 col-md-6 px-2 ml-4 pl-2">
                                             <div className="nav-item nav-link">
                                                 <a onClick={handleUserIconClick}>
                                                     <div className="iconContainer">
-                                                        <i className="fa fa-regular fa-user fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                        <i className="fa fa-regular fa-user navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
                                                         <span className="profile-text">My Profile</span>
                                                     </div>
                                                 </a>

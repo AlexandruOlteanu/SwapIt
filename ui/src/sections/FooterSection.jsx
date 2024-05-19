@@ -74,7 +74,7 @@ function FooterSection() {
                 </div>
             </div>
             <div className="container-fluid bg-dark py-4 px-sm-3 px-md-5">
-                <p className="mb-2 text-center text-body">&copy; <a href="">SwapIt 2022-2023</a>. All Rights Reserved.</p>
+                <p className="mb-2 text-center text-body">&copy; <a href="">SwapIt 2022-2024</a>. All Rights Reserved.</p>
             </div>
         </React.Fragment>
     )
