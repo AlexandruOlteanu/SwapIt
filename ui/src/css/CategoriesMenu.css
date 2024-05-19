@@ -60,12 +60,12 @@
   }
   
   .subcategories {
-    background: linear-gradient(135deg, var(--secondary), var(--dark));
+    background: var(--dark);
     border-left: 1px solid var(--primary);
     list-style: none;
     padding: 10px;
     margin: 0;
-    width: 750px; /* Adjusted width to accommodate grid */
+    width: 900px; /* Adjusted width to accommodate grid */
     display: flex; /* Flex to create grid layout */
     flex-wrap: wrap;
     border-radius: 0 0 10px 10px;

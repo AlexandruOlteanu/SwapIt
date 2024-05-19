@@ -401,7 +401,7 @@ const CategoriesMenu = () => {
                 }}
             >
                 <div className="product-categories-header">
-                    <i class="fa-solid fa-bars pr-2"></i>
+                    <i className="fa-solid fa-bars pr-2"></i>
                     Product Categories
                 </div>
                 {showCategories && (

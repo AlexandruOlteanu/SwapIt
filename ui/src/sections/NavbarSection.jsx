@@ -5,6 +5,7 @@ import Logo from '../logo/Logo.webp'
 
 import '../css/NavbarSection.css'
 import ApiBackendService from '../apiBackend/ApiBackendService';
+import SearchBar from './SearchBar';
 
 const HamburgerButton = lazy(() => import('../js/HamburgerButton'));
 
@@ -72,6 +73,8 @@ function NavbarSection() {
                             <img src={Logo} alt="SwapIt Logo" className="swapit-logo" />
                         </a>
 
+                        <SearchBar />
+
                         <div onClick={openMenu}>
                             <HamburgerButton />
                         </div>
@@ -80,32 +83,34 @@ function NavbarSection() {
                             <div className="navbar-nav ml-auto py-0">
                                 <div className="nav-item dropdown">
                                 </div>
-                                <div className="col-xl-2 col-lg-4 col-md-6 px-2">
-                                    <div className="nav-item nav-link">
-                                        {!isLoggedIn && (
+                                {!isLoggedIn && (
+                                    <div className="col-xl-2 col-lg-4 col-md-6 px-2">
+                                        <div className="nav-item nav-link">
                                             <a href="/user/auth">
                                                 <button className="btn btn-primary btn-block" type="submit" style={{ width: "120px", borderRadius: '10px' }}>Sign In</button>
                                             </a>
-                                        )}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
+
                                 {isLoggedIn && (
                                     <>
-                                        <div className="col-xl-2 col-lg-4 col-md-6 px-2">
+                                        <div className="col-lg-4 col-md-6 px-2 ml-4 pl-2">
                                             <div className="nav-item nav-link">
                                                 <a onClick={handleUserIconClick}>
                                                     <div className="iconContainer">
-                                                        <i className="fa fa-solid fa-plus fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
-
+                                                        <i className="fa fa-solid fa-plus-circle fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                        <span className="profile-text">Add Product</span>
                                                     </div>
                                                 </a>
                                             </div>
                                         </div>
-                                        <div className="col-xl-2 col-lg-4 col-md-6 px-2 ml-4">
+                                        <div className="col-lg-4 col-md-6 px-2 ml-4">
                                             <div className="nav-item nav-link">
                                                 <a onClick={handleUserIconClick}>
                                                     <div className="iconContainer">
                                                         <i className="fa fa-regular fa-user fa-2x" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                        <span className="profile-text">My Profile</span>
                                                     </div>
                                                 </a>
                                             </div>
