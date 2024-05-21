@@ -8,6 +8,7 @@ import './css/SwapIt.css';
 const Home = lazy(() => import('./Home'));
 const Authentication = lazy(() => import('./auth/Authentication'));
 const UserProfile = lazy(() => import('./user/UserProfile'));
+const AddProduct = lazy(() => import('./sections/AddProduct'));
 const Contact = lazy(() => import('./Contact'));
 const PrivacyPolicy = lazy(() => import('./info/PrivacyPolicy'));
 const TermsConditions = lazy(() => import('./info/TermsConditions'));
@@ -21,6 +22,7 @@ function SwapIt() {
                     <Route path="/user/authHandler" element={<AuthRedirectHandler />} />
                     <Route path="/user/auth" element={<AccessOnlyIfNotLoggedIn element={Authentication} />} />
                     <Route path="/users/:username" element={<UserProfile />} />
+                    <Route path="/product/addNewProduct" element={<AddProduct />} />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/info/privacy-policy" element={<PrivacyPolicy />} />
                     <Route path="/info/terms-and-conditions" element={<TermsConditions />} />

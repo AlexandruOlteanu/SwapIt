@@ -63,6 +63,17 @@ function NavbarSection() {
         navigate(`/users/${userData.username}`);
     };
 
+    const handleAddProductClick = async () => {
+        if (!isLoggedIn) {
+            window.location.href = '/user/auth';
+        }
+
+        const userData = await ApiBackendService.getAuthenticatedUserDetails({});
+        setUsername(userData.username);
+        const userId = userData.userId;
+        navigate(`/product/addNewProduct`);
+    };
+
     return (
         <div className='position-sticky'>
             {/* Navbar Start */}
@@ -98,7 +109,7 @@ function NavbarSection() {
                                     <>
                                         <div className="col-lg-4 col-md-6 px-2 ml-4 pl-2">
                                             <div className="nav-item nav-link">
-                                                <a onClick={handleUserIconClick}>
+                                                <a onClick={handleAddProductClick}>
                                                     <div className="iconContainer">
                                                         <i className="fa fa-solid fa-plus-circle navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
                                                         <span className="profile-text">Add Product</span>
