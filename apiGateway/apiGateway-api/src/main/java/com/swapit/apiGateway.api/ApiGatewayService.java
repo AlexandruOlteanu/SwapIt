@@ -9,9 +9,9 @@ import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
-import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
@@ -77,7 +77,7 @@ public interface ApiGatewayService {
     String GET_CONVERSATION = "getConversation";
 
     // SEARCH ENGINE URI
-    String GET_ALL_PRODUCT_CATEGORIES = "getAllProductCategories";
+    String GET_PRODUCT_CATEGORY_ID = "getProductCategoryId";
     String SEARCH_PRODUCTS = "searchProducts";
 
     // SEARCH ENGINE ADMIN URI
@@ -213,8 +213,8 @@ public interface ApiGatewayService {
 
     // SEARCH ENGINE API
 
-    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_ALL_PRODUCT_CATEGORIES)
-    ResponseEntity<GetProductCategoriesResponse> getAllProductCategories();
+    @PostMapping(value = BASE_URL + PUBLIC_ACCESS + GET_PRODUCT_CATEGORY_ID)
+    ResponseEntity<Integer> getProductCategoryId(@Valid @RequestBody GetProductCategoryIdRequest request);
 
     @PostMapping(value = BASE_URL + PUBLIC_ACCESS + SEARCH_PRODUCTS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<SearchProductsResponse> searchProducts(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,

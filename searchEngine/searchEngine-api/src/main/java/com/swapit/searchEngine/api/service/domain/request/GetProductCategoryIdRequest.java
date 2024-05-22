@@ -1,4 +1,4 @@
-package com.swapit.searchEngine.api.service.domain.response;
+package com.swapit.searchEngine.api.service.domain.request;
 
 import com.swapit.searchEngine.api.service.dto.ProductCategoryDTO;
 import lombok.Builder;
@@ -10,6 +10,6 @@ import java.util.List;
 @Data
 @Jacksonized
 @Builder
-public class GetProductCategoriesResponse {
-    List<ProductCategoryDTO> productCategories;
+public class GetProductCategoryIdRequest {
+    private String categoryName;
 }

@@ -132,6 +132,24 @@ class ApiService {
       params: params
     }, false);
   }
+
+  getProductCategoryId(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_CATEGORY_ID, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, true);
+  }
+
+  createProduct(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_CREATE_PRODUCT, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, true);
+  }
 }
 
 export default new ApiService();

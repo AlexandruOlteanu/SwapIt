@@ -4,8 +4,8 @@ import com.swapit.commons.cache.CacheInvalidateService;
 import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
-import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.dto.CategoryTreeValueDTO;
 import com.swapit.searchEngine.api.service.dto.ProductCategoryDTO;
 import com.swapit.searchEngine.domain.ProductCategory;
@@ -13,7 +13,6 @@ import com.swapit.searchEngine.repository.ProductCategoryRepository;
 import com.swapit.searchEngine.service.ProductCategorizeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,15 +51,12 @@ public class ProductCategorizeServiceImpl implements ProductCategorizeService {
     }
 
     @Override
-    @Cacheable(value = CACHE_PRODUCT_CATEGORIES)
-    public GetProductCategoriesResponse getAllProductCategories() {
-        List<ProductCategory> productCategories = productCategoryRepository.findAllRootCategories()
-                .orElse(new ArrayList<>());
-
-        return GetProductCategoriesResponse.builder()
-                .productCategories(processCategories(productCategories))
-                .build();
+    public Integer getProductCategoryId(GetProductCategoryIdRequest request) {
+        ProductCategory productCategory = productCategoryRepository.findProductCategoryByValue(request.getCategoryName())
+                .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_CATEGORY_NOT_FOUND));
+        return productCategory.getProductCategoryId();
     }
+
 
     @Override
     public GetCategoryTreeResponse getCategoryTree(Integer categoryId) {

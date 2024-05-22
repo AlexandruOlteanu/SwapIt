@@ -2,9 +2,9 @@ package com.swapit.searchEngine.web;
 
 import com.swapit.searchEngine.api.service.SearchEngineService;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
-import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.searchEngine.service.ProductCategorizeService;
 import com.swapit.searchEngine.service.SearchDictionaryService;
@@ -30,9 +30,10 @@ public class SearchEngineController implements SearchEngineService {
     }
 
     @Override
-    public ResponseEntity<GetProductCategoriesResponse> getAllProductCategories() {
-        return ResponseEntity.ok(productCategorizeService.getAllProductCategories());
+    public ResponseEntity<Integer> getProductCategoryId(GetProductCategoryIdRequest request) {
+        return ResponseEntity.ok(productCategorizeService.getProductCategoryId(request));
     }
+
 
     @Override
     public void addProductInSearchDictionary(Integer productId) throws IOException {

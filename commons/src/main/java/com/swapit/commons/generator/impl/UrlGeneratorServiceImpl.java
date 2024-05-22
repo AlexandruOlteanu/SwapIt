@@ -14,7 +14,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     public enum UrlIdentifier {
         USER_LOGIN, USER_REGISTER, CREATE_PRODUCT, SEND_PRIVATE_MESSAGE, GET_USER_DETAILS,
         GET_CONVERSATIONS_PREVIEW, SPECIFIC_USERS_DETAILS, GET_CONVERSATION, UPDATE_BASIC_USER_DETAILS,
-        UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_ALL_PRODUCT_CATEGORIES, ADD_PRODUCT_IN_SEARCH_DICTIONARY,
+        UPDATE_PROTECTED_USER_DETAILS, ADD_NEW_PRODUCT_CATEGORY, GET_PRODUCT_CATEGORY_ID, ADD_PRODUCT_IN_SEARCH_DICTIONARY,
         SEARCH_PRODUCTS, GET_PRODUCT_BY_ID, GET_CATEGORY_TREE, SEARCH_PRODUCTS_BY_CATEGORY, USER_OAUTH2_LOGIN,
         UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
         GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, MANUAL_SECURITY_CODES_EXPIRE,
@@ -87,8 +87,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     // SEARCH ENGINE URI
     @Value("${searchEngine.addNewProductCategory.route}")
     private String addNewProductCategoryUri;
-    @Value("${searchEngine.getAllProductCategories.route}")
-    private String getAllProductCategoriesUri;
+    @Value("${searchEngine.getProductCategoryId.route}")
+    private String getProductCategoryIdUri;
     @Value("${searchEngine.addProductInSearchDictionary.route}")
     private String addProductInSearchDictionaryUri;
     @Value("${searchEngine.updateProductInSearchDictionary.route}")
@@ -116,7 +116,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case UPDATE_BASIC_USER_DETAILS -> updateBasicUserDetailsUri;
             case UPDATE_PROTECTED_USER_DETAILS -> updateProtectedUserDetailsUri;
             case ADD_NEW_PRODUCT_CATEGORY -> addNewProductCategoryUri;
-            case GET_ALL_PRODUCT_CATEGORIES -> getAllProductCategoriesUri;
+            case GET_PRODUCT_CATEGORY_ID -> getProductCategoryIdUri;
             case ADD_PRODUCT_IN_SEARCH_DICTIONARY -> addProductInSearchDictionaryUri;
             case SEARCH_PRODUCTS -> searchProductsUri;
             case GET_PRODUCT_BY_ID -> getProductByIdUri;

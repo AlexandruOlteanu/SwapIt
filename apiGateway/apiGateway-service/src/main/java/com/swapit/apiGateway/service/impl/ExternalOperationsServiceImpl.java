@@ -12,9 +12,9 @@ import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
-import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
@@ -312,13 +312,13 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public GetProductCategoriesResponse getAllProductCategories() {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_ALL_PRODUCT_CATEGORIES);
+    public Integer getProductCategoryId(GetProductCategoryIdRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCT_CATEGORY_ID);
         log.info(url);
         try {
-            return restTemplate.exchange(url, HttpMethod.GET, null, GetProductCategoriesResponse.class).getBody();
+            return restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Integer.class).getBody();
         } catch (Exception e) {
-            log.error("Exception in getting all product categories {}", e.getMessage(), e);
+            log.error("Exception in getting product category id {}", e.getMessage(), e);
             throw e;
         }
     }

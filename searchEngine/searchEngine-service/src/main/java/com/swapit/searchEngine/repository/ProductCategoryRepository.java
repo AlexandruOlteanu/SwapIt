@@ -9,7 +9,5 @@ import java.util.Optional;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Integer> {
     Optional<ProductCategory> findFirstByValue(String value);
-
-    @Query("select pc from ProductCategory pc where pc.parent is null")
-    Optional<List<ProductCategory>> findAllRootCategories();
+    Optional<ProductCategory> findProductCategoryByValue(String value);
 }

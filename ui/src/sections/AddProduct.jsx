@@ -1,5 +1,5 @@
 import React, { useState, lazy } from 'react';
-import { TextField, Button, Grid, MenuItem, Select, InputLabel, FormControl, Typography, Box } from '@mui/material';
+import { TextField, Button, Grid, MenuItem, Typography, Box } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { styled } from '@mui/material/styles';
@@ -10,6 +10,7 @@ import '../css/AddProduct.css';
 
 import Preloader from '../js/Preloader'
 import CategoriesMenu from './CategoriesMenu';
+import ApiBackendService from '../apiBackend/ApiBackendService';
 const TopbarSection = lazy(() => import('./TopbarSection'));
 const NavbarSection = lazy(() => import('./NavbarSection'));
 const FooterSection = lazy(() => import('./FooterSection'));
@@ -263,7 +264,6 @@ const AddProduct = () => {
         title: '',
         description: '',
         price: '',
-        currency: 'USD',
         categoryId: '',
         categoryLevel1: '',
         categoryLevel2: '',
@@ -354,11 +354,49 @@ const AddProduct = () => {
         });
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(product);
-        // Make API call to submit the product
+    const transformSpecifications = (specificationsArray) => {
+        return specificationsArray.reduce((acc, spec) => {
+            acc[spec.key] = spec.value;
+            return acc;
+        }, {});
     };
+
+    const extractImageUrls = (imagesArray) => {
+        return imagesArray.reduce((acc, imageObj) => {
+            if (imageObj.imageUrl) {
+                acc.push(imageObj.imageUrl);
+            }
+            return acc;
+        }, []);
+    };
+
+    const extractNumericValue = (value) => {
+        return parseFloat(value.replace(/[^0-9.-]+/g, ''));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const categoryId = await ApiBackendService.getProductCategoryId({}, {categoryName: product.categoryLevel3});
+            product.categoryId = categoryId;
+            const transformedSpecifications = transformSpecifications(product.productSpecifications);
+            const productImages = extractImageUrls(product.productImages);
+            const data = {
+                title: product.title,
+                description: product.description,
+                price: extractNumericValue(product.price),
+                categoryId: product.categoryId,
+                productSpecifications: transformedSpecifications,
+                productImages: productImages
+            }
+            console.log(data);
+            const productId = await ApiBackendService.createProduct({}, data);
+            console.log(productId);
+        } catch (error) {
+            console.error('Error creating new product:', error);
+        }
+    };
+    
 
     return (
         <React.Fragment>

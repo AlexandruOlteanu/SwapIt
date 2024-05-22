@@ -12,9 +12,9 @@ import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
+import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
 import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
-import com.swapit.searchEngine.api.service.domain.response.GetProductCategoriesResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
@@ -162,6 +162,11 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
+    public ResponseEntity<Integer> getProductCategoryId(GetProductCategoryIdRequest request) {
+        return ResponseEntity.ok(externalOperationsService.getProductCategoryId(request));
+    }
+
+    @Override
     public void  updateBasicUserDetails(UpdateBasicUserDetailsRequest request) {
         var attributes = authenticatedUserContextService.getUserProperties();
         Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
@@ -212,11 +217,6 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public void manualRemoveUsersBan() {
         externalOperationsService.manualRemoveUsersBan();
-    }
-
-    @Override
-    public ResponseEntity<GetProductCategoriesResponse> getAllProductCategories() {
-        return ResponseEntity.ok(externalOperationsService.getAllProductCategories());
     }
 
     @Override
