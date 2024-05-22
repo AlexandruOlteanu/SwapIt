@@ -274,6 +274,7 @@ const AddProduct = () => {
 
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [productCreated, setProductCreated] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -374,6 +375,13 @@ const AddProduct = () => {
         return parseFloat(value.replace(/[^0-9.-]+/g, ''));
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -392,11 +400,54 @@ const AddProduct = () => {
             console.log(data);
             const productId = await ApiBackendService.createProduct({}, data);
             console.log(productId);
+            setProductCreated(true);
+            scrollToTop();
         } catch (error) {
             console.error('Error creating new product:', error);
         }
     };
-    
+
+    const handleCreateNewProduct = () => {
+        setProduct({
+            title: '',
+            description: '',
+            price: '',
+            categoryId: '',
+            categoryLevel1: '',
+            categoryLevel2: '',
+            categoryLevel3: '',
+            productSpecifications: [{ key: '', value: '' }],
+            productImages: []
+        });
+        setProductCreated(false);
+    };
+
+    if (productCreated) {
+        return (
+            <React.Fragment>
+                <Preloader />
+                <TopbarSection />
+                <NavbarSection />
+                <CategoriesMenu />
+                <div className="form-container">
+                    <div className="success-container" style={{ textAlign: 'center', marginTop: '50px', marginBottom: '400px'}}>
+                        <Typography variant="h4" color={'white'}>Product Created Successfully</Typography>
+                        <Button
+                            variant="contained"
+                            onClick={handleCreateNewProduct}
+                            className="button"
+                            style={{ marginTop: '20px' }}
+                        >
+                            Create a New One
+                        </Button>
+                    </div>
+                </div>
+                <FooterSection />
+                <BackToTopButton />
+            </React.Fragment>
+        );
+    }
+
 
     return (
         <React.Fragment>
@@ -407,7 +458,7 @@ const AddProduct = () => {
             <div className="form-container">
                 <Box className="form">
                     <Typography variant="h4" className="form-title">
-                        Create new product
+                        Create New Product
                     </Typography>
                     <Grid container spacing={2} component="form" onSubmit={handleSubmit}>
                         <Grid item xs={12}>
@@ -556,17 +607,17 @@ const AddProduct = () => {
                         )}
                         {product.productImages.length > 0 && (
                             <Grid item xs={12}>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                                {product.productImages.map((img, index) => (
-                                    <ImageContainer key={index}>
-                                        <img src={img.imageUrl} alt={`Product ${index}`} width="300" />
-                                        <DeleteButton onClick={() => handleRemoveImage(index)}>
-                                            <DeleteIcon />
-                                        </DeleteButton>
-                                    </ImageContainer>
-                                ))}
-                            </div>
-                        </Grid>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                                    {product.productImages.map((img, index) => (
+                                        <ImageContainer key={index}>
+                                            <img src={img.imageUrl} alt={`Product ${index}`} width="300" />
+                                            <DeleteButton onClick={() => handleRemoveImage(index)}>
+                                                <DeleteIcon />
+                                            </DeleteButton>
+                                        </ImageContainer>
+                                    ))}
+                                </div>
+                            </Grid>
                         )}
                         <Grid item xs={12}>
                             <Button
