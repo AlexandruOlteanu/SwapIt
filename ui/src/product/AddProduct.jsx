@@ -9,11 +9,11 @@ import { v4 as uuidv4 } from 'uuid';
 import '../css/AddProduct.css';
 
 import Preloader from '../js/Preloader'
-import CategoriesMenu from './CategoriesMenu';
+import CategoriesMenu from '../sections/CategoriesMenu';
 import ApiBackendService from '../apiBackend/ApiBackendService';
-const TopbarSection = lazy(() => import('./TopbarSection'));
-const NavbarSection = lazy(() => import('./NavbarSection'));
-const FooterSection = lazy(() => import('./FooterSection'));
+const TopbarSection = lazy(() => import('../sections/TopbarSection'));
+const NavbarSection = lazy(() => import('../sections/NavbarSection'));
+const FooterSection = lazy(() => import('../sections/FooterSection'));
 const BackToTopButton = lazy(() => import('../js/BackToTopButton'));
 
 

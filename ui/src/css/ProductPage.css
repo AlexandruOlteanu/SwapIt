@@ -1,0 +1,209 @@
+.product-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items to the top */
+  gap: 40px; /* Increase the gap for better spacing */
+  padding: 40px; /* Increase padding for better spacing */
+  background-color: var(--dark);
+}
+
+.image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+}
+
+.main-image {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.main-image img {
+  width: 100%;
+  height: auto;
+}
+
+.slider-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px; /* Increase the font size for better visibility */
+  z-index: 1;
+}
+
+.slider-button.left {
+  left: 10px;
+}
+
+.slider-button.right {
+  right: 10px;
+}
+
+.image-thumbnails {
+  display: flex;
+  flex-wrap: wrap; /* Allow thumbnails to wrap to the next line */
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.image-thumbnails img {
+  width: 80px; /* Increase the size of the thumbnails */
+  height: auto;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border 0.3s ease;
+}
+
+.image-thumbnails img.active,
+.image-thumbnails img:hover {
+  border: 2px solid var(--primary);
+}
+
+.product-details {
+  text-align: left;
+  width: 45%;
+  align-self: flex-start; /* Align self to start */
+  color: white;
+}
+
+.product-details h1 {
+  font-size: 36px; /* Increase the font size of the title */
+  margin-bottom: 10px;
+  color: white;
+  white-space: normal; /* Allow the text to wrap */
+  word-wrap: break-word; /* Break long words if necessary */
+  overflow-wrap: break-word; /* Ensure long words break */
+}
+
+.product-details p {
+  font-size: 18px; /* Increase the font size of the description */
+  margin-bottom: 20px;
+}
+
+.price {
+  font-size: 22px; /* Increase the font size of the price */
+  margin-bottom: 20px;
+}
+
+.price-value {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+
+.product-button button {
+  padding: 15px 30px; /* Increase the padding of the button */
+  background-color: var(--primary);
+  border-radius: 6px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px; /* Increase the font size of the button */
+}
+
+.product-buttons {
+  display: flex;
+  gap: 20px; /* Adjust gap as needed */
+}
+
+.product-button button:hover {
+  background-color: var(--primary_hover);
+}
+
+.delete-product-button {
+  padding: 15px 30px; /* Increase the padding of the button */
+  background-color: rgb(181, 26, 26);
+  border-radius: 6px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px; /* Increase the font size of the button */
+}
+
+.delete-product-button:hover {
+  background-color: red;
+}
+
+.update-product-button {
+  padding: 15px 30px; /* Increase the padding of the button */
+  background-color: var(--primary);
+  border-radius: 6px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px; /* Increase the font size of the button */
+}
+
+.update-product-button:hover {
+  background-color: var(--primary_hover);
+}
+
+.specifications-section {
+  width: 100%;
+  margin: 20px auto;
+  padding: 20px 0;
+  color: white;
+}
+
+.specifications-section h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: white;
+  text-align: left;
+}
+
+.specifications-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.specifications-table tbody tr:nth-child(even) {
+  background-color: var(--secondary);
+}
+
+.specifications-table tbody tr:nth-child(odd) {
+  background-color: #31355c;
+}
+
+.specifications-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.spec-key {
+  font-weight: bold;
+  color: white;
+  width: 30%;
+}
+
+.spec-value {
+  color: white;
+  text-align: end;
+  width: 70%;
+}
+
+.favorite-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 30px; /* Increase the padding of the button */
+  background-color: var(--primary);
+  border-radius: 6px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px; /* Increase the font size of the button */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.favorite-button .heart-icon {
+  font-size: 24px; /* Size of the heart icon */
+  transition: transform 0.3s ease;
+}

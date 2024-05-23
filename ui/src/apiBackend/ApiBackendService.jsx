@@ -150,6 +150,31 @@ class ApiService {
       params: params
     }, true);
   }
+
+  getProductById(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_BY_ID, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
+  getProductLikeStatus(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_LIKE_STATUS, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, false);
+  }
+
+  changeProductLikeStatus(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_CHANGE_PRODUCT_LIKE_STATUS, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, false);
+  }
 }
 
 export default new ApiService();

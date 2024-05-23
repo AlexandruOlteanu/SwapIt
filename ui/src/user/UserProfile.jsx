@@ -23,6 +23,7 @@ const UserProfile = () => {
     const [isSidebarMinimized, setIsSidebarMinimized] = useState(false);
     const [isUserProfileAuth, setIsUserProfileAuth] = useState(false);
     const [isOauth2User, setIsOauth2User] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [activeSection, setActiveSection] = useState("updateProfile");
 
     //Errors
@@ -139,6 +140,12 @@ const UserProfile = () => {
                 setIsOauth2User(true);
             } else {
                 setIsOauth2User(false);
+            }
+
+            if (authUserData.userRole === "ADMINISTRATOR") {
+                setIsAdmin(true);
+            } else {
+                setIsAdmin(false);
             }
         }
     }, [userData, authUserData]);
@@ -344,25 +351,31 @@ const UserProfile = () => {
 
                         <div className="user-data">
                             <hr className="pl-4" style={{ border: '1px solid white', margin: '20px 8px' }} />
-                            <div className="d-flex user-profile-button ml-2 mr-2 p-2 align-items-center br-10">
-                                <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
-                                    <i className="fa-solid fa-bag-shopping"></i>
+                            {((isUserProfileAuth && !isAdmin) || !isUserProfileAuth) && (
+                                <div className="d-flex user-profile-button ml-2 mr-2 p-2 align-items-center br-10">
+                                    <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                        <i className="fa-solid fa-bag-shopping"></i>
+                                    </div>
+                                    {isUserProfileAuth && (
+                                        <div className="text-light m-0 ml-n2"> My Products </div>
+                                    )}
+                                    {!isUserProfileAuth && (
+                                        <div className="text-light m-0 ml-n2"> {userData.surname}'s Products </div>
+                                    )}
                                 </div>
-                                {isUserProfileAuth && (
-                                    <div className="text-light m-0 ml-n2"> My Products </div>
-                                )}
-                                {!isUserProfileAuth && (
-                                    <div className="text-light m-0 ml-n2"> {userData.surname}'s Products </div>
-                                )}
-                            </div>
+                            )}
+
                             {isUserProfileAuth && (
                                 <>
-                                    <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("favouriteProducts")}>
-                                        <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
-                                            <i className="fa-solid fa-heart"></i>
+                                    {!isAdmin && (
+                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("favouriteProducts")}>
+                                            <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                                <i className="fa-solid fa-heart"></i>
+                                            </div>
+                                            <div className="text-light m-0 ml-n2"> Favourite Products </div>
                                         </div>
-                                        <div className="text-light m-0 ml-n2"> Favourite Products </div>
-                                    </div>
+                                    )}
+
                                     <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("updateProfile")}>
                                         <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
                                             <i className="fa-solid fa-pen-to-square"></i>
@@ -370,7 +383,7 @@ const UserProfile = () => {
                                         <div className="text-light m-0 ml-n2"> Update Profile </div>
                                     </div>
                                     {!isOauth2User && (
-                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => {setActiveSection("changeEmail"); setIsEmailSecurityCodeSent(false)}}>
+                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => { setActiveSection("changeEmail"); setIsEmailSecurityCodeSent(false) }}>
                                             <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
                                                 <i className="fa-solid fa-envelope-circle-check"></i>
                                             </div>
@@ -396,7 +409,6 @@ const UserProfile = () => {
                                         <div className="text-light m-0 ml-n2"> Logout </div>
                                     </div>
                                 </>
-
                             )}
 
                         </div>
