@@ -260,6 +260,7 @@ const DeleteButton = styled(IconButton)(({ theme }) => ({
 }));
 
 const AddProduct = () => {
+    const [productId, setProductId] = useState(0);
     const [product, setProduct] = useState({
         title: '',
         description: '',
@@ -399,7 +400,7 @@ const AddProduct = () => {
             }
             console.log(data);
             const productId = await ApiBackendService.createProduct({}, data);
-            console.log(productId);
+            setProductId(productId);
             setProductCreated(true);
             scrollToTop();
         } catch (error) {
@@ -422,6 +423,11 @@ const AddProduct = () => {
         setProductCreated(false);
     };
 
+    const handleViewProduct = () => {
+        const encodedTitle = encodeURIComponent(product.title.split(' ').join('-'));
+        window.location.href = `/product/${encodedTitle}/${productId}`;
+    };
+
     if (productCreated) {
         return (
             <React.Fragment>
@@ -432,6 +438,14 @@ const AddProduct = () => {
                 <div className="form-container">
                     <div className="success-container" style={{ textAlign: 'center', marginTop: '50px', marginBottom: '400px'}}>
                         <Typography variant="h4" color={'white'}>Product Created Successfully</Typography>
+                        <Button
+                            variant="contained"
+                            onClick={handleViewProduct}
+                            className="button"
+                            style={{ marginTop: '20px', marginRight: '20px' }}
+                        >
+                            View Product
+                        </Button>
                         <Button
                             variant="contained"
                             onClick={handleCreateNewProduct}

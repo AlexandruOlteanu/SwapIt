@@ -12,6 +12,7 @@ const TopbarSection = lazy(() => import('../sections/TopbarSection'));
 const NavbarSection = lazy(() => import('../sections/NavbarSection'));
 const FooterSection = lazy(() => import('../sections/FooterSection'));
 const BackToTopButton = lazy(() => import('../js/BackToTopButton'));
+const ConfirmationDialog = lazy(() => import('./ConfirmationDialog'));
 
 const ProductPage = () => {
     const { title, productId } = useParams();
@@ -24,6 +25,7 @@ const ProductPage = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isImageContainerVisible, setIsImageContainerVisible] = useState(false);
     const [isFavourite, setIsFavourite] = useState(false);
+    const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
     const [productData, setProductData] = useState({
         userId: 0,
         categoryId: 0,
@@ -38,7 +40,7 @@ const ProductPage = () => {
         const fetchData = async () => {
             try {
                 const fetchProductData = async () => {
-                    const response = await ApiBackendService.getProductById({ productId: productId });
+                    const response = await ApiBackendService.getProductById({ productId });
 
                     const encodedResponseTitle = encodeURIComponent(response.title.split(' ').join('-'));
                     const encodedTitle = encodeURIComponent(title.split(' ').join('-'));
@@ -71,7 +73,7 @@ const ProductPage = () => {
                 };
 
                 const fetchProductLike = async () => {
-                    const response = await ApiBackendService.getProductLikeStatus({ productId: productId });
+                    const response = await ApiBackendService.getProductLikeStatus({ productId });
                     const responseBody = await response.text(); // Read the response body as text
                     if (responseBody === 'ACTIVE') {
                         setIsFavourite(true);
@@ -103,8 +105,7 @@ const ProductPage = () => {
         }
         if (authUserId === productData.userId) {
             setIsUserAuth(true);
-        }
-        else {
+        } else {
             setIsUserAuth(false);
         }
     }, [authUserId, productData.userId]);
@@ -133,7 +134,7 @@ const ProductPage = () => {
 
     const handleFavouriteClick = async () => {
         try {
-            await ApiBackendService.changeProductLikeStatus({}, { productId: productId })
+            await ApiBackendService.changeProductLikeStatus({}, { productId });
             setIsFavourite(!isFavourite);
         } catch (error) {
             console.error('Error updating favourite status:', error);
@@ -141,11 +142,20 @@ const ProductPage = () => {
     };
 
     const handleUpdateProduct = async () => {
-
+        // Implement the update product logic here
     };
 
     const handleDeleteProduct = async () => {
+        setIsConfirmationVisible(true);
+    };
 
+    const confirmDeleteProduct = async () => {
+        try {
+            await ApiBackendService.deleteProduct({ productId });
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
     };
 
     return (
@@ -221,6 +231,11 @@ const ProductPage = () => {
             <FooterSection />
             <BackToTopButton />
             <ImageContainer isVisible={isImageContainerVisible} image={productImages[currentIndex]} onClose={closeImageContainer} />
+            <ConfirmationDialog
+                isVisible={isConfirmationVisible}
+                onCancel={() => setIsConfirmationVisible(false)}
+                onConfirm={confirmDeleteProduct}
+            />
         </React.Fragment>
     );
 };

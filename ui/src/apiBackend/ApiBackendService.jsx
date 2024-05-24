@@ -175,6 +175,14 @@ class ApiService {
       params: params
     }, false);
   }
+
+  deleteProduct(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_DELETE_PRODUCT, {
+      method: 'DELETE',
+      credentials: 'include',
+      params: params
+    }, false);
+  }
 }
 
 export default new ApiService();
