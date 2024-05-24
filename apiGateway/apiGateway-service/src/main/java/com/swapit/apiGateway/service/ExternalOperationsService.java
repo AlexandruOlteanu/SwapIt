@@ -50,4 +50,5 @@ public interface ExternalOperationsService {
     void passwordReset(Integer userId, PasswordResetRequest request);
     void emailReset(Integer userId, EmailResetRequest request);
     void usernameReset(Integer userId, UsernameResetRequest request);
+    void deleteProductAdmin(Integer productId);
 }

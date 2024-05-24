@@ -37,6 +37,11 @@ public class ProductController implements ProductService {
     }
 
     @Override
+    public void deleteProductAdmin(Integer productId) {
+        productOperationsService.deleteProductAdmin(productId);
+    }
+
+    @Override
     public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
         productOperationsService.changeProductLikeStatus(userId, request);
     }

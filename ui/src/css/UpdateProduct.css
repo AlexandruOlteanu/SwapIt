@@ -1,0 +1,105 @@
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  background-color: var(--dark);
+  height: auto; /* Center vertically */
+}
+
+.form {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--secondary);
+  box-shadow: 0 4px 8px var(--primary);
+  color: #fff;
+  width: 70% !important; /* Limit width to 70% */
+}
+
+.form-title {
+  margin-bottom: 20px;
+  color: var(--light);
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 40px;
+}
+
+
+
+.form-field {
+  margin-bottom: 15px !important; /* Adjust bottom margin */
+  border: 1px solid black; /* Add black border */
+}
+
+.input .MuiInputBase-input {
+  color: #fff;
+}
+
+.input .MuiInputLabel-root {
+  color: #fff;
+}
+
+.input-description .MuiInputLabel-root {
+  color: #fff;
+}
+
+.input .MuiInput-underline:before {
+  border-bottom-color: #fff;
+}
+
+.input .MuiInput-underline:hover:before {
+  border-bottom-color: #fff;
+}
+
+.input .MuiInput-underline:after {
+  border-bottom-color: #00e676;
+}
+
+.input .Mui-focused .MuiInput-underline:after {
+  border-bottom-color: red; /* Change focus color to red */
+}
+
+.input-description {
+  margin-bottom: 20px; /* Adjust bottom margin */
+  border: 1px solid black;
+}
+
+.input-description .MuiInputBase-input {
+  color: #fff;
+}
+
+.input-description .MuiInput-underline:before {
+  border-bottom-color: #fff;
+}
+
+.input-description .MuiInput-underline:hover:before {
+  border-bottom-color: #fff;
+}
+
+.input-description .MuiInput-underline:after {
+  border-bottom-color: #00e676;
+}
+
+.input-description .Mui-focused .MuiInput-underline:after {
+  border-bottom-color: red; /* Change focus color to red for description */
+}
+
+.button {
+  background-color: var(--primary) !important;
+  color: #1e1e1e;
+  margin-top: 20px !important;
+  text-transform: none !important;
+}
+
+.button:hover {
+  background-color: var(--primary_hover) !important
+}
+
+.category-title {
+  margin-bottom: 20px !important;
+}
+
+.form-subtitle {
+  color: #fff;
+  padding-bottom: 20px;
+}

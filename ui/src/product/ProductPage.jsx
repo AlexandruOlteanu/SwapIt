@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy } from 'react';
 import { useParams } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
 import '../css/ProductPage.css'; // Import the CSS file for styling
 import ImageContainer from './ImageContainer'; // Import the ImageContainer component
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -8,6 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Preloader from '../js/Preloader';
 import CategoriesMenu from '../sections/CategoriesMenu';
 import ApiBackendService from '../apiBackend/ApiBackendService';
+import Common from '../Common';
 const TopbarSection = lazy(() => import('../sections/TopbarSection'));
 const NavbarSection = lazy(() => import('../sections/NavbarSection'));
 const FooterSection = lazy(() => import('../sections/FooterSection'));
@@ -17,9 +17,9 @@ const ConfirmationDialog = lazy(() => import('./ConfirmationDialog'));
 const ProductPage = () => {
     const { title, productId } = useParams();
 
-    const [authUserId, setAuthUserId] = useState(0);
     const [isUserAuth, setIsUserAuth] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [productImages, setProductImages] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,76 +39,64 @@ const ProductPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const fetchProductData = async () => {
-                    const response = await ApiBackendService.getProductById({ productId });
+                // Product Fetch
+                const productResponse = await ApiBackendService.getProductById({ productId });
 
-                    const encodedResponseTitle = encodeURIComponent(response.title.split(' ').join('-'));
-                    const encodedTitle = encodeURIComponent(title.split(' ').join('-'));
+                const encodedResponseTitle = encodeURIComponent(productResponse.title.split(' ').join('-'));
+                const encodedTitle = encodeURIComponent(title.split(' ').join('-'));
 
-                    if (encodedResponseTitle !== encodedTitle) {
-                        const correctUrl = `/product/${encodedResponseTitle}/${productId}/`;
-                        window.location.href = correctUrl;
-                        return;
+                if (encodedResponseTitle !== encodedTitle) {
+                    const correctUrl = `/product/${encodedResponseTitle}/${productId}/`;
+                    window.location.href = correctUrl;
+                    return;
+                }
+
+                setProductData({
+                    userId: productResponse.userId,
+                    categoryId: productResponse.categoryId,
+                    title: productResponse.title,
+                    description: productResponse.description,
+                    price: productResponse.price,
+                    popularity: productResponse.popularity,
+                    specifications: productResponse.productSpecifications.reduce((acc, spec) => {
+                        acc[spec.key] = spec.value;
+                        return acc;
+                    }, {})
+                });
+
+                setProductImages(productResponse.productImages.map(image => image.imageUrl));
+
+                // Fetch Auth User Data
+                if (isLoggedIn) {
+                    const authUserData = await ApiBackendService.getAuthenticatedUserDetails({});
+                    if (authUserData.userId === productResponse.userId) {
+                        setIsUserAuth(true);
                     }
-
-                    setProductData({
-                        userId: response.userId,
-                        categoryId: response.categoryId,
-                        title: response.title,
-                        description: response.description,
-                        price: response.price,
-                        popularity: response.popularity,
-                        specifications: response.productSpecifications.reduce((acc, spec) => {
-                            acc[spec.key] = spec.value;
-                            return acc;
-                        }, {})
-                    });
-
-                    setProductImages(response.productImages.map(image => image.imageUrl));
-                };
-
-                const fetchAuthUserData = async () => {
-                    const response = await ApiBackendService.getAuthenticatedUserDetails({});
-                    setAuthUserId(response.userId);
-                };
-
-                const fetchProductLike = async () => {
-                    const response = await ApiBackendService.getProductLikeStatus({ productId });
-                    const responseBody = await response.text(); // Read the response body as text
-                    if (responseBody === 'ACTIVE') {
-                        setIsFavourite(true);
+                    else {
+                        setIsUserAuth(false);
                     }
-                };
+                }
 
-                await Promise.all([
-                    fetchProductData(),
-                    fetchAuthUserData(),
-                    fetchProductLike()
-                ]);
+                setIsAdmin(Common.isUserAdmin());
 
+                // Fetch Product Like
+                const likeResponse = await ApiBackendService.getProductLikeStatus({ productId });
+                const responseBody = await likeResponse.text(); // Read the response body as text
+                if (responseBody === 'ACTIVE') {
+                    setIsFavourite(true);
+                }
+
+                const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
+                if (storedIsLoggedIn !== null && storedIsLoggedIn === 'true') {
+                    setIsLoggedIn(true);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
         fetchData();
-    }, []);
-
-    useEffect(() => {
-        const token = localStorage.getItem(process.env.REACT_APP_JWT_TOKEN);
-        if (token !== null) {
-            const decodedToken = jwtDecode(token);
-            const userRole = decodedToken.user_role;
-            if (userRole === "ADMINISTRATOR") {
-                setIsAdmin(true);
-            }
-        }
-        if (authUserId === productData.userId) {
-            setIsUserAuth(true);
-        } else {
-            setIsUserAuth(false);
-        }
-    }, [authUserId, productData.userId]);
+    }, [productId, title, isLoggedIn]);
 
     const handlePrevClick = (e) => {
         e.stopPropagation();
@@ -142,7 +130,8 @@ const ProductPage = () => {
     };
 
     const handleUpdateProduct = async () => {
-        // Implement the update product logic here
+        const encodedTitle = encodeURIComponent(title.split(' ').join('-'));
+        window.location.href = `/product/update/${encodedTitle}/${productId}`;
     };
 
     const handleDeleteProduct = async () => {
@@ -151,7 +140,11 @@ const ProductPage = () => {
 
     const confirmDeleteProduct = async () => {
         try {
-            await ApiBackendService.deleteProduct({ productId });
+            if (!isAdmin) {
+                await ApiBackendService.deleteProduct({ productId });
+            } else {
+                await ApiBackendService.deleteProductAdmin({ productId });
+            }
             window.location.href = '/';
         } catch (error) {
             console.error('Error deleting product:', error);
@@ -203,31 +196,34 @@ const ProductPage = () => {
                         Approximate value:
                         <span className="price-value"> ${productData.price}</span>
                     </div>
-                    {!isUserAuth && !isAdmin && (
-                        <div className="product-button">
-                            <button className={`favourite-button ${isFavourite ? 'active' : ''}`} onClick={handleFavouriteClick}>
-                                <span className="heart-icon">{isFavourite ? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}</span>
-                                {isFavourite ? ' Remove from Favourite' : ' Add To Favourite'}
-                            </button>
-                        </div>
+                    {isLoggedIn && (
+                        <>
+                            {!isUserAuth && !isAdmin && (
+                                <div className="product-button">
+                                    <button className={`favourite-button ${isFavourite ? 'active' : ''}`} onClick={handleFavouriteClick}>
+                                        <span className="heart-icon">{isFavourite ? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}</span>
+                                        {isFavourite ? ' Remove from Favourite' : ' Add To Favourite'}
+                                    </button>
+                                </div>
+                            )}
+                            <div className="product-buttons">
+                                {isUserAuth && (
+                                    <button className="update-product-button" onClick={handleUpdateProduct}>
+                                        <i className="fa-solid fa-wrench" style={{ marginRight: '5px' }}></i>
+                                        Update Product
+                                    </button>
+                                )}
+                                {(isUserAuth || isAdmin) && (
+                                    <button className="delete-product-button" onClick={handleDeleteProduct}>
+                                        <DeleteIcon />
+                                        Delete Product
+                                    </button>
+                                )}
+                            </div>
+                        </>
                     )}
-                    <div className="product-buttons">
-                        {isUserAuth && (
-                            <button className="update-product-button" onClick={handleUpdateProduct}>
-                                <i className="fa-solid fa-wrench" style={{ marginRight: '5px' }}></i>
-                                Update Product
-                            </button>
-                        )}
-                        {(isUserAuth || isAdmin) && (
-                            <button className="delete-product-button" onClick={handleDeleteProduct}>
-                                <DeleteIcon />
-                                Delete Product
-                            </button>
-                        )}
-                    </div>
                 </div>
             </div>
-
             <FooterSection />
             <BackToTopButton />
             <ImageContainer isVisible={isImageContainerVisible} image={productImages[currentIndex]} onClose={closeImageContainer} />

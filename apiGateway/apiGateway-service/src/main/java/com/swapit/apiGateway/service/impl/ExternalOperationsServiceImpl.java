@@ -536,6 +536,21 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         }
     }
 
+    @Override
+    public void deleteProductAdmin(Integer productId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.DELETE_PRODUCT_ADMIN);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+        log.info(uriBuilder.toUriString());
+        try {
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
+            deleteProductFromSearchDictionary(productId);
+        } catch (Exception e) {
+            log.error("Exception in deleting product {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
 
     public void addProductInSearchDictionary(Integer productId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.ADD_PRODUCT_IN_SEARCH_DICTIONARY);

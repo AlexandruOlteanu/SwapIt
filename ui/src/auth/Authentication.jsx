@@ -1,10 +1,11 @@
 
-import React, { useState, lazy } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import '../css/Authentication.css';
 import Preloader from '../js/Preloader';
 import Logo from '../logo/Logo.webp';
 import GoogleLogo from '../img/google.png';
 import ApiBackendService from '../apiBackend/ApiBackendService';
+import Common from '../Common';
 
 const FooterSection = lazy(() => import('../sections/FooterSection'));
 const BackToTopButton = lazy(() => import('../js/BackToTopButton'));
@@ -31,6 +32,13 @@ const Authentication = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [passwordResetError, setPasswordResetError] = useState('');
+
+    useEffect(() => {
+        if (Common.isLoggedIn()) {
+            console.log("Alex");
+            window.location.href = "/";
+        }
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();

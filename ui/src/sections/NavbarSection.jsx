@@ -6,24 +6,22 @@ import Logo from '../logo/Logo.webp'
 import '../css/NavbarSection.css'
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import SearchBar from './SearchBar';
+import Common from '../Common';
 
 const HamburgerButton = lazy(() => import('../js/HamburgerButton'));
 
 function NavbarSection() {
 
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const [isAdmin, setIsAdmin] = useState(false);
     const [username, setUsername] = useState('');
     const navigate = useNavigate();
 
-    function openMenuSection(id) {
-        let menuSection = document.querySelector(id);
-        if (menuSection.classList.contains("show")) {
-            menuSection.classList.remove("show");
-        }
-        else {
-            menuSection.classList.add("show");
-        }
-    }
+    useEffect(() => {
+
+        setIsAdmin(Common.isUserAdmin());
+
+    }, []);
 
     function openMenu() {
         let menuSection = document.querySelector("#navbarCollapse");
@@ -39,19 +37,6 @@ function NavbarSection() {
         }
     }
 
-    useEffect(() => {
-        const currentUrl = window.location.href;
-        const navLinks = document.querySelectorAll(".navbarMainItem");
-
-        navLinks.forEach(link => {
-            if (link.href === currentUrl) {
-                link.classList.add("active");
-            } else {
-                link.classList.remove("active");
-            }
-        });
-    }, []);
-
     const handleUserIconClick = async () => {
         if (!isLoggedIn) {
             window.location.href = '/user/auth';
@@ -59,7 +44,6 @@ function NavbarSection() {
 
         const userData = await ApiBackendService.getAuthenticatedUserDetails({});
         setUsername(userData.username);
-        const userId = userData.userId;
         navigate(`/users/${userData.username}`);
     };
 
@@ -67,11 +51,7 @@ function NavbarSection() {
         if (!isLoggedIn) {
             window.location.href = '/user/auth';
         }
-
-        const userData = await ApiBackendService.getAuthenticatedUserDetails({});
-        setUsername(userData.username);
-        const userId = userData.userId;
-        navigate(`/product/addNewProduct`);
+        navigate(`/product/create`);
     };
 
     return (
@@ -107,26 +87,43 @@ function NavbarSection() {
 
                                 {isLoggedIn && (
                                     <>
-                                        <div className="col-lg-4 col-md-6 px-2 ml-4 pl-2">
-                                            <div className="nav-item nav-link">
-                                                <a onClick={handleAddProductClick}>
-                                                    <div className="iconContainer">
-                                                        <i className="fa fa-solid fa-plus-circle navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
-                                                        <span className="profile-text">Add Product</span>
+                                        {!isAdmin && (
+                                            <>
+                                                <div className="col-lg-4 col-md-6 px-2 ml-4 pl-2">
+                                                    <div className="nav-item nav-link">
+                                                        <a onClick={handleAddProductClick}>
+                                                            <div className="iconContainer">
+                                                                <i className="fa fa-solid fa-plus-circle navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                                <span className="profile-text">Add Product</span>
+                                                            </div>
+                                                        </a>
                                                     </div>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="col-lg-4 col-md-6 px-2 ml-4 pl-2">
-                                            <div className="nav-item nav-link">
-                                                <a onClick={handleUserIconClick}>
-                                                    <div className="iconContainer">
-                                                        <i className="fa fa-regular fa-user navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
-                                                        <span className="profile-text">My Profile</span>
+                                                </div>
+                                                <div className="col-lg-4 col-md-6 px-2 ml-4 pl-2">
+                                                    <div className="nav-item nav-link">
+                                                        <a onClick={handleUserIconClick}>
+                                                            <div className="iconContainer">
+                                                                <i className="fa fa-regular fa-user navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                                <span className="profile-text">My Profile</span>
+                                                            </div>
+                                                        </a>
                                                     </div>
-                                                </a>
+                                                </div>
+                                            </>
+                                        )}
+                                        {isAdmin && (
+                                            <div className="col-xl-12 col-lg-4 col-md-6 px-2">
+                                                <div className="nav-item nav-link">
+                                                    <a onClick={handleUserIconClick}>
+                                                        <div className="iconContainer">
+                                                            <i className="fa fa-regular fa-user navbar-icon" style={{ color: 'var(--primary)', cursor: 'pointer' }}></i>
+                                                            <span className="profile-text">My Profile</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
+
                                     </>
                                 )}
                             </div>

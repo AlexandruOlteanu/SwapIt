@@ -230,6 +230,11 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
+    public void deleteProductAdmin(Integer productId) {
+        externalOperationsService.deleteProductAdmin(productId);
+    }
+
+    @Override
     public ResponseEntity<GetCategoryTreeResponse> getCategoryTree(Integer categoryId) {
         return ResponseEntity.ok(externalOperationsService.getCategoryTree(categoryId));
     }

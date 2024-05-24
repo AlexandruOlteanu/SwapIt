@@ -183,6 +183,32 @@ class ApiService {
       params: params
     }, false);
   }
+
+  deleteProductAdmin(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_DELETE_PRODUCT_ADMIN, {
+      method: 'DELETE',
+      credentials: 'include',
+      params: params
+    }, false);
+  }
+
+  getCategoryTree(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_CATEGORY_TREE, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
+  updateProduct(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_PRODUCT, {
+      method: 'PUT',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, false);
+  }
+
 }
 
 export default new ApiService();

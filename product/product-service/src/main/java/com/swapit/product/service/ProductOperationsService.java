@@ -9,6 +9,7 @@ public interface ProductOperationsService {
     Integer createProduct(Integer userId, CreateProductRequest request);
     void updateProduct(Integer userId, UpdateProductRequest request);
     void deleteProduct(Integer userId, Integer productId);
+    void deleteProductAdmin(Integer productId);
     void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request);
     String getProductLikeStatus(Integer userId, Integer productId);
 }

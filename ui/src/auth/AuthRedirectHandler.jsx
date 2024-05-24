@@ -8,9 +8,8 @@ const AuthRedirectHandler = () => {
     useEffect(() => {
         const fetchAndStoreUserRole = async () => {
             try {
-                const response = await ApiBackendService.getAuthenticatedUserDetails({});
+                await ApiBackendService.getAuthenticatedUserDetails({});
                 localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userRole', response.userRole);
                 window.location.href = '/';
             } catch (error) {
                 console.error('Error fetching user role:', error);

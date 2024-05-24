@@ -194,6 +194,11 @@ public interface ApiGatewayService {
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_PRODUCT_BY_ID)
     ResponseEntity<ProductDTO> getProductById(@RequestParam(value = "productId") Integer productId);
 
+    // PRODUCT ADMIN API
+    @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
+    @DeleteMapping(value = BASE_URL + ADMIN_ACTION + DELETE_PRODUCT)
+    void deleteProductAdmin(@RequestParam(value = "productId") Integer productId);
+
 
     // CHAT API
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })

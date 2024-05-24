@@ -101,54 +101,38 @@ const UserProfile = () => {
     });
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        const fetchData = async () => {
+            // Fetch user Data
+            let userId = -1, authUserId = -2;
+            let authUserRole = '';
             if (username) {
                 try {
-                    const response = await ApiBackendService.getUserDetailsByUsername({ username });
-                    setUserData(response);
-                    console.log(response);
+                    const userDataResponse = await ApiBackendService.getUserDetailsByUsername({ username });
+                    setUserData(userDataResponse);
+                    userId = userDataResponse.userId;
                 } catch (error) {
                     console.error('Failed to fetch user details:', error);
                 }
             }
-        };
 
-        const fetchAuthUserData = async () => {
             try {
-                const response = await ApiBackendService.getAuthenticatedUserDetails({});
-                setAuthUserData(response);
-                setModifiedUserData(response);
-                console.log(response);
+                const authUserData = await ApiBackendService.getAuthenticatedUserDetails({});
+                setAuthUserData(authUserData);
+                setModifiedUserData(authUserData);
+                authUserId = authUserData.userId;
+                authUserRole = authUserData.userRole;
             } catch (error) {
                 console.error('Failed to fetch auth user details:', error);
             }
-        };
 
-        fetchUserData();
-        fetchAuthUserData();
-    }, [username]); // Depends only on username for re-fetching
-
-    useEffect(() => {
-        if (userData && authUserData) {
-            if (userData.userId === authUserData.userId) {
-                setIsUserProfileAuth(true);
-            } else {
-                setIsUserProfileAuth(false);
-            }
-
-            if (authUserData.userRole === "OAUTH2_USER") {
-                setIsOauth2User(true);
-            } else {
-                setIsOauth2User(false);
-            }
-
-            if (authUserData.userRole === "ADMINISTRATOR") {
-                setIsAdmin(true);
-            } else {
-                setIsAdmin(false);
-            }
+            setIsUserProfileAuth(userId === authUserId);
+            setIsOauth2User(authUserRole === "OAUTH2_USER");
+            setIsAdmin(authUserRole === "ADMINISTRATOR");
         }
-    }, [userData, authUserData]);
+
+        fetchData();
+
+    }, [username]); // Depends only on username for re-fetching
 
     const handleLogout = () => {
         ApiBackendService.logout({});

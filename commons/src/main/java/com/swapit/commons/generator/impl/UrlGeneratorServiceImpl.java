@@ -19,7 +19,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         UPDATE_PRODUCT, UPDATE_PRODUCT_IN_SEARCH_DICTIONARY, CHANGE_PRODUCT_LIKE_STATUS, GET_PRODUCT_LIKE_STATUS,
         GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, MANUAL_SECURITY_CODES_EXPIRE,
         DELETE_PRODUCT, DELETE_PRODUCT_FROM_SEARCH_DICTIONARY, BAN_USER, REMOVE_USER_BAN, MANUAL_REMOVE_USERS_BAN,
-        GET_USER_DETAILS_BY_USERNAME, FORGOTTEN_PASSWORD_RESET, PASSWORD_RESET, USERNAME_RESET, EMAIL_RESET
+        GET_USER_DETAILS_BY_USERNAME, FORGOTTEN_PASSWORD_RESET, PASSWORD_RESET, USERNAME_RESET, EMAIL_RESET, DELETE_PRODUCT_ADMIN
     }
 
     // USER URI
@@ -63,6 +63,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String updateProductUri;
     @Value("${product.deleteProduct.route}")
     private String deleteProductUri;
+    @Value("${product.deleteProductAdmin.route}")
+    private String deleteProductAdminUri;
     @Value("${product.getProductById.route}")
     private String getProductByIdUri;
     @Value("${product.getProductsByUser.route}")
@@ -141,6 +143,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case PASSWORD_RESET -> passwordResetUri;
             case USERNAME_RESET -> usernameResetUri;
             case EMAIL_RESET -> emailResetUri;
+            case DELETE_PRODUCT_ADMIN -> deleteProductAdminUri;
         };
     }
 }

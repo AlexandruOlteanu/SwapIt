@@ -21,6 +21,7 @@ public interface ProductService {
     String CREATE_PRODUCT = "createProduct";
     String UPDATE_PRODUCT = "updateProduct";
     String DELETE_PRODUCT = "deleteProduct";
+    String DELETE_PRODUCT_ADMIN = "deleteProductAdmin";
     String GET_PRODUCTS_BY_USER = "getProductsByUser";
     String GET_RECOMMENDED_PRODUCTS = "getRecommendedProducts";
     String GET_LIKED_PRODUCTS_BY_USER = "getLikedProductsByUser";
@@ -39,6 +40,9 @@ public interface ProductService {
 
     @DeleteMapping(value = BASE_URL + DELETE_PRODUCT)
     void deleteProduct(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);
+
+    @DeleteMapping(value = BASE_URL + DELETE_PRODUCT_ADMIN)
+    void deleteProductAdmin(@RequestParam(value = "productId") Integer productId);
 
     @PostMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void changeProductLikeStatus(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody ChangeProductLikeStatusRequest request);
