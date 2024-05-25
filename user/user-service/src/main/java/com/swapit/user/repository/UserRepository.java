@@ -1,7 +1,7 @@
 package com.swapit.user.repository;
 
 import com.swapit.user.domain.User;
-import com.swapit.user.utils.UserStatus;
+import com.swapit.user.api.util.UserStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

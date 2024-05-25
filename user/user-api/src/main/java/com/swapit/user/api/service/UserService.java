@@ -23,6 +23,7 @@ public interface UserService {
     String GET_USER_DETAILS = "getUserDetails";
     String GET_USER_DETAILS_BY_USERNAME = "getUserDetailsByUsername";
     String BAN_USER = "banUser";
+    String GET_USER_ACCOUNT_STATUS = "getUserAccountStatus";
     String MANUAL_SECURITY_CODES_EXPIRE = "manualSecurityCodesExpire";
     String MANUAL_REMOVE_USERS_BAN = "manualRemoveUsersBan";
     String REMOVE_USER_BAN = "removeUserBan";
@@ -63,7 +64,10 @@ public interface UserService {
     void updateBasicUserDetails(@RequestParam("userId") Integer userId, @Valid @RequestBody UpdateBasicUserDetailsRequest request);
 
     @PostMapping(value = BASE_URL + BAN_USER)
-    void banUser(@RequestParam("userId") Integer userId, @RequestParam("banDaysDuration") Integer banDaysDuration);
+    void banUser(@RequestParam("userId") Integer userId, @RequestParam(value = "banDaysDuration", required = false) Integer banDaysDuration);
+
+    @GetMapping(value = BASE_URL + GET_USER_ACCOUNT_STATUS)
+    ResponseEntity<GetUserAccountStatusResponse> getUserAccountStatus(@RequestParam("userId") Integer userId);
 
     @DeleteMapping(value = BASE_URL + REMOVE_USER_BAN)
     void removeUserBan(@RequestParam("userId") Integer userId);

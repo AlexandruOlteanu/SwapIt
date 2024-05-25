@@ -16,7 +16,7 @@ import com.swapit.user.service.SecurityCodeService;
 import com.swapit.user.utils.AuthProvider;
 import com.swapit.user.api.util.SecurityCodeType;
 import com.swapit.user.utils.UserRole;
-import com.swapit.user.utils.UserStatus;
+import com.swapit.user.api.util.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User user = userRepository.findUserByUsername(request.getUsername())
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
-        if (user.getStatus().equals(UserStatus.INACTIVE)) {
+        if (user.getStatus().equals(UserStatus.TEMPORARY_BANNED) || user.getStatus().equals(UserStatus.PERMANENT_BANNED)) {
             throw exceptionFactory.create(ExceptionType.USER_BANNED);
         }
         return LoginResponse.builder()

@@ -82,6 +82,11 @@ public class UserController implements UserService {
     }
 
     @Override
+    public ResponseEntity<GetUserAccountStatusResponse> getUserAccountStatus(Integer userId) {
+        return ResponseEntity.ok(userRestrictionsService.getUserAccountStatus(userId));
+    }
+
+    @Override
     public void removeUserBan(Integer userId) {
         userRestrictionsService.removeUserBan(userId);
     }

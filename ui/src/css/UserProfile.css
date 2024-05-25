@@ -8,6 +8,16 @@
     cursor: pointer;
 }
 
+.ban-button {
+    background-color: var(--secondary) !important;
+    cursor: pointer;
+}
+
+.ban-button:hover {
+    background-color: #3b3e58  !important;
+    cursor: pointer;
+}
+
 .form-control {
     border-radius: 5px;
 }

@@ -86,6 +86,7 @@ public class GetUserDetailsServiceImpl implements GetUserDetailsService {
             case SURNAME -> user.getSurname();
             case USERNAME -> user.getUsername();
             case IMAGE -> user.getUserImage();
+            case STATUS -> user.getStatus();
             case BAN_EXPIRY_TIME -> user.getBanExpiryTime();
             case ADDRESS -> user.getAddress();
             case COUNTRY -> user.getCountry();

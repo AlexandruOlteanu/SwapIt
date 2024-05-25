@@ -10,6 +10,9 @@ import ApiBackendService from '../apiBackend/ApiBackendService';
 import '../scss/UserProfile.scss';
 import '../css/UserProfile.css'
 import CategoriesMenu from '../sections/CategoriesMenu';
+import Common from '../Common';
+import BanUserDialog from './BanUserDialog';
+import RemoveUserBanDialog from './RemoveUserBanDialog';
 
 const TopbarSection = lazy(() => import('../sections/TopbarSection'));
 const NavbarSection = lazy(() => import('../sections/NavbarSection'));
@@ -24,7 +27,13 @@ const UserProfile = () => {
     const [isUserProfileAuth, setIsUserProfileAuth] = useState(false);
     const [isOauth2User, setIsOauth2User] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isTemporaryBanned, setIsTemporaryBanned] = useState(false);
+    const [isPermanentBanned, setIsPermanentBanned] = useState(false);
+    const [banExpiryDate, setBanExpiryDate] = useState('');
     const [activeSection, setActiveSection] = useState("updateProfile");
+
+    const [isBanDialogVisible, setIsBanDialogVisible] = useState(false);
+    const [isRemoveBanDialogVisible, setIsRemoveBanDialogVisible] = useState(false);
 
     //Errors
     const [updateProfileError, setUpdateProfileError] = useState('');
@@ -115,6 +124,7 @@ const UserProfile = () => {
                 }
             }
 
+            // Fetch Auth user data
             try {
                 const authUserData = await ApiBackendService.getAuthenticatedUserDetails({});
                 setAuthUserData(authUserData);
@@ -125,6 +135,15 @@ const UserProfile = () => {
                 console.error('Failed to fetch auth user details:', error);
             }
 
+            // Fetch user Account Status
+            const accountStatusResponse = await ApiBackendService.getUserAccountStatus({ userId: userId });
+            setIsTemporaryBanned(accountStatusResponse.userStatus === "TEMPORARY_BANNED");
+            setIsPermanentBanned(accountStatusResponse.userStatus === "PERMANENT_BANNED");
+
+            if (accountStatusResponse.userStatus === "TEMPORARY_BANNED") {
+                setBanExpiryDate(Common.formatDate(accountStatusResponse.banExpiryTime));
+            }
+
             setIsUserProfileAuth(userId === authUserId);
             setIsOauth2User(authUserRole === "OAUTH2_USER");
             setIsAdmin(authUserRole === "ADMINISTRATOR");
@@ -132,7 +151,7 @@ const UserProfile = () => {
 
         fetchData();
 
-    }, [username]); // Depends only on username for re-fetching
+    }, [username, isTemporaryBanned, isPermanentBanned]);
 
     const handleLogout = () => {
         ApiBackendService.logout({});
@@ -290,6 +309,29 @@ const UserProfile = () => {
         }
     }
 
+    const confirmBanUser = async (banDays) => {
+        const payload = {
+            userId: userData.userId,
+            ...(banDays !== -1 && { banDaysDuration: banDays })
+        };
+
+        await ApiBackendService.banUser(payload);
+
+        if (banDays === -1) setIsPermanentBanned(true);
+        else setIsTemporaryBanned(true);
+
+        setIsBanDialogVisible(false);
+    };
+
+    const confirmRemoveBanUser = async () => {
+        await ApiBackendService.removeUserBan({ userId: userData.userId });
+
+        setIsPermanentBanned(false);
+        setIsTemporaryBanned(false);
+        setIsRemoveBanDialogVisible(false);
+    };
+
+
 
     return (
         <React.Fragment>
@@ -319,12 +361,33 @@ const UserProfile = () => {
                             </div>
                         </div>
                         <div className="user-details">
+                            {(isTemporaryBanned || isPermanentBanned) && (
+                                <div className="d-flex align-items-center br-10 pl-4 pt-4" style={{ color: 'red' }}>
+                                    <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n4" style={{ width: '50px', height: '50px' }}>
+                                        <i className="fa-solid fa-lg fa-triangle-exclamation"></i>
+                                    </div>
+                                    {isTemporaryBanned && (
+                                        <div className="m-0"> User is banned till {banExpiryDate} </div>
+                                    )}
+                                    {isPermanentBanned && (
+                                        <div className="m-0"> User is permanently banned </div>
+                                    )}
+                                </div>
+                            )}
                             <div className="d-flex align-items-center br-10 pl-4 pt-4">
                                 <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n4" style={{ width: '50px', height: '50px' }}>
                                     <i className="fa fa-lg fa-user"></i>
                                 </div>
                                 <div className="text-light m-0">{userData.name} {userData.surname} </div>
                             </div>
+                            {(!isUserProfileAuth && userData.phoneNumber) && (
+                                <div className="d-flex align-items-center br-10 pl-4">
+                                    <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n4" style={{ width: '50px', height: '50px' }}>
+                                        <i class="fa-solid fa-lg fa-mobile-screen-button"></i>
+                                    </div>
+                                    <div className="text-light m-0">{userData.phoneNumber} </div>
+                                </div>
+                            )}
                             <div className="d-flex align-items-center br-10 pl-4">
                                 <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n4" style={{ width: '50px', height: '50px' }}>
                                     <i className="fa fa-lg fa-envelope"></i>
@@ -346,6 +409,22 @@ const UserProfile = () => {
                                     {!isUserProfileAuth && (
                                         <div className="text-light m-0 ml-n2"> {userData.surname}'s Products </div>
                                     )}
+                                </div>
+                            )}
+                            {(isAdmin && !isTemporaryBanned && !isPermanentBanned && !isUserProfileAuth) && (
+                                <div className="d-flex ban-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" style={{ color: 'red' }} onClick={() => setIsBanDialogVisible(true)}>
+                                    <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                        <i className="fa-solid fa-ban"></i>
+                                    </div>
+                                    <div className="m-0 ml-n2"> Ban This User </div>
+                                </div>
+                            )}
+                            {(isAdmin && (isTemporaryBanned || isPermanentBanned)) && (
+                                <div className="d-flex ban-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" style={{ color: 'var(--success)' }} onClick={() => setIsRemoveBanDialogVisible(true)}>
+                                    <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
+                                        <i className="fa-solid fa-ban"></i>
+                                    </div>
+                                    <div className="m-0 ml-n2"> Remove User Ban </div>
                                 </div>
                             )}
 
@@ -605,6 +684,16 @@ const UserProfile = () => {
                     </div>
                 </div>
             </div>
+            <BanUserDialog
+                isVisible={isBanDialogVisible}
+                onCancel={() => setIsBanDialogVisible(false)}
+                onConfirm={confirmBanUser}
+            />
+            <RemoveUserBanDialog
+                isVisible={isRemoveBanDialogVisible}
+                onCancel={() => setIsRemoveBanDialogVisible(false)}
+                onConfirm={confirmRemoveBanUser}
+            />
             <FooterSection />
             <BackToTopButton />
         </React.Fragment>

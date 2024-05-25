@@ -2,7 +2,7 @@ package com.swapit.user.domain;
 
 import com.swapit.user.utils.AuthProvider;
 import com.swapit.user.utils.UserRole;
-import com.swapit.user.utils.UserStatus;
+import com.swapit.user.api.util.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

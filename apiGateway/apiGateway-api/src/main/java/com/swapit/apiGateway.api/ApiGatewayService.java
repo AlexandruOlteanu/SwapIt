@@ -14,6 +14,7 @@ import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
+import com.swapit.user.api.domain.response.GetUserAccountStatusResponse;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
@@ -46,7 +47,7 @@ public interface ApiGatewayService {
     String LOGOUT = "auth/logout";
     String GET_USER_DETAILS = "getUserDetails";
     String GET_USER_DETAILS_BY_USERNAME = "getUserDetailsByUsername";
-    String GET_USER_BAN_EXPIRY_TIME = "getUserBanExpiryTime";
+    String GET_USER_ACCOUNT_STATUS = "getUserAccountStatus";
     String GET_AUTHENTICATED_USER_DETAILS = "getAuthenticatedUserDetails";
     String UPDATE_BASIC_USER_DETAILS = "updateBasicUserDetails";
     String FORGOTTEN_PASSWORD_RESET = "auth/forgottenPasswordReset";
@@ -119,8 +120,8 @@ public interface ApiGatewayService {
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_DETAILS_BY_USERNAME)
     ResponseEntity<GetUserDetailsResponse> getUserDetailsByUsername(@RequestParam(value = "username") String username);
 
-    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_BAN_EXPIRY_TIME)
-    ResponseEntity<ZonedDateTime> getUserBanExpiryTime(@RequestParam(value = "userId") Integer userId);
+    @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_USER_ACCOUNT_STATUS)
+    ResponseEntity<GetUserAccountStatusResponse> getUserAccountStatus(@RequestParam(value = "userId") Integer userId);
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
     @GetMapping(value = BASE_URL + GET_AUTHENTICATED_USER_DETAILS)
@@ -139,7 +140,7 @@ public interface ApiGatewayService {
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
     @PostMapping(value = BASE_URL + ADMIN_ACTION + BAN_USER)
-    void banUser(@RequestParam("userId") Integer userId, @RequestParam("banDaysDuration") Integer banDaysDuration);
+    void banUser(@RequestParam("userId") Integer userId, @RequestParam(value = "banDaysDuration", required = false) Integer banDaysDuration);
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
     @DeleteMapping(value = BASE_URL + ADMIN_ACTION + REMOVE_USER_BAN)

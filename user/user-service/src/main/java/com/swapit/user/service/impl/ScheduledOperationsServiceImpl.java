@@ -7,7 +7,7 @@ import com.swapit.user.domain.User;
 import com.swapit.user.repository.SecurityCodeRepository;
 import com.swapit.user.repository.UserRepository;
 import com.swapit.user.service.ScheduledOperationsService;
-import com.swapit.user.utils.UserStatus;
+import com.swapit.user.api.util.UserStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,10 +57,10 @@ public class ScheduledOperationsServiceImpl implements ScheduledOperationsServic
     @Retryable(retryFor = {Exception.class}, maxAttempts = 10, backoff = @Backoff(delay = 30000))
     public void removeUsersBan() {
         log.info("Starting Removing Users Ban Cron");
-        List<User> inactiveUsers = userRepository.findAllByStatus(UserStatus.INACTIVE)
+        List<User> inactiveUsers = userRepository.findAllByStatus(UserStatus.TEMPORARY_BANNED)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.USER_NOT_FOUND));
         inactiveUsers.forEach(inactiveUser -> {
-            if (inactiveUser.getBanExpiryTime() != null && inactiveUser.getBanExpiryTime().isBefore(ZonedDateTime.now())) {
+            if (inactiveUser.getBanExpiryTime().isBefore(ZonedDateTime.now())) {
                 inactiveUser.setStatus(UserStatus.ACTIVE);
                 inactiveUser.setBanExpiryTime(null);
             }

@@ -134,7 +134,7 @@ class ApiService {
   }
 
   getProductCategoryId(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_CATEGORY_ID, {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_CATEGORY_ID_URI, {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(data),
@@ -143,7 +143,7 @@ class ApiService {
   }
 
   createProduct(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_CREATE_PRODUCT, {
+    return this.fetchWithAuth(process.env.REACT_APP_CREATE_PRODUCT_URI, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify(data),
@@ -152,7 +152,7 @@ class ApiService {
   }
 
   getProductById(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_BY_ID, {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_BY_ID_URI, {
       method: 'GET',
       credentials: 'include',
       params: params
@@ -160,7 +160,7 @@ class ApiService {
   }
 
   getProductLikeStatus(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_LIKE_STATUS, {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_LIKE_STATUS_URI, {
       method: 'GET',
       credentials: 'include',
       params: params
@@ -168,7 +168,7 @@ class ApiService {
   }
 
   changeProductLikeStatus(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_CHANGE_PRODUCT_LIKE_STATUS, {
+    return this.fetchWithAuth(process.env.REACT_APP_CHANGE_PRODUCT_LIKE_STATUS_URI, {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(data),
@@ -177,7 +177,7 @@ class ApiService {
   }
 
   deleteProduct(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_DELETE_PRODUCT, {
+    return this.fetchWithAuth(process.env.REACT_APP_DELETE_PRODUCT_URI, {
       method: 'DELETE',
       credentials: 'include',
       params: params
@@ -185,7 +185,7 @@ class ApiService {
   }
 
   deleteProductAdmin(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_DELETE_PRODUCT_ADMIN, {
+    return this.fetchWithAuth(process.env.REACT_APP_DELETE_PRODUCT_ADMIN_URI, {
       method: 'DELETE',
       credentials: 'include',
       params: params
@@ -193,7 +193,7 @@ class ApiService {
   }
 
   getCategoryTree(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_GET_CATEGORY_TREE, {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_CATEGORY_TREE_URI, {
       method: 'GET',
       credentials: 'include',
       params: params
@@ -201,10 +201,34 @@ class ApiService {
   }
 
   updateProduct(params, data) {
-    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_PRODUCT, {
+    return this.fetchWithAuth(process.env.REACT_APP_UPDATE_PRODUCT_URI, {
       method: 'PUT',
       credentials: 'include',
       body: JSON.stringify(data),
+      params: params
+    }, false);
+  }
+
+  getUserAccountStatus(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_USER_ACCOUNT_STATUS_URI, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
+  banUser(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_BAN_USER_URI, {
+      method: 'POST',
+      credentials: 'include',
+      params: params
+    }, false);
+  }
+
+  removeUserBan(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_REMOVE_USER_BAN_URI, {
+      method: 'DELETE',
+      credentials: 'include',
       params: params
     }, false);
   }

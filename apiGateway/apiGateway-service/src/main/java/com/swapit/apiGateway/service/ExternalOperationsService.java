@@ -44,6 +44,7 @@ public interface ExternalOperationsService {
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void manualSecurityCodesExpire();
     void banUser(Integer userId, Integer banDaysDuration);
+    GetUserAccountStatusResponse getUserAccountStatus(Integer userId);
     void removeUserBan(Integer userId);
     void manualRemoveUsersBan();
     void forgottenPasswordReset(ForgottenPasswordResetRequest request);

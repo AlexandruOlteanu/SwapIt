@@ -457,6 +457,20 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
+    public GetUserAccountStatusResponse getUserAccountStatus(Integer userId) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_USER_ACCOUNT_STATUS);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetUserAccountStatusResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting user account status {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
     public void removeUserBan(Integer userId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.REMOVE_USER_BAN);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))

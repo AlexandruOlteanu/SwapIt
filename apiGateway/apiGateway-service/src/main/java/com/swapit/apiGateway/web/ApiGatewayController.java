@@ -17,6 +17,7 @@ import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
+import com.swapit.user.api.domain.response.GetUserAccountStatusResponse;
 import com.swapit.user.api.domain.response.GetUserDetailsResponse;
 import com.swapit.user.api.domain.response.LoginResponse;
 import com.swapit.user.api.domain.response.RegisterResponse;
@@ -131,13 +132,8 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<ZonedDateTime> getUserBanExpiryTime(Integer userId) {
-        Map<Integer, List<UserBasicDetailType>> requestedUserDetails = Map.of(userId, List.of(UserBasicDetailType.BAN_EXPIRY_TIME));
-        var response = externalOperationsService.getSpecificUsersDetails(GetSpecificUsersDetailsRequest.builder()
-                        .requestedUserDetails(requestedUserDetails)
-                .build());
-        ZonedDateTime banExpiryTime = ZonedDateTime.parse((CharSequence) response.getRequestedUserDetails().get(userId).get(UserBasicDetailType.BAN_EXPIRY_TIME));
-        return ResponseEntity.ok(banExpiryTime);
+    public ResponseEntity<GetUserAccountStatusResponse> getUserAccountStatus(Integer userId) {
+        return ResponseEntity.ok(externalOperationsService.getUserAccountStatus(userId));
     }
 
     @Override
