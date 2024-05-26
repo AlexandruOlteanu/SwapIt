@@ -53,6 +53,12 @@ public class GetProductsServiceImpl implements GetProductsService {
                 .toList();
         return GetProductsResponse.builder()
                 .products(productDTOS)
+                .currentPage(data.getNumber())
+                .totalPages(data.getTotalPages())
+                .totalItems(data.getNumberOfElements())
+                .itemsPerPage(data.getSize())
+                .hasNextPage(data.hasNext())
+                .hasPreviousPage(data.hasPrevious())
                 .build();
     }
 
@@ -74,6 +80,12 @@ public class GetProductsServiceImpl implements GetProductsService {
                 .toList();
         return GetProductsResponse.builder()
                 .products(productDTOS)
+                .currentPage(data.getNumber())
+                .totalPages(data.getTotalPages())
+                .totalItems(data.getNumberOfElements())
+                .itemsPerPage(data.getSize())
+                .hasNextPage(data.hasNext())
+                .hasPreviousPage(data.hasPrevious())
                 .build();
     }
 
@@ -117,6 +129,12 @@ public class GetProductsServiceImpl implements GetProductsService {
                 .toList();
         return GetProductsByCategoryResponse.builder()
                 .products(productDTOS)
+                .currentPage(data.getNumber())
+                .totalPages(data.getTotalPages())
+                .totalItems(data.getNumberOfElements())
+                .itemsPerPage(data.getSize())
+                .hasNextPage(data.hasNext())
+                .hasPreviousPage(data.hasPrevious())
                 .build();
     }
 
@@ -141,6 +159,12 @@ public class GetProductsServiceImpl implements GetProductsService {
                 .toList();
         return GetProductsResponse.builder()
                 .products(productDTOS)
+                .currentPage(data.getNumber())
+                .totalPages(data.getTotalPages())
+                .totalItems(data.getNumberOfElements())
+                .itemsPerPage(data.getSize())
+                .hasNextPage(data.hasNext())
+                .hasPreviousPage(data.hasPrevious())
                 .build();
     }
 

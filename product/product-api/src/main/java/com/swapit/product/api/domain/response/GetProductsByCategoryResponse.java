@@ -12,4 +12,10 @@ import java.util.List;
 @Builder
 public class GetProductsByCategoryResponse {
     List<ProductDTO> products;
+    private Integer currentPage;
+    private Integer totalPages;
+    private Integer totalItems;
+    private Integer itemsPerPage;
+    private Boolean hasNextPage;
+    private Boolean hasPreviousPage;
 }

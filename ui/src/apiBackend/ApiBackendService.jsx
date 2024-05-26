@@ -233,6 +233,14 @@ class ApiService {
     }, false);
   }
 
+  getRecommendedProducts(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_RECOMMENDED_PRODUCTS_URI, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
 }
 
 export default new ApiService();

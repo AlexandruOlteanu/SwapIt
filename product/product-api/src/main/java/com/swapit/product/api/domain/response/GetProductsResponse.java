@@ -11,5 +11,11 @@ import java.util.List;
 @Jacksonized
 @Builder
 public class GetProductsResponse {
-    List<ProductDTO> products;
+    private List<ProductDTO> products;
+    private Integer currentPage;
+    private Integer totalPages;
+    private Integer totalItems;
+    private Integer itemsPerPage;
+    private Boolean hasNextPage;
+    private Boolean hasPreviousPage;
 }

@@ -70,8 +70,15 @@ public class SearchProductsServiceImpl implements SearchProductsService {
         List<SearchProductDTO> finalSearchResults = IntStream.range(startIdx, endIdx)
                 .mapToObj(searchProductDTOS::get)
                 .toList();
+        int totalPages = Math.ceilDiv(searchProductDTOS.size(), nrElementsPerChunk);
         return SearchProductsResponse.builder()
                 .searchProducts(finalSearchResults)
+                .currentPage(chunkNumber)
+                .totalPages(totalPages)
+                .totalItems(searchProductDTOS.size())
+                .itemsPerPage(nrElementsPerChunk)
+                .hasNextPage(chunkNumber != totalPages - 1)
+                .hasPreviousPage(chunkNumber != 0)
                 .build();
     }
 
@@ -88,6 +95,12 @@ public class SearchProductsServiceImpl implements SearchProductsService {
                 .map(SearchProductMapper::prodDtoToSearchProdDto).toList();
         return SearchProductsResponse.builder()
                 .searchProducts(searchProductDTOS)
+                .currentPage(response.getCurrentPage())
+                .totalPages(response.getTotalPages())
+                .totalItems(response.getTotalItems())
+                .itemsPerPage(response.getItemsPerPage())
+                .hasNextPage(response.getHasNextPage())
+                .hasPreviousPage(response.getHasPreviousPage())
                 .build();
     }
 }
