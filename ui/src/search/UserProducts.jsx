@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Grid, Card, CardContent, CardMedia, Typography, Button, Pagination, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ApiBackendService from '../apiBackend/ApiBackendService';
-import TopbarSection from '../sections/TopbarSection';
-import NavbarSection from '../sections/NavbarSection';
 import Common from '../Common';
 
 const useStyles = makeStyles({
@@ -12,17 +10,19 @@ const useStyles = makeStyles({
         flexGrow: 1,
         padding: '20px',
         display: 'flex',
-        backgroundColor: '#1C1E32',
-        minHeight: '100vh',
-        color: 'white',
+        backgroundColor: '#1C1E32', // Background color for the entire page
+        color: 'white', // Ensure text color is white for readability
     },
     filter: {
-        width: '25%',
-        padding: '20px',
+        display: 'flex',
+        justifyContent: 'end',
+        width: '45%',
+        paddingTop: '10px',
+        paddingLeft: '32px',
         color: 'white',
     },
     productContainer: {
-        width: '75%',
+        width: '100%',
     },
     gridItem: {
         display: 'flex',
@@ -32,12 +32,12 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        backgroundColor: '#2B2E4A',
-        color: 'white',
-        boxShadow: '0 4px 8px 0 rgba(255, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19)',
+        backgroundColor: '#2B2E4A', // Background color for the product cards
+        color: 'white', // Ensure text color is white for readability
+        boxShadow: '0 4px 8px 0 rgba(255, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19)', // Red shadow
     },
     media: {
-        height: 140,
+        height: 100,
     },
     cardContent: {
         flexGrow: 1,
@@ -78,7 +78,7 @@ const useStyles = makeStyles({
             color: 'white',
         },
         '& .MuiInputLabel-root': {
-            color: 'var(--primary)',
+            color: 'var(--primary)', // Set the color to var(--primary)
         },
         '& .MuiSelect-icon': {
             color: 'white',
@@ -95,13 +95,6 @@ const useStyles = makeStyles({
             },
         },
     },
-    button: {
-        color: 'white',
-        borderColor: 'white',
-        '&:hover': {
-            backgroundColor: '#3C3E5A',
-        },
-    },
     noResults: {
         display: 'flex',
         color: 'white',
@@ -112,8 +105,7 @@ const useStyles = makeStyles({
     },
 });
 
-const SearchProducts = () => {
-    const { query } = useParams();
+const UserProducts = ({ userId, columnItems, totalItems }) => {
     const classes = useStyles();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
@@ -121,9 +113,9 @@ const SearchProducts = () => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
+    const [filter, setFilter] = useState('popularity');
     const [isProductListEmpty, setIsProductListEmpty] = useState(false);
-    const [filter, setFilter] = useState('BEST_MATCH');
-    const itemsPerPage = 30;
+    const itemsPerPage = totalItems; // Fixed value of items per page
 
     useEffect(() => {
         fetchProducts(page, filter);
@@ -133,28 +125,17 @@ const SearchProducts = () => {
 
     const fetchProducts = async (page, filter) => {
         try {
-            const response = await ApiBackendService.searchProducts({
+            const response = await ApiBackendService.getProductsByUser({
+                userId: userId,
                 sortCriteria: filter.toUpperCase(),
                 chunkNumber: page - 1,
                 nrElementsPerChunk: itemsPerPage,
-            }, { query: query });
-
-            setIsProductListEmpty(response.searchProducts.length === 0);
-
-            const productsWithFavorites = await Promise.all(response.searchProducts.map(async product => {
-                const loggedIn = Common.isLoggedIn();
-                const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
-                const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
-                return {
-                    ...product,
-                    isFavorite: likeStatus === 'ACTIVE',
-                };
-            }));
-
-            setProducts(productsWithFavorites);
+            });
+            setIsProductListEmpty(response.products.length === 0);
+            setProducts(response.products);
             setTotalPages(response.totalPages);
         } catch (error) {
-            console.log('Error fetching searched products!');
+            console.log('Error fetching recommended products!');
         }
     };
 
@@ -167,7 +148,7 @@ const SearchProducts = () => {
         navigate(`/product/${encodedTitle}/${productId}`);
     };
 
-    const toggleFavorite = async (productId, isFavorite) => {
+    const toggleFavorite = async (productId, isFavorite, popularity) => {
         try {
             await ApiBackendService.changeProductLikeStatus({}, { productId });
             setProducts(products.map(product =>
@@ -182,31 +163,26 @@ const SearchProducts = () => {
         }
     };
 
+
     return (
         <React.Fragment>
-            <TopbarSection />
-            <NavbarSection searchQuery={query} />
-            <div className={classes.root}>
-                {!isProductListEmpty && (
-                    <>
-                        <div className={classes.filter}>
-                            <FormControl fullWidth variant="outlined" className={classes.formControl}>
-                                <InputLabel style={{ color: 'var(--primary)' }}>Filter By</InputLabel>
-                                <Select
-                                    value={filter}
-                                    onChange={(e) => setFilter(e.target.value)}
-                                    label="Filter By"
-                                >
-                                    <MenuItem value="BEST_MATCH">Best Match</MenuItem>
-                                    <MenuItem value="POPULARITY">Popularity</MenuItem>
-                                    <MenuItem value="NEWEST">Newest</MenuItem>
-                                    <MenuItem value="RANDOM">Shuffled</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-
+            {!isProductListEmpty && (
+                <>
+                    <div className={classes.filter}>
+                        <FormControl fullWidth variant="outlined" className={classes.formControl}>
+                            <InputLabel style={{ color: 'var(--primary)' }}>Filter By</InputLabel>
+                            <Select
+                                value={filter}
+                                onChange={(e) => setFilter(e.target.value)}
+                                label="Filter By"
+                            >
+                                <MenuItem value="popularity">Popularity</MenuItem>
+                                <MenuItem value="newest">Most Recent</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <div className={classes.root}>
                         <div className={classes.productContainer}>
-
                             <Pagination
                                 className={classes.pagination}
                                 count={totalPages}
@@ -216,20 +192,20 @@ const SearchProducts = () => {
                             />
                             <Grid container spacing={4}>
                                 {products.map(product => (
-                                    <Grid item xs={12} sm={4} key={product.productId} className={classes.gridItem}>
+                                    <Grid item xs={12} sm={columnItems} key={product.productId} className={classes.gridItem}>
                                         <Card
                                             className={classes.card}
                                             style={{ backgroundColor: '#2B2E4A', boxShadow: '0 2px 8px var(--primary)' }}
                                         >
                                             <CardMedia
                                                 className={classes.media}
-                                                image={product.productImages[0]}
+                                                image={product.productImages[0]?.imageUrl}
                                                 title={product.title}
                                                 onClick={() => handleProductClick(product.title, product.productId)}
                                                 style={{ cursor: 'pointer' }}
                                             />
                                             <CardContent className={classes.cardContent}>
-                                                <Typography className={classes.title} gutterBottom variant="h5" component="h2"
+                                                <Typography className={classes.title} gutterBottom variant="h6" component="h4"
                                                     onClick={() => handleProductClick(product.title, product.productId)}
                                                     style={{ cursor: 'pointer', color: 'var(--light)' }}
                                                 >
@@ -254,15 +230,6 @@ const SearchProducts = () => {
                                                         This product has {product.popularity} appreciation
                                                     </Typography>
                                                 )}
-                                                {(isLoggedIn && !isAdmin) && (
-                                                    <Button size="small" variant="outlined" className={classes.button}
-                                                        onClick={() => toggleFavorite(product.productId, product.isFavorite)}
-                                                        style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                                                    >
-                                                        <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
-                                                        {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
-                                                    </Button>
-                                                )}
                                             </CardContent>
                                         </Card>
                                     </Grid>
@@ -276,18 +243,18 @@ const SearchProducts = () => {
                                 variant="outlined" shape="rounded"
                             />
                         </div>
-                    </>
-                )}
-                    
-                {isProductListEmpty && (
-                    <Typography variant="h6" className={classes.noResults}>
-                        No results found, please refine your search criteria and try again.
-                    </Typography>
-                )}
+                    </div>
+                </>
+            )}
+            {isProductListEmpty && (
+                <Typography variant="h6" className={classes.noResults}>
+                    You haven't posted any products yet!
+                </Typography>
+            )}
 
-            </div>
         </React.Fragment>
+
     );
 };
 
-export default SearchProducts;
+export default UserProducts;

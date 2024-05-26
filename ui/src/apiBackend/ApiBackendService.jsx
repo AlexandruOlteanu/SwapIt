@@ -250,6 +250,22 @@ class ApiService {
     }, true);
   }
 
+  getProductsByUser(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCTS_BY_USER_URI, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
+  getLikedProductsByUser(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_LIKED_PRODUCTS_BY_USER_URI, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
 }
 
 export default new ApiService();

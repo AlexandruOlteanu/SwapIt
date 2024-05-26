@@ -123,7 +123,9 @@ public class SearchDictionaryServiceImpl implements SearchDictionaryService {
     }
 
     private List<String> processQuery(String query) {
-        String[] words = query.split("[^a-zA-Z]+");
+        String lowerCaseQuery = query.toLowerCase();
+        String[] words = lowerCaseQuery.split("[^a-zA-Z]+");
         return Arrays.asList(words);
     }
+
 }

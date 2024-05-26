@@ -65,7 +65,7 @@ public class GetProductsServiceImpl implements GetProductsService {
     @Override
     public GetProductsResponse getLikedProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         if (sortCriteria == null) {
-            sortCriteria = NEWEST.name();
+            sortCriteria = ProductLikeSortCriteria.NEWEST.name();
         }
         Pageable pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(getProductLikeSortingCriteria(sortCriteria)).descending());
         Page<ProductLike> data = productLikeRepository.findAllByUserIdAndStatus(userId, ACTIVE.name(), pageable);

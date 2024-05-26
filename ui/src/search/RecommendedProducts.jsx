@@ -180,7 +180,7 @@ const RecommendedProducts = () => {
                     >
                         <MenuItem value="popularity">Popularity</MenuItem>
                         <MenuItem value="newest">Most Recent</MenuItem>
-                        <MenuItem value="random">Random</MenuItem>
+                        <MenuItem value="random">Shuffled</MenuItem>
                     </Select>
                 </FormControl>
             </div>

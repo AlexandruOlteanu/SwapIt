@@ -12,6 +12,8 @@ import '../css/UserProfile.css'
 import Common from '../Common';
 import BanUserDialog from './BanUserDialog';
 import RemoveUserBanDialog from './RemoveUserBanDialog';
+import UserProducts from '../search/UserProducts';
+import UserFavoriteProducts from '../search/UserFavoriteProducts';
 
 const TopbarSection = lazy(() => import('../sections/TopbarSection'));
 const NavbarSection = lazy(() => import('../sections/NavbarSection'));
@@ -30,6 +32,7 @@ const UserProfile = () => {
     const [isPermanentBanned, setIsPermanentBanned] = useState(false);
     const [banExpiryDate, setBanExpiryDate] = useState('');
     const [activeSection, setActiveSection] = useState("updateProfile");
+    const [isRightFavoriteProducts, setIsRightFavoriteProducts] = useState(false);
 
     const [isBanDialogVisible, setIsBanDialogVisible] = useState(false);
     const [isRemoveBanDialogVisible, setIsRemoveBanDialogVisible] = useState(false);
@@ -397,7 +400,7 @@ const UserProfile = () => {
                         <div className="user-data">
                             <hr className="pl-4" style={{ border: '1px solid white', margin: '20px 8px' }} />
                             {((isUserProfileAuth && !isAdmin) || !isUserProfileAuth) && (
-                                <div className="d-flex user-profile-button ml-2 mr-2 p-2 align-items-center br-10">
+                                <div className="d-flex user-profile-button ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setIsRightFavoriteProducts(false)}>
                                     <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
                                         <i className="fa-solid fa-bag-shopping"></i>
                                     </div>
@@ -429,7 +432,7 @@ const UserProfile = () => {
                             {isUserProfileAuth && (
                                 <>
                                     {!isAdmin && (
-                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setActiveSection("favouriteProducts")}>
+                                        <div className="d-flex user-profile-button mt-2 ml-2 mr-2 p-2 align-items-center br-10" onClick={() => setIsRightFavoriteProducts(true)}>
                                             <div className="d-flex br-10 align-items-center justify-content-center flex-shrink-0 ml-n3" style={{ width: '50px', height: '25px' }}>
                                                 <i className="fa-solid fa-heart"></i>
                                             </div>
@@ -479,7 +482,7 @@ const UserProfile = () => {
                         {isSidebarMinimized && (<i className="fa-solid fa-arrow-right"> </i>)}
                     </div>
                 </div>
-                <div className="right-sidebar" style={{ display: 'flex', width: '70%' }}>
+                <div className="right-sidebar" style={{ display: 'flex', width: isSidebarMinimized ? '88%' : '75%' }}>
                     {activeSection === "updateProfile" && isUserProfileAuth && (
                         <div className="container rounded mt-5 ml-5 mb-5" style={{ flex: '1 -1 0%', overflow: 'auto', width: '30%' }}>
                             <div className="row" style={{ height: '100%' }}>
@@ -676,9 +679,29 @@ const UserProfile = () => {
                         </div>
                     )}
                     <div className='ml-5' style={{ flex: 1, overflow: 'auto', width: '100%' }}>
-                        {/* Content of the new column goes here */}
-                        <h4>New Column Content</h4>
-                        <p>Details and additional settings or information can be displayed here.</p>
+                        {!isRightFavoriteProducts && (
+                            <>
+                                <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px' }}> My Products</h2>
+                                {(isSidebarMinimized && userData.userId !== -1) && (
+                                    <UserProducts userId={userData.userId} columnItems={4} totalItems={9} />
+                                )}
+                                {(!isSidebarMinimized && userData.userId !== -1) && (
+                                    <UserProducts userId={userData.userId} columnItems={6} totalItems={6} />
+                                )}
+                            </>
+                        )}
+                        {isRightFavoriteProducts && (
+                            <>
+                            <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px' }}> Favourite Products</h2>
+                            {(isSidebarMinimized && userData.userId !== -1) && (
+                                <UserFavoriteProducts userId={userData.userId} columnItems={4} totalItems={9} />
+                            )}
+                            {(!isSidebarMinimized && userData.userId !== -1) && (
+                                <UserFavoriteProducts userId={userData.userId} columnItems={6} totalItems={6} />
+                            )}
+                        </>
+                        )}
+
                     </div>
                 </div>
             </div>
