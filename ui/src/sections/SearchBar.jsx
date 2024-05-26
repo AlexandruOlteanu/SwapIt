@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/SearchBar.css';
 
-const SearchBar = () => {
+const SearchBar = ({ searchQuery: initialSearchQuery }) => {
+    const [searchQuery, setSearchQuery] = useState(initialSearchQuery || '');
 
-    const [searchQuery, setSearchQuery] = useState('');
+    useEffect(() => {
+        setSearchQuery(initialSearchQuery || '');
+    }, [initialSearchQuery]);
 
     const handleSearchQueryChange = (e) => {
         setSearchQuery(e.target.value);
@@ -11,13 +14,13 @@ const SearchBar = () => {
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
-        console.log(searchQuery);
+        window.location.href = `/search/query/${searchQuery}`;
     };
 
     return (
         <div className="wrap">
             <form className="search" onSubmit={handleSearchSubmit}>
-                <input type="text" className="searchTerm" placeholder="Search" onChange={handleSearchQueryChange} />
+                <input type="text" className="searchTerm" placeholder="Search" value={searchQuery} onChange={handleSearchQueryChange} />
                 <button type="submit" className="searchButton">
                     <i className="fa fa-search"></i>
                 </button>

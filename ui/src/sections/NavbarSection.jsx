@@ -1,8 +1,6 @@
 import React, { useEffect, useState, lazy } from 'react'
 import { useNavigate } from 'react-router-dom';
-
 import Logo from '../logo/Logo.webp'
-
 import '../css/NavbarSection.css'
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import SearchBar from './SearchBar';
@@ -11,7 +9,7 @@ import CategoriesMenu from './CategoriesMenu';
 
 const HamburgerButton = lazy(() => import('../js/HamburgerButton'));
 
-function NavbarSection() {
+function NavbarSection({ searchQuery }) {
 
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const [isAdmin, setIsAdmin] = useState(false);
@@ -19,9 +17,7 @@ function NavbarSection() {
     const navigate = useNavigate();
 
     useEffect(() => {
-
         setIsAdmin(Common.isUserAdmin());
-
     }, []);
 
     function openMenu() {
@@ -32,8 +28,7 @@ function NavbarSection() {
             menuSections.forEach(section => {
                 section.classList.remove("show");
             });
-        }
-        else {
+        } else {
             menuSection.classList.add("show");
         }
     }
@@ -65,13 +60,10 @@ function NavbarSection() {
                             <img src={Logo} alt="SwapIt Logo" className="swapit-logo" />
                         </a>
                         <CategoriesMenu />
-
-                        <SearchBar />
-
+                        <SearchBar searchQuery={searchQuery} />
                         <div onClick={openMenu}>
                             <HamburgerButton />
                         </div>
-
                         <div className="collapse navbar-collapse justify-content-between px-3 menu menu-3" id="navbarCollapse">
                             <div className="navbar-nav ml-auto py-0 justify-content-end">
                                 {!isLoggedIn && (
@@ -84,9 +76,7 @@ function NavbarSection() {
                                             </div>
                                         </div>
                                     </>
-
                                 )}
-
                                 {isLoggedIn && (
                                     <>
                                         {!isAdmin && (
@@ -125,7 +115,6 @@ function NavbarSection() {
                                                 </div>
                                             </div>
                                         )}
-
                                     </>
                                 )}
                             </div>
@@ -135,7 +124,7 @@ function NavbarSection() {
             </div>
             {/* Navbar End */}
         </div>
-    )
+    );
 }
 
-export default NavbarSection
+export default NavbarSection;

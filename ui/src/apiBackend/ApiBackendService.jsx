@@ -241,6 +241,15 @@ class ApiService {
     }, true);
   }
 
+  searchProducts(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_SEARCH_PRODUCTS_URI, {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(data),
+      params: params
+    }, true);
+  }
+
 }
 
 export default new ApiService();

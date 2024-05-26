@@ -4,6 +4,7 @@ import AuthRedirectHandler from './auth/AuthRedirectHandler';
 import './css/SwapIt.css';
 import ProductPage from './product/ProductPage';
 import Common from './Common';
+import SearchProducts from './search/SearchProducts';
 
 const Home = lazy(() => import('./Home'));
 const Authentication = lazy(() => import('./auth/Authentication'));
@@ -41,6 +42,7 @@ function SwapIt() {
                         <Route path="/product/create" element={<AddProduct />} />
                         <Route path="/product/update/:title/:productId" element={<UpdateProduct />} />
                         <Route path='/product/:title/:productId' element={<ProductPage />} />
+                        <Route path="/search/query/:query" element={<SearchProducts />} />
                         <Route path="/contact" element={<Contact />} />
                     </Routes>
                 </Suspense>
