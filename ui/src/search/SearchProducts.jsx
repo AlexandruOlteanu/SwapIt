@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import TopbarSection from '../sections/TopbarSection';
 import NavbarSection from '../sections/NavbarSection';
+import Common from '../Common';
 
 const useStyles = makeStyles({
     root: {
@@ -108,6 +109,8 @@ const SearchProducts = () => {
     const classes = useStyles();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [filter, setFilter] = useState('BEST_MATCH');
@@ -115,6 +118,8 @@ const SearchProducts = () => {
 
     useEffect(() => {
         fetchProducts(page, filter);
+        setIsLoggedIn(Common.isLoggedIn());
+        setIsAdmin(Common.isUserAdmin());
     }, [page, filter]);
 
     const fetchProducts = async (page, filter) => {
@@ -123,10 +128,12 @@ const SearchProducts = () => {
                 sortCriteria: filter.toUpperCase(),
                 chunkNumber: page - 1,
                 nrElementsPerChunk: itemsPerPage,
-            }, {query: query});
+            }, { query: query });
+            console.log()
             const productsWithFavorites = await Promise.all(response.searchProducts.map(async product => {
-                const favoriteStatus = await ApiBackendService.getProductLikeStatus({ productId: product.productId });
-                const likeStatus = await favoriteStatus.text();
+                const loggedIn = Common.isLoggedIn();
+                const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
+                const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
                 return {
                     ...product,
                     isFavorite: likeStatus === 'ACTIVE',
@@ -234,14 +241,15 @@ const SearchProducts = () => {
                                                 This product has {product.popularity} appreciation
                                             </Typography>
                                         )}
-
-                                        <Button size="small" variant="outlined" className={classes.button}
-                                            onClick={() => toggleFavorite(product.productId, product.isFavorite)}
-                                            style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                                        >
-                                            <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
-                                            {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
-                                        </Button>
+                                        {(isLoggedIn && !isAdmin) && (
+                                            <Button size="small" variant="outlined" className={classes.button}
+                                                onClick={() => toggleFavorite(product.productId, product.isFavorite)}
+                                                style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
+                                            >
+                                                <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
+                                                {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
+                                            </Button>
+                                        )}
                                     </CardContent>
                                 </Card>
                             </Grid>

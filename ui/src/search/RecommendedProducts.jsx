@@ -3,6 +3,7 @@ import { Grid, Card, CardContent, CardMedia, Typography, Button, Pagination, For
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import ApiBackendService from '../apiBackend/ApiBackendService';
+import Common from '../Common';
 
 const useStyles = makeStyles({
     root: {
@@ -105,6 +106,8 @@ const RecommendedProducts = () => {
     const classes = useStyles();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [filter, setFilter] = useState('popularity');
@@ -112,6 +115,8 @@ const RecommendedProducts = () => {
 
     useEffect(() => {
         fetchProducts(page, filter);
+        setIsLoggedIn(Common.isLoggedIn());
+        setIsAdmin(Common.isUserAdmin());
     }, [page, filter]);
 
     const fetchProducts = async (page, filter) => {
@@ -122,8 +127,9 @@ const RecommendedProducts = () => {
                 nrElementsPerChunk: itemsPerPage,
             });
             const productsWithFavorites = await Promise.all(response.products.map(async product => {
-                const favoriteStatus = await ApiBackendService.getProductLikeStatus({productId: product.productId});
-                const likeStatus = await favoriteStatus.text();
+                const loggedIn = Common.isLoggedIn();
+                const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
+                const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
                 return {
                     ...product,
                     isFavorite: likeStatus === 'ACTIVE',
@@ -149,9 +155,9 @@ const RecommendedProducts = () => {
     const toggleFavorite = async (productId, isFavorite, popularity) => {
         try {
             await ApiBackendService.changeProductLikeStatus({}, { productId });
-            setProducts(products.map(product => 
-                product.productId === productId ? { 
-                    ...product, 
+            setProducts(products.map(product =>
+                product.productId === productId ? {
+                    ...product,
                     isFavorite: !isFavorite,
                     popularity: isFavorite ? product.popularity - 1 : product.popularity + 1
                 } : product
@@ -160,7 +166,7 @@ const RecommendedProducts = () => {
             console.log('Error updating favorite status!');
         }
     };
-    
+
 
     return (
         <div className={classes.root}>
@@ -226,14 +232,15 @@ const RecommendedProducts = () => {
                                             This product has {product.popularity} appreciation
                                         </Typography>
                                     )}
-
-                                    <Button size="small" variant="outlined" className={classes.button}
-                                        onClick={() => toggleFavorite(product.productId, product.isFavorite)}
-                                        style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                                    >
-                                        <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
-                                        {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
-                                    </Button>
+                                    {(isLoggedIn && !isAdmin) && (
+                                        <Button size="small" variant="outlined" className={classes.button}
+                                            onClick={() => toggleFavorite(product.productId, product.isFavorite)}
+                                            style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
+                                        >
+                                            <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
+                                            {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
+                                        </Button>
+                                    )}
                                 </CardContent>
                             </Card>
                         </Grid>

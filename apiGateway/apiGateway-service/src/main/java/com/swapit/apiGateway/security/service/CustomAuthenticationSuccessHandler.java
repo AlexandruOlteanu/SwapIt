@@ -3,10 +3,9 @@ package com.swapit.apiGateway.security.service;
 import com.swapit.apiGateway.service.ExternalOperationsService;
 import com.swapit.user.api.domain.request.Oauth2Request;
 import com.swapit.user.api.domain.response.Oauth2Response;
+import com.swapit.user.api.util.UserStatus;
 import com.swapit.user.domain.User;
 import com.swapit.user.repository.UserRepository;
-import com.swapit.user.utils.UserStatus;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -51,7 +50,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         Oauth2Response loginResponse = externalOperationsService.oauth2login(oauth2Request);
         User user = userRepository.findById(loginResponse.getUserId()).orElse(null);
         assert user != null;
-        if (user.getStatus().equals(UserStatus.INACTIVE)) {
+        if (user.getStatus().equals(UserStatus.TEMPORARY_BANNED) || user.getStatus().equals(UserStatus.PERMANENT_BANNED)) {
             HttpSession session = request.getSession(false);
             if (session != null) {
                 session.invalidate();
