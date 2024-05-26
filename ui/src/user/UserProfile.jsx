@@ -681,25 +681,30 @@ const UserProfile = () => {
                     <div className='ml-5' style={{ flex: 1, overflow: 'auto', width: '100%' }}>
                         {!isRightFavoriteProducts && (
                             <>
-                                <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px' }}> My Products</h2>
-                                {(isSidebarMinimized && userData.userId !== -1) && (
+                                {isUserProfileAuth && (
+                                    <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom:'10px'  }}> My Products</h2>
+                                )}
+                                {!isUserProfileAuth && (
+                                    <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom:'10px' }}> {userData.surname}'s Products</h2>
+                                )}
+                                {((isUserProfileAuth && isSidebarMinimized && userData.userId !== -1) || (!isUserProfileAuth && userData.userId !== -1)) && (
                                     <UserProducts userId={userData.userId} columnItems={4} totalItems={9} />
                                 )}
-                                {(!isSidebarMinimized && userData.userId !== -1) && (
+                                {(isUserProfileAuth && !isSidebarMinimized && userData.userId !== -1) && (
                                     <UserProducts userId={userData.userId} columnItems={6} totalItems={6} />
                                 )}
                             </>
                         )}
                         {isRightFavoriteProducts && (
                             <>
-                            <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px' }}> Favourite Products</h2>
-                            {(isSidebarMinimized && userData.userId !== -1) && (
-                                <UserFavoriteProducts userId={userData.userId} columnItems={4} totalItems={9} />
-                            )}
-                            {(!isSidebarMinimized && userData.userId !== -1) && (
-                                <UserFavoriteProducts userId={userData.userId} columnItems={6} totalItems={6} />
-                            )}
-                        </>
+                                <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom:'10px'  }}> Favourite Products</h2>
+                                {((isUserProfileAuth && isSidebarMinimized && userData.userId !== -1) || (!isUserProfileAuth && userData.userId !== -1)) && (
+                                    <UserFavoriteProducts userId={userData.userId} columnItems={4} totalItems={9} />
+                                )}
+                                {(isUserProfileAuth && !isSidebarMinimized && userData.userId !== -1) && (
+                                    <UserFavoriteProducts userId={userData.userId} columnItems={6} totalItems={6} />
+                                )}
+                            </>
                         )}
 
                     </div>
