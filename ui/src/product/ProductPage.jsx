@@ -5,7 +5,6 @@ import ImageContainer from './ImageContainer'; // Import the ImageContainer comp
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Preloader from '../js/Preloader';
-import CategoriesMenu from '../sections/CategoriesMenu';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import Common from '../Common';
 const TopbarSection = lazy(() => import('../sections/TopbarSection'));
@@ -156,7 +155,6 @@ const ProductPage = () => {
             <Preloader />
             <TopbarSection />
             <NavbarSection />
-            <CategoriesMenu />
             <div className="product-page">
                 <div className="image-section">
                     <div className="main-image" onClick={openImageContainer}>

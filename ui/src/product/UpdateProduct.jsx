@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 import '../css/AddProduct.css';
 
 import Preloader from '../js/Preloader'
-import CategoriesMenu from '../sections/CategoriesMenu';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 const TopbarSection = lazy(() => import('../sections/TopbarSection'));
 const NavbarSection = lazy(() => import('../sections/NavbarSection'));
@@ -482,7 +481,6 @@ const UpdateProduct = () => {
                 <Preloader />
                 <TopbarSection />
                 <NavbarSection />
-                <CategoriesMenu />
                 <div className="form-container">
                     <div className="success-container" style={{ textAlign: 'center', marginTop: '50px', marginBottom: '400px' }}>
                         <Typography variant="h4" color={'white'}>Product Updated Successfully</Typography>
@@ -508,7 +506,6 @@ const UpdateProduct = () => {
             <Preloader />
             <TopbarSection />
             <NavbarSection />
-            <CategoriesMenu />
             <div className="form-container">
                 <Box className="form">
                     <Typography variant="h4" className="form-title">

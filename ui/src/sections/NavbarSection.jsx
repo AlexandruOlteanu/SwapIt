@@ -7,6 +7,7 @@ import '../css/NavbarSection.css'
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import SearchBar from './SearchBar';
 import Common from '../Common';
+import CategoriesMenu from './CategoriesMenu';
 
 const HamburgerButton = lazy(() => import('../js/HamburgerButton'));
 
@@ -63,6 +64,7 @@ function NavbarSection() {
                         <a href="/" className="navbar-brand" aria-label="Logo">
                             <img src={Logo} alt="SwapIt Logo" className="swapit-logo" />
                         </a>
+                        <CategoriesMenu />
 
                         <SearchBar />
 

@@ -1,7 +1,6 @@
 import React, { lazy } from 'react';
 
 import Preloader from './js/Preloader'
-import CategoriesMenu from './sections/CategoriesMenu';
 import RecommendedProducts from './search/RecommendedProducts';
 const TopbarSection = lazy(() => import('./sections/TopbarSection'));
 const NavbarSection = lazy(() => import('./sections/NavbarSection'));
@@ -15,7 +14,6 @@ const Home = () => {
             <Preloader />
             <TopbarSection />
             <NavbarSection />
-            <CategoriesMenu />
             <RecommendedProducts />
 
             <ContactSection title="Contact Us" />

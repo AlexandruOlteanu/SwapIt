@@ -121,7 +121,16 @@ const RecommendedProducts = () => {
                 chunkNumber: page - 1,
                 nrElementsPerChunk: itemsPerPage,
             });
-            setProducts(response.products);
+            const productsWithFavorites = await Promise.all(response.products.map(async product => {
+                const favoriteStatus = await ApiBackendService.getProductLikeStatus({productId: product.productId});
+                const likeStatus = await favoriteStatus.text();
+                return {
+                    ...product,
+                    isFavorite: likeStatus === 'ACTIVE',
+                };
+            }));
+
+            setProducts(productsWithFavorites);
             setTotalPages(response.totalPages);
         } catch (error) {
             console.log('Error fetching recommended products!');
@@ -136,6 +145,22 @@ const RecommendedProducts = () => {
         const encodedTitle = encodeURIComponent(title.split(' ').join('-'));
         navigate(`/product/${encodedTitle}/${productId}`);
     };
+
+    const toggleFavorite = async (productId, isFavorite, popularity) => {
+        try {
+            await ApiBackendService.changeProductLikeStatus({}, { productId });
+            setProducts(products.map(product => 
+                product.productId === productId ? { 
+                    ...product, 
+                    isFavorite: !isFavorite,
+                    popularity: isFavorite ? product.popularity - 1 : product.popularity + 1
+                } : product
+            ));
+        } catch (error) {
+            console.log('Error updating favorite status!');
+        }
+    };
+    
 
     return (
         <div className={classes.root}>
@@ -203,10 +228,11 @@ const RecommendedProducts = () => {
                                     )}
 
                                     <Button size="small" variant="outlined" className={classes.button}
+                                        onClick={() => toggleFavorite(product.productId, product.isFavorite)}
                                         style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
                                     >
-                                        <i className="fa-regular fa-lg fa-heart" style={{ marginRight: '3px' }}></i>
-                                        Add to Favourite
+                                        <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
+                                        {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
                                     </Button>
                                 </CardContent>
                             </Card>

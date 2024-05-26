@@ -389,7 +389,6 @@ const CategoriesMenu = () => {
         console.log('Subcategory clicked:', name);
         // Perform any other actions with the name
     };
-
     return (
         <div className="main-container-categories">
             <div
@@ -402,8 +401,8 @@ const CategoriesMenu = () => {
             >
                 <div className="product-categories-header">
                     <i className="fa-solid fa-bars pr-2"></i>
-                    Product Categories
-                </div>
+                    <span className="categories-text">Categories</span>
+                </div>  
                 {showCategories && (
                     <div className="categories-menu">
                         <ul className="main-categories">

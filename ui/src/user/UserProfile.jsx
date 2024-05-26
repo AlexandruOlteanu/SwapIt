@@ -9,7 +9,6 @@ import Preloader from '../js/Preloader';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import '../scss/UserProfile.scss';
 import '../css/UserProfile.css'
-import CategoriesMenu from '../sections/CategoriesMenu';
 import Common from '../Common';
 import BanUserDialog from './BanUserDialog';
 import RemoveUserBanDialog from './RemoveUserBanDialog';
@@ -338,7 +337,6 @@ const UserProfile = () => {
             <Preloader />
             <TopbarSection />
             <NavbarSection />
-            <CategoriesMenu />
             <div className="main-container">
                 <div className={isSidebarMinimized ? "left-sidebar minimize" : "left-sidebar"}>
                     <div className="inner">
