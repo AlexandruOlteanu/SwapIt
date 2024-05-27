@@ -23,7 +23,6 @@ const ProductPage = () => {
     const [categoryLvl2, setCategoryLvl2] = useState('');
     const [categoryLvl3, setCategoryLvl3] = useState('');
 
-
     const [productImages, setProductImages] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isImageContainerVisible, setIsImageContainerVisible] = useState(false);
@@ -37,6 +36,21 @@ const ProductPage = () => {
         price: 0,
         popularity: '',
         specifications: {}
+    });
+
+    const [productOwnerData, setProductOwnerData] = useState({
+        userId: -1,
+        username: '',
+        name: '',
+        surname: '',
+        email: '',
+        userImage: '',
+        joinDate: '',
+        userRole: '',
+        address: '',
+        phoneNumber: '',
+        country: '',
+        stateRegion: ''
     });
 
     useEffect(() => {
@@ -79,6 +93,10 @@ const ProductPage = () => {
                         setIsUserAuth(false);
                     }
                 }
+
+                // Fetch Product Owner Data
+                const ownerData = await ApiBackendService.getUserDetails({userId : productResponse.userId});
+                setProductOwnerData(ownerData);
 
                 // Fetch category tree data
                 const categoryResponse = await ApiBackendService.getCategoryTree({ categoryId: productResponse.categoryId });
@@ -165,7 +183,6 @@ const ProductPage = () => {
     };
 
     const handleCategoryClick = (categoryName) => {
-        // Implement the logic to navigate to the category page based on the category name
         window.location.href = `/search/category/${categoryName}`;
     };
 

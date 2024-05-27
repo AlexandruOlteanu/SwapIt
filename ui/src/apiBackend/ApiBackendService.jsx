@@ -80,6 +80,14 @@ class ApiService {
     }, true);
   }
 
+  getUserDetails(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_USER_DETAILS_URI, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
   logout(params) {
     return this.fetchWithAuth(process.env.REACT_APP_LOGOUT_URI, {
       method: 'POST',
