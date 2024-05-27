@@ -281,8 +281,10 @@ const SearchProducts = () => {
                     
                 {isProductListEmpty && (
                     <Typography variant="h6" className={classes.noResults}>
-                        No results found, please refine your search criteria and try again.
-                    </Typography>
+                    <div>
+                        <i class="fa-solid fa-circle-exclamation" style={{marginRight:'5px'}}></i>No results found, please refine your search criteria and try again.
+                    </div>
+                </Typography>
                 )}
 
             </div>

@@ -6,6 +6,7 @@ import ProductPage from './product/ProductPage';
 import Common from './Common';
 import SearchProducts from './search/SearchProducts';
 import CategorySearch from './category/CategorySearch';
+import Error from './Error';
 
 const Home = lazy(() => import('./Home'));
 const Authentication = lazy(() => import('./auth/Authentication'));
@@ -46,6 +47,7 @@ function SwapIt() {
                         <Route path="/search/query/:query" element={<SearchProducts />} />
                         <Route path="/search/category/:categoryName" element={<CategorySearch />} />
                         <Route path="/contact" element={<Contact />} />
+                        <Route path="/error" element={<Error />} />
                     </Routes>
                 </Suspense>
             </div>

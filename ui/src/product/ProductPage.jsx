@@ -95,7 +95,7 @@ const ProductPage = () => {
                 }
 
                 // Fetch Product Owner Data
-                const ownerData = await ApiBackendService.getUserDetails({userId : productResponse.userId});
+                const ownerData = await ApiBackendService.getUserDetails({ userId: productResponse.userId });
                 setProductOwnerData(ownerData);
 
                 // Fetch category tree data
@@ -123,6 +123,7 @@ const ProductPage = () => {
 
             } catch (error) {
                 console.error('Error fetching data:', error);
+                window.location.href = "/error";
             }
         };
 
@@ -158,6 +159,10 @@ const ProductPage = () => {
         } catch (error) {
             console.error('Error updating favourite status:', error);
         }
+    };
+
+    const handleProductOwnerClick = async () => {
+        window.location.href = `/users/${productOwnerData.username}`;
     };
 
     const handleUpdateProduct = async () => {
@@ -196,10 +201,20 @@ const ProductPage = () => {
                 <div className="image-section">
                     <div className="category-breadcrumbs">
                         <span onClick={() => handleCategoryClick(categoryLvl1)}>{categoryLvl1}</span>
-                        <i className="fa-solid fa-angle-right" style={{marginLeft:'10px', marginRight:'10px'}}></i>
+                        <i className="fa-solid fa-angle-right" style={{ marginLeft: '10px', marginRight: '10px' }}></i>
                         <span onClick={() => handleCategoryClick(categoryLvl2)}>{categoryLvl2}</span>
-                        <i className="fa-solid fa-angle-right" style={{marginLeft:'10px', marginRight:'10px'}}></i>
+                        <i className="fa-solid fa-angle-right" style={{ marginLeft: '10px', marginRight: '10px' }}></i>
                         <span onClick={() => handleCategoryClick(categoryLvl3)}>{categoryLvl3}</span>
+                    </div>
+                    <div className="product-owner" onClick={handleProductOwnerClick}>
+                        <img src={productOwnerData.userImage} alt="User" className="owner-image" />
+                        <div className="owner-details">
+                            <span className="owner-username">@{productOwnerData.username}</span>
+                            <span className="owner-phone">
+                                <i class="fa-solid fa-mobile-screen-button" style={{ marginRight: '5px' }}></i>
+                                {productOwnerData.phoneNumber}
+                            </span>
+                        </div>
                     </div>
                     <div className="main-image" onClick={openImageContainer}>
                         <button className="slider-button left" onClick={handlePrevClick}>{"<"}</button>
@@ -216,19 +231,6 @@ const ProductPage = () => {
                                 className={currentIndex === index ? 'active' : ''}
                             />
                         ))}
-                    </div>
-                    <div className="specifications-section">
-                        <h2>Product Specifications</h2>
-                        <table className="specifications-table">
-                            <tbody>
-                                {Object.entries(productData.specifications).map(([key, value]) => (
-                                    <tr key={key} className="specification-item">
-                                        <td className="spec-key">{key}</td>
-                                        <td className="spec-value">{value}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
                     </div>
                 </div>
                 <div className="product-details">
@@ -264,6 +266,27 @@ const ProductPage = () => {
                             </div>
                         </>
                     )}
+                </div>
+
+            </div>
+            <div className='product-page' style={{paddingTop:'0px'}}>
+                <div className="image-section">
+                    <div className="specifications-section">
+                        <h2>Product Specifications</h2>
+                        <table className="specifications-table">
+                            <tbody>
+                                {Object.entries(productData.specifications).map(([key, value]) => (
+                                    <tr key={key} className="specification-item">
+                                        <td className="spec-key">{key}</td>
+                                        <td className="spec-value">{value}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className="product-details">
+
                 </div>
             </div>
             <FooterSection />
