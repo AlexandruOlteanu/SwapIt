@@ -109,18 +109,18 @@ const ProductPage = () => {
                         setCategoryLvl3(category.value);
                     }
                 });
-
+                const loggedIn = Common.isLoggedIn();
                 setIsAdmin(Common.isUserAdmin());
+                setIsLoggedIn(loggedIn);
 
                 // Fetch Product Like
-                const likeResponse = await ApiBackendService.getProductLikeStatus({ productId });
-                const responseBody = await likeResponse.text(); // Read the response body as text
-                if (responseBody === 'ACTIVE') {
-                    setIsFavourite(true);
+                if (loggedIn) {
+                    const likeResponse = await ApiBackendService.getProductLikeStatus({ productId });
+                    const responseBody = await likeResponse.text(); // Read the response body as text
+                    if (responseBody === 'ACTIVE') {
+                        setIsFavourite(true);
+                    }
                 }
-
-                setIsLoggedIn(Common.isLoggedIn());
-
             } catch (error) {
                 console.error('Error fetching data:', error);
                 window.location.href = "/error";
@@ -211,7 +211,7 @@ const ProductPage = () => {
                         <div className="owner-details">
                             <span className="owner-username">@{productOwnerData.username}</span>
                             <span className="owner-phone">
-                                <i class="fa-solid fa-mobile-screen-button" style={{ marginRight: '5px' }}></i>
+                                <i className="fa-solid fa-mobile-screen-button" style={{ marginRight: '5px' }}></i>
                                 {productOwnerData.phoneNumber}
                             </span>
                         </div>
@@ -269,7 +269,7 @@ const ProductPage = () => {
                 </div>
 
             </div>
-            <div className='product-page' style={{paddingTop:'0px'}}>
+            <div className='product-page' style={{ paddingTop: '0px' }}>
                 <div className="image-section">
                     <div className="specifications-section">
                         <h2>Product Specifications</h2>

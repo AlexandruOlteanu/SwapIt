@@ -105,6 +105,14 @@ const useStyles = makeStyles({
             backgroundColor: '#3C3E5A',
         },
     },
+    noResults: {
+        display: 'flex',
+        color: 'white',
+        alignItems: 'center',
+        flexDirection: 'column',
+        marginTop: '50px !important',
+        width: '100%',
+    },
 });
 
 const CategorySearch = () => {
@@ -115,6 +123,7 @@ const CategorySearch = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
+    const [isProductListEmpty, setIsProductListEmpty] = useState(false);
     const [totalPages, setTotalPages] = useState(0);
     const [filter, setFilter] = useState('popularity');
     const itemsPerPage = 30; // Fixed value of items per page
@@ -127,13 +136,14 @@ const CategorySearch = () => {
 
     const fetchProducts = async (page, filter) => {
         try {
-            const categoryId = await ApiBackendService.getProductCategoryId({}, {categoryName: categoryName});
+            const categoryId = await ApiBackendService.getProductCategoryId({}, { categoryName: categoryName });
             const response = await ApiBackendService.searchProductsByCategory({
                 categoryId: categoryId,
                 sortCriteria: filter.toUpperCase(),
                 chunkNumber: page - 1,
                 nrElementsPerChunk: itemsPerPage,
             });
+            setIsProductListEmpty(response.searchProducts.length === 0);
             const productsWithFavorites = await Promise.all(response.searchProducts.map(async product => {
                 const loggedIn = Common.isLoggedIn();
                 const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
@@ -147,7 +157,8 @@ const CategorySearch = () => {
             setProducts(productsWithFavorites);
             setTotalPages(response.totalPages);
         } catch (error) {
-            console.log('Error fetching recommended products!');
+            console.log('Error fetching category products!');
+            window.location.href = "/error";
         }
     };
 
@@ -182,91 +193,103 @@ const CategorySearch = () => {
             <TopbarSection />
             <NavbarSection />
             <div className={classes.root}>
-                <div className={classes.filter}>
-                    <FormControl fullWidth variant="outlined" className={classes.formControl}>
-                        <InputLabel style={{ color: 'var(--primary)' }}>Filter By</InputLabel>
-                        <Select
-                            value={filter}
-                            onChange={(e) => setFilter(e.target.value)}
-                            label="Filter By"
-                        >
-                            <MenuItem value="popularity">Popularity</MenuItem>
-                            <MenuItem value="newest">Most Recent</MenuItem>
-                            <MenuItem value="random">Shuffled</MenuItem>
-                        </Select>
-                    </FormControl>
-                </div>
-                <div className={classes.productContainer}>
-                    <Pagination
-                        className={classes.pagination}
-                        count={totalPages}
-                        page={page}
-                        onChange={handlePageChange}
-                        variant="outlined" shape="rounded"
-                    />
-                    <Grid container spacing={4}>
-                        {products.map(product => (
-                            <Grid item xs={12} sm={4} key={product.productId} className={classes.gridItem}>
-                                <Card
-                                    className={classes.card}
-                                    style={{ backgroundColor: '#2B2E4A', boxShadow: '0 2px 8px var(--primary)' }}
+                {!isProductListEmpty && (
+                    <>
+                        <div className={classes.filter}>
+                            <FormControl fullWidth variant="outlined" className={classes.formControl}>
+                                <InputLabel style={{ color: 'var(--primary)' }}>Filter By</InputLabel>
+                                <Select
+                                    value={filter}
+                                    onChange={(e) => setFilter(e.target.value)}
+                                    label="Filter By"
                                 >
-                                    <CardMedia
-                                        className={classes.media}
-                                        image={product.productImages[0]}
-                                        title={product.title}
-                                        onClick={() => handleProductClick(product.title, product.productId)}
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography className={classes.title} gutterBottom variant="h5" component="h2"
-                                            onClick={() => handleProductClick(product.title, product.productId)}
-                                            style={{ cursor: 'pointer', color: 'var(--light)' }}
+                                    <MenuItem value="popularity">Popularity</MenuItem>
+                                    <MenuItem value="newest">Most Recent</MenuItem>
+                                    <MenuItem value="random">Shuffled</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </div>
+                        <div className={classes.productContainer}>
+                            <Pagination
+                                className={classes.pagination}
+                                count={totalPages}
+                                page={page}
+                                onChange={handlePageChange}
+                                variant="outlined" shape="rounded"
+                            />
+                            <Grid container spacing={4}>
+                                {products.map(product => (
+                                    <Grid item xs={12} sm={4} key={product.productId} className={classes.gridItem}>
+                                        <Card
+                                            className={classes.card}
+                                            style={{ backgroundColor: '#2B2E4A', boxShadow: '0 2px 8px var(--primary)' }}
                                         >
-                                            {product.title}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p"
-                                            style={{ marginBottom: '6px', color: 'var(--light)' }}
-                                        >
-                                            Approximate Value: ${product.price}
-                                        </Typography>
-                                        {product.popularity > 1 && (
-                                            <Typography variant="body2" color="textSecondary" component="p"
-                                                style={{ marginBottom: '6px', color: 'var(--light)' }}
-                                            >
-                                                This product has {product.popularity} appreciations
-                                            </Typography>
-                                        )}
-                                        {product.popularity === 1 && (
-                                            <Typography variant="body2" color="textSecondary" component="p"
-                                                style={{ marginBottom: '6px', color: 'var(--light)' }}
-                                            >
-                                                This product has {product.popularity} appreciation
-                                            </Typography>
-                                        )}
-                                        {(isLoggedIn && !isAdmin) && (
-                                            <Button size="small" variant="outlined" className={classes.button}
-                                                onClick={() => toggleFavorite(product.productId, product.isFavorite)}
-                                                style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                                            >
-                                                <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
-                                                {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
-                                            </Button>
-                                        )}
-                                    </CardContent>
-                                </Card>
+                                            <CardMedia
+                                                className={classes.media}
+                                                image={product.productImages[0]}
+                                                title={product.title}
+                                                onClick={() => handleProductClick(product.title, product.productId)}
+                                                style={{ cursor: 'pointer' }}
+                                            />
+                                            <CardContent className={classes.cardContent}>
+                                                <Typography className={classes.title} gutterBottom variant="h5" component="h2"
+                                                    onClick={() => handleProductClick(product.title, product.productId)}
+                                                    style={{ cursor: 'pointer', color: 'var(--light)' }}
+                                                >
+                                                    {product.title}
+                                                </Typography>
+                                                <Typography variant="body2" color="textSecondary" component="p"
+                                                    style={{ marginBottom: '6px', color: 'var(--light)' }}
+                                                >
+                                                    Approximate Value: ${product.price}
+                                                </Typography>
+                                                {product.popularity > 1 && (
+                                                    <Typography variant="body2" color="textSecondary" component="p"
+                                                        style={{ marginBottom: '6px', color: 'var(--light)' }}
+                                                    >
+                                                        This product has {product.popularity} appreciations
+                                                    </Typography>
+                                                )}
+                                                {product.popularity === 1 && (
+                                                    <Typography variant="body2" color="textSecondary" component="p"
+                                                        style={{ marginBottom: '6px', color: 'var(--light)' }}
+                                                    >
+                                                        This product has {product.popularity} appreciation
+                                                    </Typography>
+                                                )}
+                                                {(isLoggedIn && !isAdmin) && (
+                                                    <Button size="small" variant="outlined" className={classes.button}
+                                                        onClick={() => toggleFavorite(product.productId, product.isFavorite)}
+                                                        style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
+                                                    >
+                                                        <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
+                                                        {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
+                                                    </Button>
+                                                )}
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                ))}
                             </Grid>
-                        ))}
-                    </Grid>
-                    <Pagination
-                        className={classes.pagination}
-                        count={totalPages}
-                        page={page}
-                        onChange={handlePageChange}
-                        variant="outlined" shape="rounded"
-                    />
-                </div>
+                            <Pagination
+                                className={classes.pagination}
+                                count={totalPages}
+                                page={page}
+                                onChange={handlePageChange}
+                                variant="outlined" shape="rounded"
+                            />
+                        </div>
+                    </>
+                )}
+                {isProductListEmpty && (
+                    <Typography variant="h6" className={classes.noResults}>
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style={{ marginRight: '5px' }}></i>No results found for this product category!
+                        </div>
+                    </Typography>
+                )}
             </div>
+
             <FooterSection />
             <BackToTopButton />
         </React.Fragment>
