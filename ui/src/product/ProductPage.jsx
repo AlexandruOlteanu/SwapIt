@@ -19,6 +19,10 @@ const ProductPage = () => {
     const [isUserAuth, setIsUserAuth] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [categoryLvl1, setCategoryLvl1] = useState('');
+    const [categoryLvl2, setCategoryLvl2] = useState('');
+    const [categoryLvl3, setCategoryLvl3] = useState('');
+
 
     const [productImages, setProductImages] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -76,6 +80,18 @@ const ProductPage = () => {
                     }
                 }
 
+                // Fetch category tree data
+                const categoryResponse = await ApiBackendService.getCategoryTree({ categoryId: productResponse.categoryId });
+                categoryResponse.parentCategories.forEach((category, index) => {
+                    if (index === 0) {
+                        setCategoryLvl1(category.value);
+                    } else if (index === 1) {
+                        setCategoryLvl2(category.value);
+                    } else if (index === 2) {
+                        setCategoryLvl3(category.value);
+                    }
+                });
+
                 setIsAdmin(Common.isUserAdmin());
 
                 // Fetch Product Like
@@ -85,10 +101,8 @@ const ProductPage = () => {
                     setIsFavourite(true);
                 }
 
-                const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
-                if (storedIsLoggedIn !== null && storedIsLoggedIn === 'true') {
-                    setIsLoggedIn(true);
-                }
+                setIsLoggedIn(Common.isLoggedIn());
+
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -150,13 +164,26 @@ const ProductPage = () => {
         }
     };
 
+    const handleCategoryClick = (categoryName) => {
+        // Implement the logic to navigate to the category page based on the category name
+        window.location.href = `/search/category/${categoryName}`;
+    };
+
     return (
         <React.Fragment>
             <Preloader />
             <TopbarSection />
             <NavbarSection />
+
             <div className="product-page">
                 <div className="image-section">
+                    <div className="category-breadcrumbs">
+                        <span onClick={() => handleCategoryClick(categoryLvl1)}>{categoryLvl1}</span>
+                        <i className="fa-solid fa-angle-right" style={{marginLeft:'10px', marginRight:'10px'}}></i>
+                        <span onClick={() => handleCategoryClick(categoryLvl2)}>{categoryLvl2}</span>
+                        <i className="fa-solid fa-angle-right" style={{marginLeft:'10px', marginRight:'10px'}}></i>
+                        <span onClick={() => handleCategoryClick(categoryLvl3)}>{categoryLvl3}</span>
+                    </div>
                     <div className="main-image" onClick={openImageContainer}>
                         <button className="slider-button left" onClick={handlePrevClick}>{"<"}</button>
                         <img src={productImages[currentIndex]} alt="Selected Product" />

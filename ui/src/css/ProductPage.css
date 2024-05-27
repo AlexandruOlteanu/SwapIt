@@ -7,6 +7,23 @@
   background-color: var(--dark);
 }
 
+.category-breadcrumbs {
+  width: 100%;
+  font-size: 18px;
+  padding-bottom: 30px;
+  color: var(--light);
+}
+
+.category-breadcrumbs span {
+  cursor: pointer;
+  color: var(--light);
+  text-decoration: none;
+}
+
+.category-breadcrumbs span:hover {
+  color: var(--primary);
+}
+
 .image-section {
   display: flex;
   flex-direction: column;

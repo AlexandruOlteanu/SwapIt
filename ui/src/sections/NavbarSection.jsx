@@ -5,7 +5,7 @@ import '../css/NavbarSection.css'
 import ApiBackendService from '../apiBackend/ApiBackendService';
 import SearchBar from './SearchBar';
 import Common from '../Common';
-import CategoriesMenu from './CategoriesMenu';
+import CategoriesMenu from '../category/CategoriesMenu';
 
 const HamburgerButton = lazy(() => import('../js/HamburgerButton'));
 

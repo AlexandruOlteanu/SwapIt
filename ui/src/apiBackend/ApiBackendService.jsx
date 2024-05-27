@@ -266,6 +266,14 @@ class ApiService {
     }, true);
   }
 
+  searchProductsByCategory(params) {
+    return this.fetchWithAuth(process.env.REACT_APP_SEARCH_PRODUCTS_BY_CATEGORY_URI, {
+      method: 'GET',
+      credentials: 'include',
+      params: params
+    }, true);
+  }
+
 }
 
 export default new ApiService();

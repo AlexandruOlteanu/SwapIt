@@ -386,9 +386,9 @@ const CategoriesMenu = () => {
     ];
 
     const handleSubcategoryClick = (name) => {
-        console.log('Subcategory clicked:', name);
-        // Perform any other actions with the name
+        window.location.href = `/search/category/${name}`;
     };
+    
     return (
         <div className="main-container-categories">
             <div
