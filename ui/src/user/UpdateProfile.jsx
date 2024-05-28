@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 
-const UpdateProfile = ({ userData }) => {
+const UpdateProfile = ({ userData, setUserData}) => {
     const [modifiedUserData, setModifiedUserData] = useState({ ...userData });
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -30,6 +30,7 @@ const UpdateProfile = ({ userData }) => {
             setError('');
             await ApiBackendService.updateBasicUserDetails({}, data);
             setSuccess('Successfully Updated Profile!');
+            setUserData(modifiedUserData);
         } catch (error) {
             console.error('Failed to update profile: ', error.message);
             setError(error.message);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ApiBackendService from '../apiBackend/ApiBackendService';
 
-const ChangeEmail = ({ userData }) => {
+const ChangeEmail = ({ userData, setUserData }) => {
     const [newEmail, setNewEmail] = useState('');
     const [repeatNewEmail, setRepeatNewEmail] = useState('');
     const [emailSecurityCode, setEmailSecurityCode] = useState('');
@@ -26,7 +26,7 @@ const ChangeEmail = ({ userData }) => {
             try {
                 setError('');
                 await ApiBackendService.emailReset({}, data);
-                setSuccess('Succesfully sent reset code to the new email!');
+                setSuccess('Successfully sent reset code to the new email!');
                 setIsEmailSecurityCodeSent(true);
                 data.processPhase = "SEND_SECURITY_CODE";
                 await ApiBackendService.emailReset({}, data);
@@ -40,12 +40,16 @@ const ChangeEmail = ({ userData }) => {
                 setError('');
                 data.securityCode = emailSecurityCode;
                 data.processPhase = "FINALIZE";
+                console.log(data);
                 await ApiBackendService.emailReset({}, data);
-                setSuccess('Succesfully Changed Your Email!');
+                setSuccess('Successfully Changed Your Email!');
                 setIsEmailSecurityCodeSent(false);
-                userData.email = newEmail;
+                setUserData(prevUserData => ({
+                    ...prevUserData,
+                    email: newEmail
+                }));
             } catch (error) {
-                console.error('Failed change email:', error.message);
+                console.error('Failed to change email:', error.message);
                 setError(error.message);
                 setSuccess('');
             }

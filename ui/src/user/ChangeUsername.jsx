@@ -17,7 +17,7 @@ const ChangeUsername = ({ userData }) => {
             setError('');
             await ApiBackendService.usernameReset({}, data);
             setSuccess('Successfully Changed Your Username!');
-            userData.username = newUsername;
+            window.location.href = `/users/${newUsername}`;
         } catch (error) {
             console.error('Failed change username:', error.message);
             setError(error.message);

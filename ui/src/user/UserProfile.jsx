@@ -89,7 +89,6 @@ const UserProfile = () => {
     const handleLogout = () => {
         ApiBackendService.logout({});
         localStorage.clear();
-        sessionStorage.clear();
         window.location.href = "/";
     };
 
@@ -143,6 +142,7 @@ const UserProfile = () => {
                             handleLogout={handleLogout}
                             setIsBanDialogVisible={setIsBanDialogVisible}
                             setIsRemoveBanDialogVisible={setIsRemoveBanDialogVisible}
+                            isOauth2User={isOauth2User}
                         />
                     </div>
                     <div className="toggle-button" onClick={toggleSidebar}>
@@ -152,50 +152,57 @@ const UserProfile = () => {
                 </div>
                 <div className="right-sidebar" style={{ display: 'flex', width: isSidebarMinimized ? '88%' : '75%' }}>
                     {activeSection === "updateProfile" && isUserProfileAuth && (
-                        <UpdateProfile userData={userData} />
+                        <UpdateProfile userData={userData} setUserData={setUserData} />
                     )}
                     {activeSection === "changeEmail" && !isOauth2User && isUserProfileAuth && (
                         <ChangeEmail
                             userData={userData}
+                            setUserData={setUserData}
                         />
                     )}
                     {activeSection === "changeUsername" && isUserProfileAuth && (
                         <ChangeUsername
                             userData={userData}
+                            setUserData={setUserData}
                         />
                     )}
                     {activeSection === "changePassword" && isUserProfileAuth && (
                         <ChangePassword />
                     )}
-                    <div className='ml-5' style={{ flex: 1, overflow: 'auto', width: '100%' }}>
-                        {!isRightFavoriteProducts && (
-                            <>
-                                {isUserProfileAuth && (
-                                    <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> My Products</h2>
+                    {(!isAdmin || !isUserProfileAuth) && (
+                        <>
+                            <div className='ml-5' style={{ flex: 1, overflow: 'auto', width: '100%' }}>
+                                {!isRightFavoriteProducts && (
+                                    <>
+                                        {isUserProfileAuth && (
+                                            <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> My Products</h2>
+                                        )}
+                                        {!isUserProfileAuth && (
+                                            <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> {userData.surname}'s Products</h2>
+                                        )}
+                                        {((isUserProfileAuth && isSidebarMinimized) || !isUserProfileAuth) && (
+                                            <UserProducts userId={userData.userId} surname={userData.surname} columnItems={4} totalItems={9} />
+                                        )}
+                                        {(isUserProfileAuth && !isSidebarMinimized) && (
+                                            <UserProducts userId={userData.userId} surname={userData.surname} columnItems={6} totalItems={6} isUserProfileAuth={isUserProfileAuth} />
+                                        )}
+                                    </>
                                 )}
-                                {!isUserProfileAuth && (
-                                    <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> {userData.surname}'s Products</h2>
+                                {isRightFavoriteProducts && (
+                                    <>
+                                        <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> Favourite Products</h2>
+                                        {((isUserProfileAuth && isSidebarMinimized) || !isUserProfileAuth) && (
+                                            <UserFavoriteProducts userId={userData.userId} columnItems={4} totalItems={9} />
+                                        )}
+                                        {(isUserProfileAuth && !isSidebarMinimized) && (
+                                            <UserFavoriteProducts userId={userData.userId} columnItems={6} totalItems={6} />
+                                        )}
+                                    </>
                                 )}
-                                {((isUserProfileAuth && isSidebarMinimized) || !isUserProfileAuth) && (
-                                    <UserProducts userId={userData.userId} surname={userData.surname} columnItems={4} totalItems={9} />
-                                )}
-                                {(isUserProfileAuth && !isSidebarMinimized) && (
-                                    <UserProducts userId={userData.userId} surname={userData.surname} columnItems={6} totalItems={6} isUserProfileAuth={isUserProfileAuth} />
-                                )}
-                            </>
-                        )}
-                        {isRightFavoriteProducts && (
-                            <>
-                                <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> Favourite Products</h2>
-                                {((isUserProfileAuth && isSidebarMinimized) || !isUserProfileAuth) && (
-                                    <UserFavoriteProducts userId={userData.userId} columnItems={4} totalItems={9} />
-                                )}
-                                {(isUserProfileAuth && !isSidebarMinimized) && (
-                                    <UserFavoriteProducts userId={userData.userId} columnItems={6} totalItems={6} />
-                                )}
-                            </>
-                        )}
-                    </div>
+                            </div>
+                        </>
+                    )}
+
                 </div>
             </div>
             <BanUserDialog
