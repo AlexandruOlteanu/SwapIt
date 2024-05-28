@@ -43,13 +43,15 @@ public interface ExternalOperationsService {
     String getProductLikeStatus(Integer userId, Integer productId);
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void manualSecurityCodesExpire();
-    void banUser(Integer userId, Integer banDaysDuration);
+    void banUser(Integer adminUserId, Integer userId, Integer banDaysDuration);
     GetUserAccountStatusResponse getUserAccountStatus(Integer userId);
-    void removeUserBan(Integer userId);
+    void removeUserBan(Integer adminUserId, Integer userId);
     void manualRemoveUsersBan();
     void forgottenPasswordReset(ForgottenPasswordResetRequest request);
     void passwordReset(Integer userId, PasswordResetRequest request);
     void emailReset(Integer userId, EmailResetRequest request);
     void usernameReset(Integer userId, UsernameResetRequest request);
-    void deleteProductAdmin(Integer productId);
+    void deleteProductAdmin(Integer adminUserId, Integer productId);
+    void postUserAction(PostUserActionRequest request);
+    GetUserActionsResponse getUserActions(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
 }

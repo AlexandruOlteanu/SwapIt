@@ -8,6 +8,7 @@ SELECT setval('product_category_product_category_id_seq', (SELECT MAX(product_ca
 SELECT setval('product_like_id_seq', (SELECT MAX(id) FROM product_like));
 SELECT setval('product_image_id_seq', (SELECT MAX(id) FROM product_image));
 SELECT setval('security_code_id_seq', (SELECT MAX(id) FROM security_code));
+SELECT setval('action_log_id_seq', (SELECT MAX(id) FROM action_log));
 
 
 

@@ -120,6 +120,7 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
     }
 
     @Override
+    @Transactional
     public void deleteProductAdmin(Integer productId) {
         productRepository.findById(productId)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));

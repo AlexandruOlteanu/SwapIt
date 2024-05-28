@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.swapit.commons.utils.Constants.IntegerMaxValueAsString;
+
 @RestController
 @Validated
 public interface UserService {
@@ -17,6 +19,8 @@ public interface UserService {
     String OAUTH2_LOGIN = "auth/oauth2login";
     String REGISTER = "auth/register";
     String FORGOTTEN_PASSWORD_RESET = "auth/forgottenPasswordReset";
+    String POST_USER_ACTION = "postUserAction";
+    String GET_USER_ACTIONS = "getUserActions";
     String PASSWORD_RESET = "passwordReset";
     String USERNAME_RESET = "usernameReset";
     String EMAIL_RESET = "emailReset";
@@ -38,6 +42,15 @@ public interface UserService {
 
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
+
+    @PostMapping(value = BASE_URL + POST_USER_ACTION, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void postUserAction(@Valid @RequestBody PostUserActionRequest request);
+
+    @GetMapping(value = BASE_URL + GET_USER_ACTIONS, produces = MEDIA_TYPE_APPLICATION_JSON)
+    ResponseEntity<GetUserActionsResponse> getUserActions(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                          @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                          @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
+
 
     @PutMapping(value = BASE_URL + FORGOTTEN_PASSWORD_RESET, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void forgottenPasswordReset(@Valid @RequestBody ForgottenPasswordResetRequest request);

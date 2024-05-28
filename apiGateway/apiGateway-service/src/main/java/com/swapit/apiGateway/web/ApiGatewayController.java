@@ -17,10 +17,7 @@ import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
-import com.swapit.user.api.domain.response.GetUserAccountStatusResponse;
-import com.swapit.user.api.domain.response.GetUserDetailsResponse;
-import com.swapit.user.api.domain.response.LoginResponse;
-import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.*;
 import com.swapit.user.api.util.UserBasicDetailType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,9 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
 
 import static com.swapit.apiGateway.util.AuthenticatedUserPropertyType.CONTEXT_USER_ID;
 
@@ -202,12 +196,21 @@ public class ApiGatewayController implements ApiGatewayService {
 
     @Override
     public void banUser(Integer userId, Integer banDaysDuration) {
-        externalOperationsService.banUser(userId, banDaysDuration);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer adminUserId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.banUser(adminUserId, userId, banDaysDuration);
     }
 
     @Override
     public void removeUserBan(Integer userId) {
-        externalOperationsService.removeUserBan(userId);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer adminUserId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.removeUserBan(adminUserId, userId);
+    }
+
+    @Override
+    public ResponseEntity<GetUserActionsResponse> getUserActions(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(externalOperationsService.getUserActions(chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override
@@ -227,7 +230,9 @@ public class ApiGatewayController implements ApiGatewayService {
 
     @Override
     public void deleteProductAdmin(Integer productId) {
-        externalOperationsService.deleteProductAdmin(productId);
+        var attributes = authenticatedUserContextService.getUserProperties();
+        Integer adminUserId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        externalOperationsService.deleteProductAdmin(adminUserId, productId);
     }
 
     @Override

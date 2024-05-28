@@ -101,6 +101,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
             user = userRepository.save(user);
             return RegisterResponse.builder()
+                    .userId(user.getUserId())
                     .jwtToken(jwtService.generateToken(user))
                     .build();
         }

@@ -14,10 +14,7 @@ import com.swapit.searchEngine.api.service.domain.request.SearchProductsRequest;
 import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeResponse;
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
-import com.swapit.user.api.domain.response.GetUserAccountStatusResponse;
-import com.swapit.user.api.domain.response.GetUserDetailsResponse;
-import com.swapit.user.api.domain.response.LoginResponse;
-import com.swapit.user.api.domain.response.RegisterResponse;
+import com.swapit.user.api.domain.response.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -58,6 +55,7 @@ public interface ApiGatewayService {
     // USER ADMIN URI
     String BAN_USER = "banUser";
     String REMOVE_USER_BAN = "removeUserBan";
+    String GET_USER_ACTIONS = "getUserActions";
     String MANUAL_REMOVE_USERS_BAN = "manualRemoveUsersBan";
     String MANUAL_SECURITY_CODES_EXPIRE = "manualSecurityCodesExpire";
 
@@ -145,6 +143,13 @@ public interface ApiGatewayService {
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
     @DeleteMapping(value = BASE_URL + ADMIN_ACTION + REMOVE_USER_BAN)
     void removeUserBan(@RequestParam("userId") Integer userId);
+
+    @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
+    @GetMapping(value = BASE_URL + ADMIN_ACTION + GET_USER_ACTIONS, produces = MEDIA_TYPE_APPLICATION_JSON)
+    ResponseEntity<GetUserActionsResponse> getUserActions(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,
+                                                          @RequestParam(value = "nrElementsPerChunk", defaultValue = IntegerMaxValueAsString) Integer nrElementsPerChunk,
+                                                          @RequestParam(value = "sortCriteria", required = false) String sortCriteria);
+
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
     @DeleteMapping(value = BASE_URL + ADMIN_ACTION + MANUAL_REMOVE_USERS_BAN)

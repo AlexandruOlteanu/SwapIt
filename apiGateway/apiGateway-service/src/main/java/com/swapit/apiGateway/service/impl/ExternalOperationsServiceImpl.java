@@ -18,6 +18,12 @@ import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeRespon
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
+import com.swapit.user.api.dto.userActions.AddProductActionDTO;
+import com.swapit.user.api.dto.userActions.AdminBanUserActionDTO;
+import com.swapit.user.api.dto.userActions.AdminDeleteProductDTO;
+import com.swapit.user.api.dto.userActions.AdminRemoveUserBanDTO;
+import com.swapit.user.api.util.ActionType;
+import com.swapit.user.api.util.RegisterProcessPhase;
 import com.swapit.user.api.util.UserBasicDetailType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +91,15 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.USER_REGISTER);
         log.info(url);
         try {
-            return restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), RegisterResponse.class).getBody();
+            RegisterResponse registerResponse = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), RegisterResponse.class).getBody();
+            assert registerResponse != null;
+            if (request.getProcessPhase().equals(RegisterProcessPhase.FINALIZE)) {
+                postUserAction(PostUserActionRequest.builder()
+                        .actionType(ActionType.USER_REGISTER)
+                        .userId(registerResponse.getUserId())
+                        .build());
+            }
+            return registerResponse;
         } catch (Exception e) {
             log.error("Exception in User Register {}", e.getMessage(), e);
             throw e;
@@ -102,6 +116,16 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         try {
             Integer productId = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
             addProductInSearchDictionary(productId);
+            ProductDTO productDTO = getProductById(productId);
+            PostUserActionRequest postUserActionRequest = PostUserActionRequest.builder()
+                    .userId(userId)
+                    .actionType(ActionType.USER_ADD_PRODUCT)
+                    .addProductAction(AddProductActionDTO.builder()
+                            .productId(productId)
+                            .productTitle(productDTO.getTitle())
+                            .build())
+                    .build();
+            postUserAction(postUserActionRequest);
             return productId;
         } catch (Exception e) {
             log.error("Exception in Product Creation {}", e.getMessage(), e);
@@ -442,7 +466,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void banUser(Integer userId, Integer banDaysDuration) {
+    public void banUser(Integer adminUserId, Integer userId, Integer banDaysDuration) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.BAN_USER);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
                 .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
@@ -450,6 +474,14 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         log.info(uriBuilder.toUriString());
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, null, Void.class);
+            postUserAction(PostUserActionRequest.builder()
+                    .userId(adminUserId)
+                    .actionType(ActionType.ADMIN_BAN_USER)
+                    .adminBanUserAction(AdminBanUserActionDTO.builder()
+                            .bannedUserId(userId)
+                            .banDurationInDays(banDaysDuration)
+                            .build())
+                    .build());
         } catch (Exception e) {
             log.error("Exception in banning user {}", e.getMessage(), e);
             throw e;
@@ -471,13 +503,20 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void removeUserBan(Integer userId) {
+    public void removeUserBan(Integer adminUserId, Integer userId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.REMOVE_USER_BAN);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
                 .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
         log.info(uriBuilder.toUriString());
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
+            postUserAction(PostUserActionRequest.builder()
+                    .actionType(ActionType.ADMIN_REMOVE_USER_BAN)
+                    .userId(adminUserId)
+                    .adminRemoveUserBan(AdminRemoveUserBanDTO.builder()
+                            .unbannedUserId(userId)
+                            .build())
+                    .build());
         } catch (Exception e) {
             log.error("Exception in removing user ban {}", e.getMessage(), e);
             throw e;
@@ -551,16 +590,52 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void deleteProductAdmin(Integer productId) {
+    public void deleteProductAdmin(Integer adminUserId, Integer productId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.DELETE_PRODUCT_ADMIN);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
                 .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
         log.info(uriBuilder.toUriString());
         try {
+            ProductDTO productDTO = getProductById(productId);
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
             deleteProductFromSearchDictionary(productId);
+            postUserAction(PostUserActionRequest.builder()
+                    .actionType(ActionType.ADMIN_DELETE_PRODUCT)
+                    .userId(adminUserId)
+                    .adminDeleteProduct(AdminDeleteProductDTO.builder()
+                            .productTitle(productDTO.getTitle())
+                            .build())
+                    .build());
         } catch (Exception e) {
             log.error("Exception in deleting product {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public void postUserAction(PostUserActionRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.POST_USER_ACTION);
+        log.info(url);
+        try {
+            restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);
+        } catch (Exception e) {
+            log.error("Exception in posting user action reset {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public GetUserActionsResponse getUserActions(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_USER_ACTIONS);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
+                .queryParamIfPresent(CHUNK_NUMBER_PARAM, Optional.ofNullable(chunkNumber))
+                .queryParamIfPresent(NR_ELEMENTS_PER_CHUNK_PARAM, Optional.ofNullable(nrElementsPerChunk))
+                .queryParamIfPresent(SORT_CRITERIA_PARAM, Optional.ofNullable(sortCriteria));
+        log.info(uriBuilder.toUriString());
+        try {
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, GetUserActionsResponse.class).getBody();
+        } catch (Exception e) {
+            log.error("Exception in getting user actions {}", e.getMessage(), e);
             throw e;
         }
     }

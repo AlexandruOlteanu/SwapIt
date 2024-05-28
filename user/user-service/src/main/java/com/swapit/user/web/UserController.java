@@ -20,6 +20,7 @@ public class UserController implements UserService {
     private final GetUserDetailsService getUserDetailsService;
     private final UserRestrictionsService userRestrictionsService;
     private final ScheduledOperationsService scheduledOperationsService;
+    private final UserActionService userActionService;
 
     @Override
     public ResponseEntity<LoginResponse> login(LoginRequest request) {
@@ -34,6 +35,16 @@ public class UserController implements UserService {
     @Override
     public ResponseEntity<RegisterResponse> register(RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
+    }
+
+    @Override
+    public void postUserAction(PostUserActionRequest request) {
+        userActionService.postUserAction(request);
+    }
+
+    @Override
+    public ResponseEntity<GetUserActionsResponse> getUserActions(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        return ResponseEntity.ok(userActionService.getUserActions(chunkNumber, nrElementsPerChunk, sortCriteria));
     }
 
     @Override
