@@ -149,10 +149,12 @@ const UserFavoriteProducts = ({ userId, columnItems, totalItems }) => {
                 console.log('Error fetching recommended products!');
             }
         };
-        fetchProducts(page, filter);
-        setIsLoggedIn(Common.isLoggedIn());
-        setIsAdmin(Common.isUserAdmin());
-    }, [page, filter, itemsPerPage]);
+        if (userId !== -1) {
+            fetchProducts(page, filter);
+            setIsLoggedIn(Common.isLoggedIn());
+            setIsAdmin(Common.isUserAdmin());
+        }
+    }, [page, filter, itemsPerPage, userId]);
 
 
 

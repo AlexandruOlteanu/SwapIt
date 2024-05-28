@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Card, CardContent, CardMedia, Typography, Button, Pagination, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Pagination, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import ApiBackendService from '../apiBackend/ApiBackendService';
-import Common from '../Common';
 
 const useStyles = makeStyles({
     root: {
@@ -105,12 +104,10 @@ const useStyles = makeStyles({
     },
 });
 
-const UserProducts = ({ userId, columnItems, totalItems }) => {
+const UserProducts = ({ userId, surname, columnItems, totalItems, isUserProfileAuth }) => {
     const classes = useStyles();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [filter, setFilter] = useState('popularity');
@@ -118,26 +115,27 @@ const UserProducts = ({ userId, columnItems, totalItems }) => {
     const itemsPerPage = totalItems; // Fixed value of items per page
 
     useEffect(() => {
-        fetchProducts(page, filter);
-        setIsLoggedIn(Common.isLoggedIn());
-        setIsAdmin(Common.isUserAdmin());
-    }, [page, filter]);
-
-    const fetchProducts = async (page, filter) => {
-        try {
-            const response = await ApiBackendService.getProductsByUser({
-                userId: userId,
-                sortCriteria: filter.toUpperCase(),
-                chunkNumber: page - 1,
-                nrElementsPerChunk: itemsPerPage,
-            });
-            setIsProductListEmpty(response.products.length === 0);
-            setProducts(response.products);
-            setTotalPages(response.totalPages);
-        } catch (error) {
-            console.log('Error fetching recommended products!');
+        const fetchProducts = async (page, filter) => {
+            try {
+                const response = await ApiBackendService.getProductsByUser({
+                    userId: userId,
+                    sortCriteria: filter.toUpperCase(),
+                    chunkNumber: page - 1,
+                    nrElementsPerChunk: itemsPerPage,
+                });
+                setIsProductListEmpty(response.products.length === 0);
+                setProducts(response.products);
+                setTotalPages(response.totalPages);
+            } catch (error) {
+                console.log('Error fetching recommended products!');
+            }
+        };
+        if (userId !== -1) {
+            fetchProducts(page, filter);
         }
-    };
+    }, [page, filter, userId, isUserProfileAuth]);
+
+
 
     const handlePageChange = (event, value) => {
         setPage(value);
@@ -147,22 +145,6 @@ const UserProducts = ({ userId, columnItems, totalItems }) => {
         const encodedTitle = encodeURIComponent(title.split(' ').join('-'));
         navigate(`/product/${encodedTitle}/${productId}`);
     };
-
-    const toggleFavorite = async (productId, isFavorite, popularity) => {
-        try {
-            await ApiBackendService.changeProductLikeStatus({}, { productId });
-            setProducts(products.map(product =>
-                product.productId === productId ? {
-                    ...product,
-                    isFavorite: !isFavorite,
-                    popularity: isFavorite ? product.popularity - 1 : product.popularity + 1
-                } : product
-            ));
-        } catch (error) {
-            console.log('Error updating favorite status!');
-        }
-    };
-
 
     return (
         <React.Fragment>
@@ -246,13 +228,18 @@ const UserProducts = ({ userId, columnItems, totalItems }) => {
                     </div>
                 </>
             )}
-            {isProductListEmpty && (
+            {(isProductListEmpty && isUserProfileAuth) && (
                 <Typography variant="h6" className={classes.noResults}>
-                    You haven't posted any products yet!
+                    You haven't added any products yet!
+                </Typography>
+            )}
+            {(isProductListEmpty && !isUserProfileAuth) && (
+                < Typography variant="h6" className={classes.noResults}>
+                    {surname} doesn't have any added products yet!
                 </Typography>
             )}
 
-        </React.Fragment>
+        </React.Fragment >
 
     );
 };

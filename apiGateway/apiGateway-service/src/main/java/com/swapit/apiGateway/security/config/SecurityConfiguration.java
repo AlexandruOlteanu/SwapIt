@@ -4,6 +4,7 @@ import com.swapit.apiGateway.security.service.CustomAuthenticationEntryPoint;
 import com.swapit.apiGateway.security.service.CustomAuthenticationSuccessHandler;
 import com.swapit.apiGateway.security.service.CustomLogoutHandler;
 import com.swapit.apiGateway.security.service.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +51,7 @@ public class SecurityConfiguration {
                 .logout(httpSecurityLogoutConfigurer -> {
                     httpSecurityLogoutConfigurer.logoutUrl("/api/v1/swapIt/apiGateway/auth/logout");
                     httpSecurityLogoutConfigurer.addLogoutHandler(customLogoutHandler);
+                    httpSecurityLogoutConfigurer.logoutSuccessHandler((_, response, _) -> response.setStatus(HttpServletResponse.SC_OK));
                     httpSecurityLogoutConfigurer.invalidateHttpSession(true);
                     httpSecurityLogoutConfigurer.clearAuthentication(true);
                     httpSecurityLogoutConfigurer.deleteCookies("JSESSIONID");
