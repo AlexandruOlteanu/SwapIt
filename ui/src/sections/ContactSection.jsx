@@ -1,7 +1,6 @@
 import React, { useState, useRef, lazy } from 'react';
 import emailjs from '@emailjs/browser';
 import checkAnimation from '../animations/check-animation.json';
-import ContactButtonAnimation from '../animations/ContactButtonAnimation.json';
 
 const Animation = lazy(() => import('../js/Animation'));
 

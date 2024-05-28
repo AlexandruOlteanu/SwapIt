@@ -13,7 +13,6 @@ const Authentication = lazy(() => import('./auth/Authentication'));
 const UserProfile = lazy(() => import('./user/UserProfile'));
 const AddProduct = lazy(() => import('./product/AddProduct'));
 const UpdateProduct = lazy(() => import('./product/UpdateProduct'));
-const Contact = lazy(() => import('./Contact'));
 
 function SwapIt() {
     const [isAdmin, setIsAdmin] = useState(false);
@@ -46,7 +45,6 @@ function SwapIt() {
                         <Route path='/product/:title/:productId' element={<ProductPage />} />
                         <Route path="/search/query/:query" element={<SearchProducts />} />
                         <Route path="/search/category/:categoryName" element={<CategorySearch />} />
-                        <Route path="/contact" element={<Contact />} />
                         <Route path="/error" element={<Error />} />
                     </Routes>
                 </Suspense>
