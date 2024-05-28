@@ -96,9 +96,10 @@ form{
     color: #232836;
 }
 .form a{
-    color: #0171d3;
+    color: var(--primary);
     text-decoration: none;
 }
+
 .form-content a:hover{
     text-decoration: underline;
 }

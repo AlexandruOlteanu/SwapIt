@@ -126,38 +126,39 @@ const SearchProducts = () => {
     const itemsPerPage = 30;
 
     useEffect(() => {
+        const fetchProducts = async (page, filter) => {
+            try {
+                const response = await ApiBackendService.searchProducts({
+                    sortCriteria: filter.toUpperCase(),
+                    chunkNumber: page - 1,
+                    nrElementsPerChunk: itemsPerPage,
+                }, { query: query });
+
+                setIsProductListEmpty(response.searchProducts.length === 0);
+
+                const productsWithFavorites = await Promise.all(response.searchProducts.map(async product => {
+                    const loggedIn = Common.isLoggedIn();
+                    const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
+                    const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
+                    return {
+                        ...product,
+                        isFavorite: likeStatus === 'ACTIVE',
+                    };
+                }));
+
+                setProducts(productsWithFavorites);
+                setTotalPages(response.totalPages);
+            } catch (error) {
+                console.log('Error fetching searched products!');
+                window.location.href = "/error";
+            }
+        };
         fetchProducts(page, filter);
         setIsLoggedIn(Common.isLoggedIn());
         setIsAdmin(Common.isUserAdmin());
-    }, [page, filter]);
+    }, [page, filter, query]);
 
-    const fetchProducts = async (page, filter) => {
-        try {
-            const response = await ApiBackendService.searchProducts({
-                sortCriteria: filter.toUpperCase(),
-                chunkNumber: page - 1,
-                nrElementsPerChunk: itemsPerPage,
-            }, { query: query });
 
-            setIsProductListEmpty(response.searchProducts.length === 0);
-
-            const productsWithFavorites = await Promise.all(response.searchProducts.map(async product => {
-                const loggedIn = Common.isLoggedIn();
-                const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
-                const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
-                return {
-                    ...product,
-                    isFavorite: likeStatus === 'ACTIVE',
-                };
-            }));
-
-            setProducts(productsWithFavorites);
-            setTotalPages(response.totalPages);
-        } catch (error) {
-            console.log('Error fetching searched products!');
-            window.location.href = "/error";
-        }
-    };
 
     const handlePageChange = (event, value) => {
         setPage(value);
@@ -279,13 +280,13 @@ const SearchProducts = () => {
                         </div>
                     </>
                 )}
-                    
+
                 {isProductListEmpty && (
                     <Typography variant="h6" className={classes.noResults}>
-                    <div>
-                        <i class="fa-solid fa-circle-exclamation" style={{marginRight:'5px'}}></i>No results found, please refine your search criteria and try again.
-                    </div>
-                </Typography>
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation" style={{ marginRight: '5px' }}></i>No results found, please refine your search criteria and try again.
+                        </div>
+                    </Typography>
                 )}
 
             </div>

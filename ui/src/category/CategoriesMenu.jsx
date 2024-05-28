@@ -30,7 +30,7 @@ const CategoriesMenu = () => {
                     subcategories: ["Smart TVs", "4K TVs", "LED TVs", "OLED TVs", "Projectors"]
                 },
                 {
-                    name: "Personal Care",
+                    name: "Individual Care",
                     subcategories: ["Hair Dryers", "Electric Shavers", "Epilators", "Electric Toothbrushes", "Massagers"]
                 },
                 {

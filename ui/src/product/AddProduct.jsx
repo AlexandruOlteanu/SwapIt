@@ -37,7 +37,7 @@ const categories = {
             "Air Conditioners",
             "Home Audio",
             "TV & Video",
-            "Personal Care",
+            "Individual Care",
             "Vacuum Cleaners"
         ],
         "Computers & Accessories": [
@@ -137,7 +137,7 @@ const categories = {
         "Air Conditioners": ["Window AC", "Split AC", "Portable AC", "Inverter AC", "Smart AC"],
         "Home Audio": ["Soundbars", "Home Theater Systems", "Speakers", "Receivers", "Subwoofers"],
         "TV & Video": ["Smart TVs", "4K TVs", "LED TVs", "OLED TVs", "Projectors"],
-        "Personal Care": ["Hair Dryers", "Electric Shavers", "Epilators", "Electric Toothbrushes", "Massagers"],
+        "Individual Care": ["Hair Dryers", "Electric Shavers", "Epilators", "Electric Toothbrushes", "Massagers"],
         "Vacuum Cleaners": ["Robot Vacuums", "Upright Vacuums", "Stick Vacuums", "Handheld Vacuums", "Canister Vacuums"],
         "Laptops": ["Gaming Laptops", "Business Laptops", "2-in-1 Laptops", "Ultrabooks", "Chromebooks"],
         "Desktops": ["Gaming Desktops", "All-in-One Desktops", "Mini PCs", "Workstations", "Tower Desktops"],

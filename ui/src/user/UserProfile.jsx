@@ -96,21 +96,7 @@ const UserProfile = () => {
         country: '',
         stateRegion: ''
     });
-    const [authUserData, setAuthUserData] = useState({
-        userId: -1,
-        username: '',
-        name: '',
-        surname: '',
-        email: '',
-        userImage: '',
-        joinDate: '',
-        userRole: '',
-        address: '',
-        phoneNumber: '',
-        country: '',
-        stateRegion: ''
-    });
-
+    
     useEffect(() => {
         const fetchData = async () => {
             // Fetch user Data
@@ -129,7 +115,6 @@ const UserProfile = () => {
             // Fetch Auth user data
             try {
                 const authUserData = await ApiBackendService.getAuthenticatedUserDetails({});
-                setAuthUserData(authUserData);
                 setModifiedUserData(authUserData);
                 authUserId = authUserData.userId;
                 authUserRole = authUserData.userRole;
@@ -229,6 +214,10 @@ const UserProfile = () => {
 
     const handleChangeEmail = async (e) => {
         e.preventDefault();
+        if (newEmail !== repeatNewEmail) {
+            setChangeEmailError('Emails don\'t match');
+            return;
+        }
         const data = {
             newEmail: newEmail,
             password: password,

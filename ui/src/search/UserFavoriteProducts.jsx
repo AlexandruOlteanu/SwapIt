@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Card, CardContent, CardMedia, Typography, Button, Pagination, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, Button, Pagination } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import ApiBackendService from '../apiBackend/ApiBackendService';
@@ -120,40 +120,41 @@ const UserFavoriteProducts = ({ userId, columnItems, totalItems }) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
-    const [filter, setFilter] = useState('newest');
+    const [filter] = useState('newest');
     const [isProductListEmpty, setIsProductListEmpty] = useState(false);
     const itemsPerPage = totalItems; // Fixed value of items per page
 
     useEffect(() => {
+        const fetchProducts = async (page, filter) => {
+            try {
+                const response = await ApiBackendService.getLikedProductsByUser({
+                    sortCriteria: filter.toUpperCase(),
+                    chunkNumber: page - 1,
+                    nrElementsPerChunk: itemsPerPage,
+                });
+                setIsProductListEmpty(response.products.length === 0);
+                const productsWithFavorites = await Promise.all(response.products.map(async product => {
+                    const loggedIn = Common.isLoggedIn();
+                    const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
+                    const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
+                    return {
+                        ...product,
+                        isFavorite: likeStatus === 'ACTIVE',
+                    };
+                }));
+
+                setProducts(productsWithFavorites);
+                setTotalPages(response.totalPages);
+            } catch (error) {
+                console.log('Error fetching recommended products!');
+            }
+        };
         fetchProducts(page, filter);
         setIsLoggedIn(Common.isLoggedIn());
         setIsAdmin(Common.isUserAdmin());
-    }, [page, filter]);
+    }, [page, filter, itemsPerPage]);
 
-    const fetchProducts = async (page, filter) => {
-        try {
-            const response = await ApiBackendService.getLikedProductsByUser({
-                sortCriteria: filter.toUpperCase(),
-                chunkNumber: page - 1,
-                nrElementsPerChunk: itemsPerPage,
-            });
-            setIsProductListEmpty(response.products.length === 0);
-            const productsWithFavorites = await Promise.all(response.products.map(async product => {
-                const loggedIn = Common.isLoggedIn();
-                const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
-                const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
-                return {
-                    ...product,
-                    isFavorite: likeStatus === 'ACTIVE',
-                };
-            }));
 
-            setProducts(productsWithFavorites);
-            setTotalPages(response.totalPages);
-        } catch (error) {
-            console.log('Error fetching recommended products!');
-        }
-    };
 
     const handlePageChange = (event, value) => {
         setPage(value);
