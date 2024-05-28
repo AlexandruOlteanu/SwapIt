@@ -8,6 +8,8 @@ import SearchProducts from './search/SearchProducts';
 import CategorySearch from './category/CategorySearch';
 import Error from './Error';
 
+import PrivacyPolicy from './info/PrivacyPolicy';
+import TermsConditions from './info/TermsConditions';
 const Home = lazy(() => import('./Home'));
 const Authentication = lazy(() => import('./auth/Authentication'));
 const UserProfile = lazy(() => import('./user/UserProfile'));
@@ -45,6 +47,8 @@ function SwapIt() {
                         <Route path='/product/:title/:productId' element={<ProductPage />} />
                         <Route path="/search/query/:query" element={<SearchProducts />} />
                         <Route path="/search/category/:categoryName" element={<CategorySearch />} />
+                        <Route path="/info/privacy-policy" element={<PrivacyPolicy />} />
+                        <Route path="/info/terms-and-conditions" element={<TermsConditions />} />
                         <Route path="/error" element={<Error />} />
                     </Routes>
                 </Suspense>
