@@ -2,6 +2,7 @@ package com.swapit.apiGateway.security.config;
 
 import com.swapit.apiGateway.security.service.CustomAuthenticationEntryPoint;
 import com.swapit.apiGateway.security.service.CustomAuthenticationSuccessHandler;
+import com.swapit.apiGateway.security.service.CustomLogoutHandler;
 import com.swapit.apiGateway.security.service.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomLogoutHandler customLogoutHandler;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -45,6 +47,13 @@ public class SecurityConfiguration {
                 .oauth2Login(oauth2Configurer -> oauth2Configurer.successHandler(customAuthenticationSuccessHandler))
                 .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authenticationProvider(authenticationProvider)
+                .logout(httpSecurityLogoutConfigurer -> {
+                    httpSecurityLogoutConfigurer.logoutUrl("/api/v1/swapIt/apiGateway/auth/logout");
+                    httpSecurityLogoutConfigurer.addLogoutHandler(customLogoutHandler);
+                    httpSecurityLogoutConfigurer.invalidateHttpSession(true);
+                    httpSecurityLogoutConfigurer.clearAuthentication(true);
+                    httpSecurityLogoutConfigurer.deleteCookies("JSESSIONID");
+                })
                 .build();
     }
 }
