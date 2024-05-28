@@ -12,13 +12,12 @@ const BackToTopButton = lazy(() => import('../js/BackToTopButton'));
 
 const Authentication = () => {
 
-    const [activeForm, setActiveForm] = useState('login');  // 'login', 'signUp', 'forgotPassword' or 'succesPasswordReset'
+    const [activeForm, setActiveForm] = useState('login');
 
 
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
-    const [userImage, setUserImage] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -35,7 +34,6 @@ const Authentication = () => {
 
     useEffect(() => {
         if (Common.isLoggedIn()) {
-            console.log("Alex");
             window.location.href = "/";
         }
     }, []);
@@ -49,7 +47,6 @@ const Authentication = () => {
         try {
             const response = await ApiBackendService.login({}, loginData);
 
-            console.log('Login successful', response);
             localStorage.setItem(process.env.REACT_APP_JWT_TOKEN, response.jwtToken);
             window.location.href = "/user/authHandler";
         } catch (error) {
@@ -86,19 +83,16 @@ const Authentication = () => {
                 setIsCodeSent(true);
                 data.processPhase = "SEND_SECURITY_CODE";
                 await ApiBackendService.register({}, data);
-                console.log('Security code sent');
             } catch (error) {
                 console.error('Failed to send security code', error.message);
                 setSignUpError(error.message);
             }
         } else {
             try {
-                setUserImage(process.env.REACT_APP_DEFAULT_PROFILE_IMAGE);
                 data.userImage = process.env.REACT_APP_DEFAULT_PROFILE_IMAGE;
                 data.securityCode = registrationCode;
                 data.processPhase = "FINALIZE";
                 const registerResponse = await ApiBackendService.register({}, data);
-                console.log('Signup verified', registerResponse);
                 localStorage.setItem(process.env.REACT_APP_JWT_TOKEN, registerResponse.jwtToken);
                 window.location.href = "/user/authHandler";
             } catch (error) {
@@ -123,7 +117,6 @@ const Authentication = () => {
                 setIsResetCodeSent(true);
                 data.processPhase = "SEND_SECURITY_CODE";
                 await ApiBackendService.forgottenPasswordReset({}, data);
-                console.log('Reset code sent');
             } catch (error) {
                 console.error('Failed to send reset code', error.message);
                 setPasswordResetError(error.message);
@@ -140,7 +133,6 @@ const Authentication = () => {
                 data.processPhase = "FINALIZE";
 
                 await ApiBackendService.forgottenPasswordReset({}, data);
-                console.log('Password successfully reset');
                 setIsResetCodeSent(false);
                 setActiveForm('succesPasswordReset');
             } catch (error) {

@@ -20,8 +20,7 @@ function SwapIt() {
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
-        // Simulate fetching user role and determining if the user is an admin
-        const user = { role: 'admin' }; // Example user object
+        const user = { role: 'admin' };
         startTransition(() => {
             setIsAdmin(Common.isUserAdmin(user));
         });

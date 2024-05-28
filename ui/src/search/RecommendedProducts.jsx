@@ -140,6 +140,7 @@ const RecommendedProducts = () => {
             setTotalPages(response.totalPages);
         } catch (error) {
             console.log('Error fetching recommended products!');
+            window.location.href = "/error";
         }
     };
 

@@ -461,7 +461,6 @@ const UpdateProduct = () => {
                 productSpecifications: transformedSpecifications,
                 productImages: productImages
             }
-            console.log(data);
             await ApiBackendService.updateProduct({}, data);
             setProductUpdated(true);
             scrollToTop();

@@ -168,7 +168,6 @@ const UserProfile = () => {
         const imageRef = ref(storage, `images/${uuidv4()}`);
         uploadBytes(imageRef, file).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
-                console.log('Image URL:', url);
                 const data = {
                     userDetails: {
                         IMAGE: url
@@ -226,7 +225,6 @@ const UserProfile = () => {
             setUpdateProfileError(error.message);
             setUpdateProfileSuccess('');
         }
-        console.log(modifiedUserData);
     };
 
     const handleChangeEmail = async (e) => {

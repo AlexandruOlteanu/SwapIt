@@ -397,7 +397,6 @@ const AddProduct = () => {
                 productSpecifications: transformedSpecifications,
                 productImages: productImages
             }
-            console.log(data);
             const productId = await ApiBackendService.createProduct({}, data);
             setProductId(productId);
             setProductCreated(true);

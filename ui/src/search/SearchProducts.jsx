@@ -155,6 +155,7 @@ const SearchProducts = () => {
             setTotalPages(response.totalPages);
         } catch (error) {
             console.log('Error fetching searched products!');
+            window.location.href = "/error";
         }
     };
 
