@@ -103,14 +103,14 @@ public class UserActionServiceImpl implements UserActionService {
 
         Pageable pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(NEWEST_FIELD).descending());;
         Page<ActionLog> data = null;
-        if (sortCriteria.equals(INCLUDE_ALL.name())) {
+        if (sortCriteria.equalsIgnoreCase(INCLUDE_ALL.name())) {
             data = actionLogRepository.findAll(pageable);
         }
-        if (sortCriteria.equals(ONLY_USER_ACTIONS.name())) {
+        if (sortCriteria.equalsIgnoreCase(ONLY_USER_ACTIONS.name())) {
             data = actionLogRepository.findAllByActionTypeIn(
                     List.of(ActionType.USER_ADD_PRODUCT, ActionType.USER_REGISTER), pageable);
         }
-        if (sortCriteria.equals(ONLY_ADMIN_ACTIONS.name())) {
+        if (sortCriteria.equalsIgnoreCase(ONLY_ADMIN_ACTIONS.name())) {
             data = actionLogRepository.findAllByActionTypeIn(
                     List.of(ActionType.ADMIN_BAN_USER, ActionType.ADMIN_REMOVE_USER_BAN, ActionType.ADMIN_DELETE_PRODUCT),
                     pageable);

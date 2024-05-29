@@ -16,6 +16,7 @@ import UpdateProfile from './UpdateProfile';
 import UserImage from './UserImage';
 import UserDetails from './UserDetails';
 import UserProfileButtons from './UserProfileButtons';
+import WebsiteActionsLog from './WebsiteActionsLog.jsx';
 
 const TopbarSection = lazy(() => import('../sections/TopbarSection'));
 const NavbarSection = lazy(() => import('../sections/NavbarSection'));
@@ -201,6 +202,13 @@ const UserProfile = () => {
                                 )}
                             </div>
                         </>
+                    )}
+                    {isAdmin && (
+                        
+                        <div className='ml-5' style={{ flex: 1, overflow: 'auto', width: '100%' }}>
+                            <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> Website Actions Log </h2>
+                            <WebsiteActionsLog columnItems={12} totalItems={4} />
+                        </div>
                     )}
 
                 </div>
