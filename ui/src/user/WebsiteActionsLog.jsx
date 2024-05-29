@@ -143,9 +143,6 @@ const useStyles = makeStyles({
     },
 });
 
-
-
-
 const WebsiteActionsLog = ({ columnItems, totalItems }) => {
     const classes = useStyles();
     const navigate = useNavigate();
@@ -178,11 +175,14 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
 
     useEffect(() => {
         actions.forEach((action) => {
-            if ((action.actionType === 'USER_REGISTER' || action.actionType === 'USER_ADD_PRODUCT') && !userDetails[action.userId]) {
+            if (!userDetails[action.userId]) {
                 fetchUserDetails(action.userId);
             }
-            if (action.actionType === 'USER_ADD_PRODUCT' && !productDetails[action.actionDetails.productId]) {
-                fetchProductDetails(action.actionDetails.productId);
+            if (action.actionType === 'ADMIN_BAN_USER' && !userDetails[action.actionDetails?.bannedUserId]) {
+                fetchUserDetails(action.actionDetails?.bannedUserId);
+            }
+            if (action.actionType === 'USER_ADD_PRODUCT' && !productDetails[action.actionDetails?.productId]) {
+                fetchProductDetails(action.actionDetails?.productId);
             }
         });
     }, [actions, userDetails, productDetails]);
@@ -227,7 +227,7 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
     };
 
     const handleUserClick = (userId) => {
-        navigate(`/users/${userDetails[userId].username}`);
+        navigate(`/users/${userDetails[userId]?.username}`);
     };
 
     const handleProductClick = (productId, productTitle) => {
@@ -274,7 +274,7 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                     <Grid item xs={12} sm={columnItems} key={action.actionId} className={classes.gridItem}>
                                         <Card
                                             className={`${classes.card} ${action.actionType.startsWith('ADMIN') ? classes.adminCard : ''}`}
-                                            style={{ cursor: 'pointer', backgroundColor: action.actionType.startsWith('ADMIN') ? '#641818' : 'var(--secondary)', boxShadow: '0 2px 8px var(--primary)' }}
+                                            style={{ backgroundColor: action.actionType.startsWith('ADMIN') ? '#641818' : 'var(--secondary)', boxShadow: '0 2px 8px var(--primary)' }}
                                             onClick={() => action.actionType === 'USER_REGISTER' && handleUserClick(action.userId)}
                                         >
                                             {action.actionType === 'USER_REGISTER' && userDetails[action.userId] && (
@@ -282,7 +282,7 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         <Avatar className={classes.avatar} alt="User Avatar" src={userDetails[action.userId].userImage} />
                                                         <Typography variant="h6" style={{ color: 'white', cursor: 'pointer' }} onClick={() => handleUserClick(action.userId)}>
-                                                            {userDetails[action.userId].username} has registered
+                                                            @{userDetails[action.userId].username} has registered
                                                         </Typography>
                                                     </div>
                                                     <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
@@ -306,16 +306,18 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                                                 style={{ color: 'white', cursor: 'pointer' }}
                                                                 onClick={() => handleUserClick(action.userId)}
                                                             >
-                                                                {userDetails[action.userId].username} added a new product
+                                                                @{userDetails[action.userId].username} added a new product
                                                             </Typography>
                                                         </div>
                                                         <Typography
                                                             variant="body2"
-                                                            style={{ color: 'white', marginTop: '10px', cursor: 'pointer' }}
+                                                            style={{ color: 'white', marginTop: '10px', cursor: 'default' }}
                                                         >
                                                             Product Title: {action.actionDetails.productTitle}
                                                         </Typography>
-                                                        <Typography variant="body2" className={classes.dateText}>
+                                                        <Typography variant="body2" className={classes.dateText}
+                                                            style={{ color: 'white', marginTop: '10px', cursor: 'default' }}
+                                                        >
                                                             {formatDateTime(action.createdAt)}
                                                         </Typography>
                                                     </div>
@@ -334,36 +336,65 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                                     )}
                                                 </CardContent>
                                             )}
-
-
-                                            {action.actionType === 'ADMIN_BAN_USER' && (
+                                            {action.actionType === 'ADMIN_BAN_USER' && userDetails[action.userId] && userDetails[action.actionDetails.bannedUserId] && (
                                                 <CardContent className={classes.cardContent}>
-                                                    <Typography variant="h6" style={{ color: 'white' }}>
-                                                        Admin {action.userId} banned user {action.actionDetails.bannedUserId}
-                                                    </Typography>
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <Avatar
+                                                            className={classes.avatar}
+                                                            alt="User Avatar"
+                                                            src={userDetails[action.userId].userImage}
+                                                            onClick={() => handleUserClick(action.userId)}
+                                                            style={{ cursor: 'pointer' }}
+                                                        />
+                                                        <Typography variant="h6" style={{ color: 'white' }}>
+                                                            <Typography
+                                                                variant="h6"
+                                                                component="span"
+                                                                style={{ color: 'white', cursor: 'pointer' }}
+                                                                onClick={() => handleUserClick(action.userId)}
+                                                            >
+                                                                @{userDetails[action.userId].username}
+                                                            </Typography>{' '}
+                                                            banned user{' '}
+                                                            <Typography
+                                                                variant="h6"
+                                                                component="span"
+                                                                style={{ color: 'white', cursor: 'pointer' }}
+                                                                onClick={() => handleUserClick(action.actionDetails.bannedUserId)}
+                                                            >
+                                                                @{userDetails[action.actionDetails.bannedUserId]?.username}
+                                                            </Typography>
+                                                        </Typography>
+                                                    </div>
                                                     <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
                                                         Ban Duration: {action.actionDetails.banDurationDays ? `${action.actionDetails.banDurationDays} days` : 'Permanent'}
                                                     </Typography>
-                                                    <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
+                                                    <Typography variant="body2" className={classes.dateText}>
                                                         {formatDateTime(action.createdAt)}
                                                     </Typography>
                                                 </CardContent>
                                             )}
+
                                             {action.actionType === 'ADMIN_REMOVE_USER_BAN' && (
                                                 <CardContent className={classes.cardContent}>
                                                     <Typography variant="h6" style={{ color: 'white' }}>
                                                         Admin {action.userId} removed ban from user {action.actionDetails.unbannedUserId}
                                                     </Typography>
-                                                    <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
+                                                    <Typography variant="body2" className={classes.dateText}>
                                                         {formatDateTime(action.createdAt)}
                                                     </Typography>
                                                 </CardContent>
                                             )}
-                                            {action.actionType === 'ADMIN_DELETE_PRODUCT' && (
-                                                <CardContent className={classes.cardContent}>
-                                                    <Typography variant="h6" style={{ color: 'white' }}>
-                                                        Admin {action.userId} deleted product {action.actionDetails.productTitle}
-                                                    </Typography>
+                                            {action.actionType === 'ADMIN_DELETE_PRODUCT' && userDetails[action.userId] && (
+                                                <CardContent className={classes.cardContent} onClick={() => handleUserClick(action.userId)}
+                                                    style={{ cursor: 'pointer' }}
+                                                >
+                                                    <div style={{ display: 'flex', alignItems: 'center' }} >
+                                                        <Avatar className={classes.avatar} alt="User Avatar" src={userDetails[action.userId].userImage} />
+                                                        <Typography variant="h6" style={{ color: 'white' }} >
+                                                            @{userDetails[action.userId].username} deleted product {action.actionDetails.productTitle}
+                                                        </Typography>
+                                                    </div>
                                                     <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
                                                         {formatDateTime(action.createdAt)}
                                                     </Typography>
