@@ -181,6 +181,9 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
             if (action.actionType === 'ADMIN_BAN_USER' && !userDetails[action.actionDetails?.bannedUserId]) {
                 fetchUserDetails(action.actionDetails?.bannedUserId);
             }
+            if (action.actionType === 'ADMIN_REMOVE_USER_BAN' && !userDetails[action.actionDetails?.unbannedUserId]) {
+                fetchUserDetails(action.actionDetails?.unbannedUserId);
+            }
             if (action.actionType === 'USER_ADD_PRODUCT' && !productDetails[action.actionDetails?.productId]) {
                 fetchProductDetails(action.actionDetails?.productId);
             }
@@ -369,18 +372,51 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                                     <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
                                                         Ban Duration: {action.actionDetails.banDurationDays ? `${action.actionDetails.banDurationDays} days` : 'Permanent'}
                                                     </Typography>
-                                                    <Typography variant="body2" className={classes.dateText}>
+                                                    <Typography variant="body2" className={classes.dateText} style={{ marginTop: '10px' }}>
                                                         {formatDateTime(action.createdAt)}
                                                     </Typography>
                                                 </CardContent>
                                             )}
 
-                                            {action.actionType === 'ADMIN_REMOVE_USER_BAN' && (
+                                            {action.actionType === 'ADMIN_REMOVE_USER_BAN' && userDetails[action.userId] && userDetails[action.actionDetails.unbannedUserId] && (
+                                                // <CardContent className={classes.cardContent}>
+                                                //     <Typography variant="h6" style={{ color: 'white' }}>
+                                                //         Admin {action.userId} removed ban from user {action.actionDetails.unbannedUserId}
+                                                //     </Typography>
+                                                //     <Typography variant="body2" className={classes.dateText}>
+                                                //         {formatDateTime(action.createdAt)}
+                                                //     </Typography>
+                                                // </CardContent>
                                                 <CardContent className={classes.cardContent}>
-                                                    <Typography variant="h6" style={{ color: 'white' }}>
-                                                        Admin {action.userId} removed ban from user {action.actionDetails.unbannedUserId}
-                                                    </Typography>
-                                                    <Typography variant="body2" className={classes.dateText}>
+                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <Avatar
+                                                            className={classes.avatar}
+                                                            alt="User Avatar"
+                                                            src={userDetails[action.userId].userImage}
+                                                            onClick={() => handleUserClick(action.userId)}
+                                                            style={{ cursor: 'pointer' }}
+                                                        />
+                                                        <Typography variant="h6" style={{ color: 'white' }}>
+                                                            <Typography
+                                                                variant="h6"
+                                                                component="span"
+                                                                style={{ color: 'white', cursor: 'pointer' }}
+                                                                onClick={() => handleUserClick(action.userId)}
+                                                            >
+                                                                @{userDetails[action.userId].username}
+                                                            </Typography>{' '}
+                                                            removed ban from user{' '}
+                                                            <Typography
+                                                                variant="h6"
+                                                                component="span"
+                                                                style={{ color: 'white', cursor: 'pointer' }}
+                                                                onClick={() => handleUserClick(action.actionDetails.unbannedUserId)}
+                                                            >
+                                                                @{userDetails[action.actionDetails.unbannedUserId]?.username}
+                                                            </Typography>
+                                                        </Typography>
+                                                    </div>
+                                                    <Typography variant="body2" className={classes.dateText} style={{ marginTop: '10px' }}>
                                                         {formatDateTime(action.createdAt)}
                                                     </Typography>
                                                 </CardContent>
