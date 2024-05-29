@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Card, CardContent, Typography, Pagination, FormControl, InputLabel, Select, MenuItem, Avatar } from '@mui/material';
+import { Grid, Card, CardContent, Typography, Pagination, FormControl, InputLabel, Select, MenuItem, Avatar, CardMedia } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import ApiBackendService from '../apiBackend/ApiBackendService';
@@ -31,20 +31,51 @@ const useStyles = makeStyles({
     card: {
         width: '100%',
         display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: 'var(--dark)', // Background color for the action cards
         color: 'white', // Ensure text color is white for readability
         boxShadow: '0 4px 8px 0 rgba(255, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 0, 0, 0.19)', // Red shadow for admin actions
-        marginBottom: '20px'
+        marginBottom: '20px',
+        padding: '16px', // Added padding for better spacing
     },
     adminCard: {
-        backgroundColor: '#red !important', // Background color for admin action cards
+        backgroundColor: '#641818', // Background color for admin action cards
     },
     cardContent: {
-        flexGrow: 1,
         display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'space-between',
+        flexGrow: 1,
+    },
+    userAddProductContent: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexGrow: 1,
+    },
+    textContent: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+    },
+    mediaContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100px',
+        height: '100px',
+        marginLeft: '16px',
+        backgroundColor: '#ffffff', // Optional: Add a background color to make sure the container is visible
+    },
+    media: {
+        maxWidth: '100%',
+        maxHeight: '100%',
+        objectFit: 'contain', // Ensure the image is fully visible within the container
+    },
+    avatar: {
+        width: 60,
+        height: 60,
+        marginRight: 10,
     },
     title: {
         display: '-webkit-box',
@@ -53,6 +84,11 @@ const useStyles = makeStyles({
         textOverflow: 'ellipsis',
         WebkitLineClamp: 3,
         lineClamp: 3,
+    },
+    dateText: {
+        color: 'white',
+        marginTop: '10px',
+        textAlign: 'left',
     },
     pagination: {
         display: 'flex',
@@ -105,12 +141,10 @@ const useStyles = makeStyles({
         marginTop: '50px !important',
         width: '100%',
     },
-    avatar: {
-        width: 60,
-        height: 60,
-        marginRight: 10,
-    },
 });
+
+
+
 
 const WebsiteActionsLog = ({ columnItems, totalItems }) => {
     const classes = useStyles();
@@ -121,6 +155,7 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
     const [filter, setFilter] = useState('include_all');
     const [isActionsListEmpty, setIsActionsListEmpty] = useState(false);
     const [userDetails, setUserDetails] = useState({});
+    const [productDetails, setProductDetails] = useState({});
     const itemsPerPage = totalItems; // Fixed value of items per page
 
     useEffect(() => {
@@ -143,15 +178,18 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
 
     useEffect(() => {
         actions.forEach((action) => {
-            if (action.actionType === 'USER_REGISTER' && !userDetails[action.userId]) {
+            if ((action.actionType === 'USER_REGISTER' || action.actionType === 'USER_ADD_PRODUCT') && !userDetails[action.userId]) {
                 fetchUserDetails(action.userId);
             }
+            if (action.actionType === 'USER_ADD_PRODUCT' && !productDetails[action.actionDetails.productId]) {
+                fetchProductDetails(action.actionDetails.productId);
+            }
         });
-    }, [actions, userDetails]);
+    }, [actions, userDetails, productDetails]);
 
     const fetchUserDetails = async (userId) => {
         try {
-            const response = await ApiBackendService.getUserDetails({userId: userId});
+            const response = await ApiBackendService.getUserDetails({ userId });
             setUserDetails((prevDetails) => ({
                 ...prevDetails,
                 [userId]: response,
@@ -161,12 +199,40 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
         }
     };
 
+    const fetchProductDetails = async (productId) => {
+        try {
+            const response = await ApiBackendService.getProductById({ productId });
+            if (response && response.productImages.length !== 0) {
+                setProductDetails((prevDetails) => ({
+                    ...prevDetails,
+                    [productId]: response,
+                }));
+            } else {
+                setProductDetails((prevDetails) => ({
+                    ...prevDetails,
+                    [productId]: { notFound: true },
+                }));
+            }
+        } catch (error) {
+            console.log('Error fetching product details', error);
+            setProductDetails((prevDetails) => ({
+                ...prevDetails,
+                [productId]: { notFound: true },
+            }));
+        }
+    };
+
     const handlePageChange = (event, value) => {
         setPage(value);
     };
 
     const handleUserClick = (userId) => {
         navigate(`/users/${userDetails[userId].username}`);
+    };
+
+    const handleProductClick = (productId, productTitle) => {
+        const encodedTitle = encodeURIComponent(productTitle.split(' ').join('-'));
+        navigate(`/product/${encodedTitle}/${productId}`);
     };
 
     const formatDateTime = (dateTimeString) => {
@@ -208,14 +274,14 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                     <Grid item xs={12} sm={columnItems} key={action.actionId} className={classes.gridItem}>
                                         <Card
                                             className={`${classes.card} ${action.actionType.startsWith('ADMIN') ? classes.adminCard : ''}`}
-                                            style={{ cursor:'pointer', backgroundColor: action.actionType.startsWith('ADMIN') ? '#641818' : 'var(--secondary)', boxShadow: '0 2px 8px var(--primary)' }}
+                                            style={{ cursor: 'pointer', backgroundColor: action.actionType.startsWith('ADMIN') ? '#641818' : 'var(--secondary)', boxShadow: '0 2px 8px var(--primary)' }}
                                             onClick={() => action.actionType === 'USER_REGISTER' && handleUserClick(action.userId)}
                                         >
                                             {action.actionType === 'USER_REGISTER' && userDetails[action.userId] && (
                                                 <CardContent className={classes.cardContent}>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         <Avatar className={classes.avatar} alt="User Avatar" src={userDetails[action.userId].userImage} />
-                                                        <Typography variant="h6" style={{ color: 'white' }}>
+                                                        <Typography variant="h6" style={{ color: 'white', cursor: 'pointer' }} onClick={() => handleUserClick(action.userId)}>
                                                             {userDetails[action.userId].username} has registered
                                                         </Typography>
                                                     </div>
@@ -224,19 +290,52 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                                     </Typography>
                                                 </CardContent>
                                             )}
-                                            {action.actionType === 'USER_ADD_PRODUCT' && (
-                                                <CardContent className={classes.cardContent}>
-                                                    <Typography variant="h6" style={{ color: 'white' }}>
-                                                        User {action.userId} added a new product
-                                                    </Typography>
-                                                    <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
-                                                        Product: {action.actionDetails.productTitle}
-                                                    </Typography>
-                                                    <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
-                                                        {formatDateTime(action.createdAt)}
-                                                    </Typography>
+                                            {action.actionType === 'USER_ADD_PRODUCT' && userDetails[action.userId] && (
+                                                <CardContent className={classes.userAddProductContent}>
+                                                    <div className={classes.textContent}>
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            <Avatar
+                                                                className={classes.avatar}
+                                                                alt="User Avatar"
+                                                                src={userDetails[action.userId].userImage}
+                                                                onClick={() => handleUserClick(action.userId)}
+                                                                style={{ cursor: 'pointer' }}
+                                                            />
+                                                            <Typography
+                                                                variant="h6"
+                                                                style={{ color: 'white', cursor: 'pointer' }}
+                                                                onClick={() => handleUserClick(action.userId)}
+                                                            >
+                                                                {userDetails[action.userId].username} added a new product
+                                                            </Typography>
+                                                        </div>
+                                                        <Typography
+                                                            variant="body2"
+                                                            style={{ color: 'white', marginTop: '10px', cursor: 'pointer' }}
+                                                        >
+                                                            Product Title: {action.actionDetails.productTitle}
+                                                        </Typography>
+                                                        <Typography variant="body2" className={classes.dateText}>
+                                                            {formatDateTime(action.createdAt)}
+                                                        </Typography>
+                                                    </div>
+                                                    {!productDetails[action.actionDetails.productId]?.notFound && productDetails[action.actionDetails.productId] && (
+                                                        <div className={classes.mediaContainer}>
+                                                            <CardMedia
+                                                                component="img"
+                                                                alt={action.actionDetails.productTitle}
+                                                                className={classes.media}
+                                                                image={productDetails[action.actionDetails.productId].productImages[0].imageUrl}
+                                                                title={action.actionDetails.productTitle}
+                                                                onClick={() => handleProductClick(action.actionDetails.productId, action.actionDetails.productTitle)}
+                                                                style={{ cursor: 'pointer' }}
+                                                            />
+                                                        </div>
+                                                    )}
                                                 </CardContent>
                                             )}
+
+
                                             {action.actionType === 'ADMIN_BAN_USER' && (
                                                 <CardContent className={classes.cardContent}>
                                                     <Typography variant="h6" style={{ color: 'white' }}>
