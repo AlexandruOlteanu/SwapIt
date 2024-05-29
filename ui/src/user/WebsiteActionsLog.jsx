@@ -239,10 +239,11 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
     };
 
     const formatDateTime = (dateTimeString) => {
-        const options = { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
+        const options = { year: 'numeric', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
         const date = new Date(dateTimeString);
         return date.toLocaleDateString(undefined, options);
     };
+    
 
     return (
         <React.Fragment>
