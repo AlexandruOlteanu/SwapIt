@@ -120,6 +120,7 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
     const [totalPages, setTotalPages] = useState(0);
     const [filter, setFilter] = useState('include_all');
     const [isActionsListEmpty, setIsActionsListEmpty] = useState(false);
+    const [userDetails, setUserDetails] = useState({});
     const itemsPerPage = totalItems; // Fixed value of items per page
 
     useEffect(() => {
@@ -140,13 +141,32 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
         fetchWebsiteActions(page, filter);
     }, [page, filter]);
 
+    useEffect(() => {
+        actions.forEach((action) => {
+            if (action.actionType === 'USER_REGISTER' && !userDetails[action.userId]) {
+                fetchUserDetails(action.userId);
+            }
+        });
+    }, [actions, userDetails]);
+
+    const fetchUserDetails = async (userId) => {
+        try {
+            const response = await ApiBackendService.getUserDetails({userId: userId});
+            setUserDetails((prevDetails) => ({
+                ...prevDetails,
+                [userId]: response,
+            }));
+        } catch (error) {
+            console.log('Error fetching user details', error);
+        }
+    };
+
     const handlePageChange = (event, value) => {
         setPage(value);
     };
 
-    const handleProductClick = (title, productId) => {
-        const encodedTitle = encodeURIComponent(title.split(' ').join('-'));
-        navigate(`/product/${encodedTitle}/${productId}`);
+    const handleUserClick = (userId) => {
+        navigate(`/users/${userDetails[userId].username}`);
     };
 
     const formatDateTime = (dateTimeString) => {
@@ -188,14 +208,15 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                     <Grid item xs={12} sm={columnItems} key={action.actionId} className={classes.gridItem}>
                                         <Card
                                             className={`${classes.card} ${action.actionType.startsWith('ADMIN') ? classes.adminCard : ''}`}
-                                            style={{ backgroundColor: '#2B2E4A', boxShadow: '0 2px 8px var(--primary)' }}
+                                            style={{ cursor:'pointer', backgroundColor: action.actionType.startsWith('ADMIN') ? '#641818' : 'var(--secondary)', boxShadow: '0 2px 8px var(--primary)' }}
+                                            onClick={() => action.actionType === 'USER_REGISTER' && handleUserClick(action.userId)}
                                         >
-                                            {action.actionType === 'USER_REGISTER' && (
+                                            {action.actionType === 'USER_REGISTER' && userDetails[action.userId] && (
                                                 <CardContent className={classes.cardContent}>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <Avatar className={classes.avatar} alt="User Avatar" src={`/path/to/user/avatar/${action.userId}`} />
+                                                        <Avatar className={classes.avatar} alt="User Avatar" src={userDetails[action.userId].userImage} />
                                                         <Typography variant="h6" style={{ color: 'white' }}>
-                                                            User {action.userId} has registered
+                                                            {userDetails[action.userId].username} has registered
                                                         </Typography>
                                                     </div>
                                                     <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
@@ -218,7 +239,7 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                             )}
                                             {action.actionType === 'ADMIN_BAN_USER' && (
                                                 <CardContent className={classes.cardContent}>
-                                                    <Typography variant="h6" style={{ color: '#eb4343' }}>
+                                                    <Typography variant="h6" style={{ color: 'white' }}>
                                                         Admin {action.userId} banned user {action.actionDetails.bannedUserId}
                                                     </Typography>
                                                     <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>

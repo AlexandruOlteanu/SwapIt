@@ -203,7 +203,7 @@ const UserProfile = () => {
                             </div>
                         </>
                     )}
-                    {isAdmin && (
+                    {(isAdmin && isUserProfileAuth) && (
                         
                         <div className='ml-5' style={{ flex: 1, overflow: 'auto', width: '100%' }}>
                             <h2 className="text-light" style={{ paddingTop: '20px', paddingLeft: '32px', paddingBottom: '10px' }}> Website Actions Log </h2>
