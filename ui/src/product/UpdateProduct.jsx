@@ -29,7 +29,6 @@ const categories = {
         "Automotive",
         "Books & Audible",
         "Music & Instruments",
-        "Office Supplies"
     ],
     level2: {
         "Electronics & Appliances": [
@@ -121,15 +120,6 @@ const categories = {
             "Sheet Music",
             "Vinyl Records",
             "Digital Music"
-        ],
-        "Office Supplies": [
-            "Writing Instruments",
-            "Paper Products",
-            "Office Electronics",
-            "Office Furniture",
-            "Calendars & Planners",
-            "Mailroom Supplies",
-            "Cleaning Supplies"
         ]
     },
     level3: {
@@ -202,14 +192,7 @@ const categories = {
         "DJ Equipment": ["Turntables", "Controllers", "Mixers", "Headphones", "Lighting"],
         "Sheet Music": ["Classical", "Pop", "Jazz", "Rock", "Folk"],
         "Vinyl Records": ["Classic Rock", "Jazz", "Hip-Hop", "Electronic", "Country"],
-        "Digital Music": ["MP3", "Streaming", "Downloads", "Music Videos", "Playlists"],
-        "Writing Instruments": ["Pens", "Pencils", "Markers", "Highlighters", "Erasers"],
-        "Paper Products": ["Notebooks", "Printing Paper", "Sticky Notes", "Envelopes", "Folders"],
-        "Office Electronics": ["Printers", "Scanners", "Copiers", "Calculators", "Projectors"],
-        "Office Furniture": ["Desks", "Chairs", "File Cabinets", "Bookcases", "Office Lighting"],
-        "Calendars & Planners": ["Wall Calendars", "Desk Calendars", "Planners", "Appointment Books", "Organizers"],
-        "Mailroom Supplies": ["Packing Tape", "Shipping Labels", "Mailing Tubes", "Bubble Wrap", "Mail Sorters"],
-        "Cleaning Supplies": ["Disinfectants", "Paper Towels", "Trash Bags", "Cleaning Cloths", "Air Fresheners"]
+        "Digital Music": ["MP3", "Streaming", "Downloads", "Music Videos", "Playlists"]
     }
 };
 

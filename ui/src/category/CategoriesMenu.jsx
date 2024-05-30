@@ -335,39 +335,6 @@ const CategoriesMenu = () => {
                     subcategories: ["MP3", "Streaming", "Downloads", "Music Videos", "Playlists"]
                 }
             ]
-        },
-        {
-            name: "Office Supplies",
-            subcategories: [
-                {
-                    name: "Writing Instruments",
-                    subcategories: ["Pens", "Pencils", "Markers", "Highlighters", "Erasers"]
-                },
-                {
-                    name: "Paper Products",
-                    subcategories: ["Notebooks", "Printing Paper", "Sticky Notes", "Envelopes", "Folders"]
-                },
-                {
-                    name: "Office Electronics",
-                    subcategories: ["Printers", "Scanners", "Copiers", "Calculators", "Projectors"]
-                },
-                {
-                    name: "Office Furniture",
-                    subcategories: ["Desks", "Chairs", "File Cabinets", "Bookcases", "Office Lighting"]
-                },
-                {
-                    name: "Calendars & Planners",
-                    subcategories: ["Wall Calendars", "Desk Calendars", "Planners", "Appointment Books", "Organizers"]
-                },
-                {
-                    name: "Mailroom Supplies",
-                    subcategories: ["Packing Tape", "Shipping Labels", "Mailing Tubes", "Bubble Wrap", "Mail Sorters"]
-                },
-                {
-                    name: "Cleaning Supplies",
-                    subcategories: ["Disinfectants", "Paper Towels", "Trash Bags", "Cleaning Cloths", "Air Fresheners"]
-                }
-            ]
         }
     ];
 
