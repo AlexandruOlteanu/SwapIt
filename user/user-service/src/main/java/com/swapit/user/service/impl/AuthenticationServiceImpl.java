@@ -137,6 +137,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return Oauth2Response.builder()
                 .userId(userId)
+                .registeredNow(existingUser == null)
                 .build();
     }
 

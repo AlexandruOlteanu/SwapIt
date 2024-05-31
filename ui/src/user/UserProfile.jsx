@@ -83,6 +83,7 @@ const UserProfile = () => {
             setIsUserProfileAuth(userId === authUserId);
             setIsOauth2User(authUserRole === "OAUTH2_USER");
             setIsAdmin(authUserRole === "ADMINISTRATOR");
+            console.log(authUserRole);
         }
         fetchData();
     }, [username, isTemporaryBanned, isPermanentBanned]);
