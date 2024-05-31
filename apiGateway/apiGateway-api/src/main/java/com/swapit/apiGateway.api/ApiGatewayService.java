@@ -6,7 +6,9 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
@@ -65,7 +67,7 @@ public interface ApiGatewayService {
     String GET_PRODUCT_BY_ID = "getProductById";
     String DELETE_PRODUCT = "deleteProduct";
     String CHANGE_PRODUCT_LIKE_STATUS = "changeProductLikeStatus";
-    String GET_PRODUCT_LIKE_STATUS = "getProductLikeStatus";
+    String GET_PRODUCTS_LIKE_STATUS = "getProductsLikeStatus";
     String GET_PRODUCTS_BY_USER = "getProductsByUser";
     String GET_LIKED_PRODUCTS_BY_USER = "getLikedProductsByUser";
     String GET_RECOMMENDED_PRODUCTS = "getRecommendedProducts";
@@ -190,12 +192,12 @@ public interface ApiGatewayService {
 
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
-    @PostMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    @PutMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void changeProductLikeStatus(@Valid @RequestBody ChangeProductLikeStatusRequest request);
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
-    @GetMapping(value = BASE_URL + GET_PRODUCT_LIKE_STATUS)
-    ResponseEntity<String> getProductLikeStatus(@RequestParam(value = "productId") Integer productId);
+    @PostMapping(value = BASE_URL + GET_PRODUCTS_LIKE_STATUS)
+    ResponseEntity<GetProductsLikeStatusResponse> getProductsLikeStatus(@Valid @RequestBody GetProductsLikeStatusRequest request);
 
     @GetMapping(value = BASE_URL + PUBLIC_ACCESS + GET_PRODUCT_BY_ID)
     ResponseEntity<ProductDTO> getProductById(@RequestParam(value = "productId") Integer productId);

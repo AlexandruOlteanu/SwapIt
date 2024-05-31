@@ -9,7 +9,9 @@ import com.swapit.commons.generator.impl.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
@@ -415,7 +417,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
                 .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
         log.info(uriBuilder.toUriString());
         try {
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, new HttpEntity<>(request), Void.class);
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class);
         } catch (Exception e) {
             log.error("Exception in changing product like status {}", e.getMessage(), e);
             throw e;
@@ -423,16 +425,15 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public String getProductLikeStatus(Integer userId, Integer productId) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCT_LIKE_STATUS);
+    public GetProductsLikeStatusResponse getProductsLikeStatus(Integer userId, GetProductsLikeStatusRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.GET_PRODUCTS_LIKE_STATUS);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
-                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
         log.info(uriBuilder.toUriString());
         try {
-            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, null, String.class).getBody();
+            return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, new HttpEntity<>(request), GetProductsLikeStatusResponse.class).getBody();
         } catch (Exception e) {
-            log.error("Exception in getting product like status {}", e.getMessage(), e);
+            log.error("Exception in getting products like status {}", e.getMessage(), e);
             throw e;
         }
     }

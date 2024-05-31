@@ -4,6 +4,7 @@ import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.*;
 import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public interface ProductService {
     String GET_PRODUCT_BY_ID = "getProductById";
     String GET_PRODUCTS_BY_CATEGORY = "getProductsByCategory";
     String CHANGE_PRODUCT_LIKE_STATUS = "changeProductLikeStatus";
-    String GET_PRODUCT_LIKE_STATUS = "getProductLikeStatus";
+    String GET_PRODUCTS_LIKE_STATUS = "getProductsLikeStatus";
 
 
     @PutMapping(value = BASE_URL + CREATE_PRODUCT, consumes = MEDIA_TYPE_APPLICATION_JSON)
@@ -44,11 +45,11 @@ public interface ProductService {
     @DeleteMapping(value = BASE_URL + DELETE_PRODUCT_ADMIN)
     void deleteProductAdmin(@RequestParam(value = "productId") Integer productId);
 
-    @PostMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    @PutMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
     void changeProductLikeStatus(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody ChangeProductLikeStatusRequest request);
 
-    @GetMapping(value = BASE_URL + GET_PRODUCT_LIKE_STATUS)
-    ResponseEntity<String> getProductLikeStatus(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);
+    @PostMapping(value = BASE_URL + GET_PRODUCTS_LIKE_STATUS)
+    ResponseEntity<GetProductsLikeStatusResponse> getProductsLikeStatus(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody GetProductsLikeStatusRequest request);
 
     @GetMapping(value = BASE_URL + GET_PRODUCTS_BY_USER)
     ResponseEntity<GetProductsResponse> getProductsByUser(@RequestParam(value = "userId") Integer userId,

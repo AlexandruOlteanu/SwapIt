@@ -144,21 +144,33 @@ const CategorySearch = () => {
                 nrElementsPerChunk: itemsPerPage,
             });
             setIsProductListEmpty(response.searchProducts.length === 0);
-            const productsWithFavorites = await Promise.all(response.searchProducts.map(async product => {
-                const loggedIn = Common.isLoggedIn();
-                const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
-                const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
-                return {
+            const loggedIn = Common.isLoggedIn();
+            if (!loggedIn) {
+                setProducts(response.searchProducts.map(product => ({
                     ...product,
-                    isFavorite: likeStatus === 'ACTIVE',
-                };
+                    isFavorite: false,
+                })));
+                return;
+            }
+
+            const productIds = response.searchProducts.map(product => product.productId);
+            const favoriteStatusResponse = await ApiBackendService.getProductsLikeStatus({}, {productIds});
+
+            const favoriteStatusMap = favoriteStatusResponse.productsLikeStatus.reduce((acc, { productId, likeStatus }) => {
+                acc[productId] = likeStatus;
+                return acc;
+            }, {});
+
+            const productsWithFavorites = response.searchProducts.map(product => ({
+                ...product,
+                isFavorite: favoriteStatusMap[product.productId] === 'ACTIVE',
             }));
 
             setProducts(productsWithFavorites);
             setTotalPages(response.totalPages);
         } catch (error) {
             console.log('Error fetching category products!');
-            window.location.href = "/error";
+            // window.location.href = "/error";
         }
     };
 

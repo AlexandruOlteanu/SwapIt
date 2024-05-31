@@ -9,7 +9,9 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
@@ -102,10 +104,10 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public ResponseEntity<String> getProductLikeStatus(Integer productId) {
+    public ResponseEntity<GetProductsLikeStatusResponse> getProductsLikeStatus(GetProductsLikeStatusRequest request) {
         var attributes = authenticatedUserContextService.getUserProperties();
         Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
-        return ResponseEntity.ok(externalOperationsService.getProductLikeStatus(userId, productId));
+        return ResponseEntity.ok(externalOperationsService.getProductsLikeStatus(userId, request));
     }
 
     @Override

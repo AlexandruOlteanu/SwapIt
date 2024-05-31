@@ -133,14 +133,26 @@ const UserFavoriteProducts = ({ userId, columnItems, totalItems }) => {
                     nrElementsPerChunk: itemsPerPage,
                 });
                 setIsProductListEmpty(response.products.length === 0);
-                const productsWithFavorites = await Promise.all(response.products.map(async product => {
-                    const loggedIn = Common.isLoggedIn();
-                    const favoriteStatus = (loggedIn ? await ApiBackendService.getProductLikeStatus({ productId: product.productId }) : '');
-                    const likeStatus = (loggedIn ? await favoriteStatus.text() : '');
-                    return {
+                const loggedIn = Common.isLoggedIn();
+                if (!loggedIn) {
+                    setProducts(response.products.map(product => ({
                         ...product,
-                        isFavorite: likeStatus === 'ACTIVE',
-                    };
+                        isFavorite: false,
+                    })));
+                    return;
+                }
+
+                const productIds = response.products.map(product => product.productId);
+                const favoriteStatusResponse = await ApiBackendService.getProductsLikeStatus({}, { productIds });
+
+                const favoriteStatusMap = favoriteStatusResponse.productsLikeStatus.reduce((acc, { productId, likeStatus }) => {
+                    acc[productId] = likeStatus;
+                    return acc;
+                }, {});
+
+                const productsWithFavorites = response.products.map(product => ({
+                    ...product,
+                    isFavorite: favoriteStatusMap[product.productId] === 'ACTIVE',
                 }));
 
                 setProducts(productsWithFavorites);

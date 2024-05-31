@@ -167,17 +167,18 @@ class ApiService {
     }, true);
   }
 
-  getProductLikeStatus(params) {
-    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCT_LIKE_STATUS_URI, {
-      method: 'GET',
+  getProductsLikeStatus(params, data) {
+    return this.fetchWithAuth(process.env.REACT_APP_GET_PRODUCTS_LIKE_STATUS_URI, {
+      method: 'POST',
       credentials: 'include',
+      body: JSON.stringify(data),
       params: params
-    }, false);
+    }, true);
   }
 
   changeProductLikeStatus(params, data) {
     return this.fetchWithAuth(process.env.REACT_APP_CHANGE_PRODUCT_LIKE_STATUS_URI, {
-      method: 'POST',
+      method: 'PUT',
       credentials: 'include',
       body: JSON.stringify(data),
       params: params

@@ -2,7 +2,9 @@ package com.swapit.product.service;
 
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 
 public interface ProductOperationsService {
 
@@ -11,5 +13,5 @@ public interface ProductOperationsService {
     void deleteProduct(Integer userId, Integer productId);
     void deleteProductAdmin(Integer productId);
     void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request);
-    String getProductLikeStatus(Integer userId, Integer productId);
+    GetProductsLikeStatusResponse getProductsLikeStatus(Integer userId, GetProductsLikeStatusRequest request);
 }

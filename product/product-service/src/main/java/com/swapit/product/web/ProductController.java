@@ -4,6 +4,7 @@ import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.*;
 import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
 import com.swapit.product.api.domain.response.GetProductsByIdsResponse;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.product.api.service.ProductService;
 import com.swapit.product.service.GetProductsService;
@@ -47,8 +48,8 @@ public class ProductController implements ProductService {
     }
 
     @Override
-    public ResponseEntity<String> getProductLikeStatus(Integer userId, Integer productId) {
-        return ResponseEntity.ok(productOperationsService.getProductLikeStatus(userId, productId));
+    public ResponseEntity<GetProductsLikeStatusResponse> getProductsLikeStatus(Integer userId, GetProductsLikeStatusRequest request) {
+        return ResponseEntity.ok(productOperationsService.getProductsLikeStatus(userId, request));
     }
 
     @Override

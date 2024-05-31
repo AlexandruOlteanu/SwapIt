@@ -6,7 +6,9 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.searchEngine.api.service.domain.request.AddNewProductCategoryRequest;
 import com.swapit.searchEngine.api.service.domain.request.GetProductCategoryIdRequest;
@@ -40,7 +42,7 @@ public interface ExternalOperationsService {
     GetCategoryTreeResponse getCategoryTree(Integer categoryId);
     SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request);
-    String getProductLikeStatus(Integer userId, Integer productId);
+    GetProductsLikeStatusResponse getProductsLikeStatus(Integer userId, GetProductsLikeStatusRequest request);
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void manualSecurityCodesExpire();
     void banUser(Integer adminUserId, Integer userId, Integer banDaysDuration);

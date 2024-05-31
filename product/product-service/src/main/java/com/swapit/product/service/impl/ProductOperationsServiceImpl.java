@@ -2,9 +2,12 @@ package com.swapit.product.service.impl;
 
 import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
+import com.swapit.product.api.domain.dto.ProductLikeStatusDTO;
 import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
+import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
+import com.swapit.product.api.domain.response.GetProductsLikeStatusResponse;
 import com.swapit.product.domain.Product;
 import com.swapit.product.domain.ProductImage;
 import com.swapit.product.domain.ProductLike;
@@ -20,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.swapit.product.util.ProductLikeStatus.ACTIVE;
@@ -156,12 +160,27 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
     }
 
     @Override
-    public String getProductLikeStatus(Integer userId, Integer productId) {
-        ProductLike productLike = productLikeRepository.findProductLikeByUserIdAndProductId(userId, productId)
-                .orElse(null);
-        if (productLike == null || productLike.getStatus().equals(INACTIVE.name())) {
-            return INACTIVE.name();
-        }
-        return ACTIVE.name();
+    public GetProductsLikeStatusResponse getProductsLikeStatus(Integer userId, GetProductsLikeStatusRequest request) {
+        List<ProductLike> productLike = productLikeRepository.findProductLikeByUserIdAndProductIdIn(userId, request.getProductIds())
+                .orElse(new ArrayList<>());
+        List<ProductLikeStatusDTO> productLikeStatusDTOList = request.getProductIds().stream()
+                .map(productId -> {
+                    ProductLike productLike1 = productLike.stream().filter(productLike2 -> productLike2.getProductId().equals(productId)).findFirst()
+                            .orElse(null);
+                    if (productLike1 == null || !productLike1.getStatus().equals(ACTIVE.name())) {
+                        return ProductLikeStatusDTO.builder()
+                                .productId(productId)
+                                .likeStatus(INACTIVE.name())
+                                .build();
+                    }
+                    return ProductLikeStatusDTO.builder()
+                            .productId(productId)
+                            .likeStatus(ACTIVE.name())
+                            .build();
+                })
+                .toList();
+        return GetProductsLikeStatusResponse.builder()
+                .productsLikeStatus(productLikeStatusDTOList)
+                .build();
     }
 }
