@@ -115,12 +115,21 @@ const ProductPage = () => {
 
                 // Fetch Product Like
                 if (loggedIn) {
-                    const likeResponse = await ApiBackendService.getProductLikeStatus({ productId });
-                    const responseBody = await likeResponse.text(); // Read the response body as text
-                    if (responseBody === 'ACTIVE') {
-                        setIsFavourite(true);
+                    const likeResponse = await ApiBackendService.getProductsLikeStatus({}, { productIds: [productId] });
+
+                    // Assuming the response is an array of objects as shown in the new API response example
+                    if (likeResponse.productsLikeStatus && likeResponse.productsLikeStatus.length > 0) {
+                        const likeStatus = likeResponse.productsLikeStatus[0].likeStatus;
+                        if (likeStatus === 'ACTIVE') {
+                            setIsFavourite(true);
+                        } else {
+                            setIsFavourite(false);
+                        }
+                    } else {
+                        setIsFavourite(false); // Default to false if no status is returned
                     }
                 }
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 window.location.href = "/error";
