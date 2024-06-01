@@ -1,0 +1,431 @@
+product_category_id,value,parent
+1,Electronics & Appliances,
+2,Computers & Accessories,
+3,Home & Garden,
+4,Sports & Outdoors,
+5,Fashion & Accessories,
+6,Health & Beauty,
+7,Toys & Games,
+8,Automotive,
+9,Books & Audible,
+10,Music & Instruments,
+11,Washing Machines,1
+12,Kitchen Appliances,1
+13,Air Conditioners,1
+14,Home Audio,1
+15,TV & Video,1
+16,Individual Care,1
+17,Vacuum Cleaners,1
+18,Laptops,2
+19,Desktops,2
+20,Monitors,2
+21,Computer Accessories,2
+22,Storage Devices,2
+23,Networking,2
+24,Software,2
+25,Furniture,3
+26,Garden Tools,3
+27,Lighting,3
+28,Decor,3
+29,Kitchenware,3
+30,Bedding,3
+31,DIY & Tools,3
+32,Fitness Equipment,4
+33,Camping & Hiking,4
+34,Cycling,4
+35,Water Sports,4
+36,Team Sports,4
+37,Outdoor Clothing,4
+38,Fishing,4
+39,Men's Clothing,5
+40,Women's Clothing,5
+41,Shoes,5
+42,Bags & Accessories,5
+43,Jewelry,5
+44,Eyewear,5
+45,Watches,5
+46,Skincare,6
+47,Haircare,6
+48,Makeup,6
+49,Fragrances,6
+50,Health Supplements,6
+51,Personal Care,6
+52,Medical Supplies,6
+53,Action Figures,7
+54,Board Games,7
+55,Building Sets,7
+56,Dolls & Accessories,7
+57,Educational Toys,7
+58,Outdoor Play,7
+59,Puzzles,7
+60,Car Electronics,8
+61,Car Accessories,8
+62,Motorcycle Accessories,8
+63,Car Care,8
+64,Replacement Parts,8
+65,Tires & Wheels,8
+66,Tools & Equipment,8
+67,Fiction,9
+68,Non-Fiction,9
+69,Children's Books,9
+70,Audible Books,9
+71,E-Books,9
+72,Magazines,9
+73,Comics & Graphic Novels,9
+74,Musical Instruments,10
+75,Music Accessories,10
+76,Recording Equipment,10
+77,DJ Equipment,10
+78,Sheet Music,10
+79,Vinyl Records,10
+80,Digital Music,10
+81,Front Load,11
+82,Top Load,11
+83,Washer Dryer,11
+84,Compact,11
+85,Portable,11
+86,Microwaves,12
+87,Ovens,12
+88,Dishwashers,12
+89,Refrigerators,12
+90,Blenders,12
+91,Window AC,13
+92,Split AC,13
+93,Portable AC,13
+94,Inverter AC,13
+95,Smart AC,13
+96,Soundbars,14
+97,Home Theater Systems,14
+98,Speakers,14
+99,Receivers,14
+100,Subwoofers,14
+101,Smart TVs,15
+102,4K TVs,15
+103,LED TVs,15
+104,OLED TVs,15
+105,Projectors,15
+106,Hair Dryers,16
+107,Electric Shavers,16
+108,Epilators,16
+109,Electric Toothbrushes,16
+110,Massagers,16
+111,Robot Vacuums,17
+112,Upright Vacuums,17
+113,Stick Vacuums,17
+114,Handheld Vacuums,17
+115,Canister Vacuums,17
+116,Gaming Laptops,18
+117,Business Laptops,18
+118,2-in-1 Laptops,18
+119,Ultrabooks,18
+120,Chromebooks,18
+121,Gaming Desktops,19
+122,All-in-One Desktops,19
+123,Mini PCs,19
+124,Workstations,19
+125,Tower Desktops,19
+126,Gaming Monitors,20
+127,4K Monitors,20
+128,Curved Monitors,20
+129,Ultrawide Monitors,20
+130,Office Monitors,20
+131,Keyboards,21
+132,Mice,21
+133,Webcams,21
+134,Headsets,21
+135,Docking Stations,21
+136,External Hard Drives,22
+137,SSD Drives,22
+138,USB Flash Drives,22
+139,Network Storage,22
+140,Memory Cards,22
+141,Routers,23
+142,Modems,23
+143,Range Extenders,23
+144,Switches,23
+145,Access Points,23
+146,Operating Systems,24
+147,Office Suites,24
+148,Security Software,24
+149,Design Software,24
+150,Development Software,24
+151,Sofas,25
+152,Beds,25
+153,Dining Tables,25
+154,Wardrobes,25
+155,Office Chairs,25
+156,Lawn Mowers,26
+157,Hedge Trimmers,26
+158,Leaf Blowers,26
+159,Garden Hoses,26
+160,Garden Shears,26
+161,LED Bulbs,27
+162,Table Lamps,27
+163,Floor Lamps,27
+164,Ceiling Lights,27
+165,Outdoor Lighting,27
+166,Wall Art,28
+167,Mirrors,28
+168,Vases,28
+169,Clocks,28
+170,Rugs,28
+171,Cookware,29
+172,Cutlery,29
+173,Glassware,29
+174,Dinnerware,29
+175,Storage Containers,29
+176,Bedsheets,30
+177,Pillows,30
+178,Comforters,30
+179,Mattress Protectors,30
+180,Blankets,30
+181,Power Tools,31
+182,Hand Tools,31
+183,Tool Storage,31
+184,Ladders,31
+185,Safety Equipment,31
+186,Treadmills,32
+187,Exercise Bikes,32
+188,Dumbbells,32
+189,Yoga Mats,32
+190,Resistance Bands,32
+191,Tents,33
+192,Sleeping Bags,33
+193,Backpacks,33
+194,Camping Furniture,33
+195,Camping Cookware,33
+196,Mountain Bikes,34
+197,Road Bikes,34
+198,Electric Bikes,34
+199,Bike Helmets,34
+200,Bike Accessories,34
+201,Kayaks,35
+202,Paddleboards,35
+203,Life Jackets,35
+204,Swim Goggles,35
+205,Snorkeling Gear,35
+206,Soccer,36
+207,Basketball,36
+208,Baseball,36
+209,Volleyball,36
+210,Hockey,36
+211,Jackets,37
+212,Hiking Boots,37
+213,Outdoor Pants,37
+214,Base Layers,37
+215,Gloves,37
+216,Fishing Rods,38
+217,Reels,38
+218,Bait & Lures,38
+219,Fishing Line,38
+220,Fishing Accessories,38
+221,Shirts,39
+222,Trousers,39
+223,Suits,39
+224,Jackets,39
+225,T-Shirts,39
+226,Dresses,40
+227,Tops,40
+228,Skirts,40
+229,Jeans,40
+230,Sweaters,40
+231,Sneakers,41
+232,Boots,41
+233,Sandals,41
+234,Formal Shoes,41
+235,Casual Shoes,41
+236,Handbags,42
+237,Backpacks,42
+238,Wallets,42
+239,Belts,42
+240,Hats,42
+241,Necklaces,43
+242,Rings,43
+243,Earrings,43
+244,Bracelets,43
+245,Watches,43
+246,Sunglasses,44
+247,Prescription Glasses,44
+248,Reading Glasses,44
+249,Sports Glasses,44
+250,Eyewear Accessories,44
+251,Smartwatches,45
+252,Analog Watches,45
+253,Digital Watches,45
+254,Luxury Watches,45
+255,Sports Watches,45
+256,Cleansers,46
+257,Moisturizers,46
+258,Serums,46
+259,Masks,46
+260,Sunscreens,46
+261,Shampoos,47
+262,Conditioners,47
+263,Hair Treatments,47
+264,Styling Products,47
+265,Hair Accessories,47
+266,Foundations,48
+267,Lipsticks,48
+268,Eyeshadows,48
+269,Blushes,48
+270,Mascaras,48
+271,Perfumes,49
+272,Colognes,49
+273,Body Mists,49
+274,Roll-ons,49
+275,Scented Lotions,49
+276,Vitamins,50
+277,Minerals,50
+278,Protein Supplements,50
+279,Herbal Supplements,50
+280,Omega-3,50
+281,Electric Toothbrushes,51
+282,Razors,51
+283,Epilators,51
+284,Body Scales,51
+285,Massagers,51
+286,First Aid Kits,52
+287,Thermometers,52
+288,Blood Pressure Monitors,52
+289,Glucose Meters,52
+290,Medical Masks,52
+291,Superheroes,53
+292,TV & Movie Characters,53
+293,Anime Figures,53
+294,Video Game Characters,53
+295,Collectible Figures,53
+296,Strategy Games,54
+297,Family Games,54
+298,Card Games,54
+299,Party Games,54
+300,Classic Games,54
+301,LEGO,55
+302,Mega Bloks,55
+303,K'NEX,55
+304,Wooden Blocks,55
+305,Magnetic Blocks,55
+306,Fashion Dolls,56
+307,Baby Dolls,56
+308,Dollhouses,56
+309,Doll Clothing,56
+310,Doll Furniture,56
+311,STEM Toys,57
+312,Learning Games,57
+313,Science Kits,57
+314,Math Toys,57
+315,Language Toys,57
+316,Playhouses,58
+317,Swing Sets,58
+318,Trampolines,58
+319,Ride-On Toys,58
+320,Inflatable Pools,58
+321,Jigsaw Puzzles,59
+322,3D Puzzles,59
+323,Wooden Puzzles,59
+324,Brain Teasers,59
+325,Puzzle Accessories,59
+326,Car Stereos,60
+327,Car Speakers,60
+328,Car Cameras,60
+329,GPS Systems,60
+330,Car Alarms,60
+331,Seat Covers,61
+332,Floor Mats,61
+333,Car Covers,61
+334,Steering Wheel Covers,61
+335,Air Fresheners,61
+336,Helmets,62
+337,Motorcycle Gloves,62
+338,Motorcycle Jackets,62
+339,Motorcycle Boots,62
+340,Motorcycle Covers,62
+341,Car Wash,63
+342,Wax & Polish,63
+343,Detailing Tools,63
+344,Car Vacuum Cleaners,63
+345,Tire Care,63
+346,Brake Pads,64
+347,Oil Filters,64
+348,Spark Plugs,64
+349,Batteries,64
+350,Headlights,64
+351,All-Season Tires,65
+352,Winter Tires,65
+353,Performance Tires,65
+354,Off-Road Tires,65
+355,Rims,65
+356,Jump Starters,66
+357,Tire Inflators,66
+358,Car Jacks,66
+359,Tool Kits,66
+360,Battery Chargers,66
+361,Mystery,67
+362,Romance,67
+363,Science Fiction,67
+364,Fantasy,67
+365,Thriller,67
+366,Biographies,68
+367,Self-Help,68
+368,Cookbooks,68
+369,History,68
+370,Travel,68
+371,Picture Books,69
+372,Early Learning,69
+373,Chapter Books,69
+374,Young Adult,69
+375,Educational,69
+376,Fiction,70
+377,Non-Fiction,70
+378,Classics,70
+379,Podcasts,70
+380,Languages,70
+381,Kindle,71
+382,PDF,71
+383,ePub,71
+384,Interactive,71
+385,Free,71
+386,Fashion,72
+387,Technology,72
+388,Lifestyle,72
+389,Fitness,72
+390,Business,72
+391,Superheroes,73
+392,Manga,73
+393,Science Fiction,73
+394,Fantasy,73
+395,Horror,73
+396,Guitars,74
+397,Keyboards,74
+398,Drums,74
+399,Wind Instruments,74
+400,String Instruments,74
+401,Instrument Cases,75
+402,Music Stands,75
+403,Picks & Strings,75
+404,Tuners & Metronomes,75
+405,Amplifiers,75
+406,Microphones,76
+407,Audio Interfaces,76
+408,Mixers,76
+409,Headphones,76
+410,Studio Monitors,76
+411,Turntables,77
+412,Controllers,77
+413,Mixers,77
+414,Headphones,77
+415,Lighting,77
+416,Classical,78
+417,Pop,78
+418,Jazz,78
+419,Rock,78
+420,Folk,78
+421,Classic Rock,79
+422,Jazz,79
+423,Hip-Hop,79
+424,Electronic,79
+425,Country,79
+426,MP3,80
+427,Streaming,80
+428,Downloads,80
+429,Music Videos,80
+430,Playlists,80

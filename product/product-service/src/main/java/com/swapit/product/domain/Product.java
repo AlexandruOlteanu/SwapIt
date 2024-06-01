@@ -18,7 +18,14 @@ import java.util.List;
 @AllArgsConstructor
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Entity
-@Table(name = "product")
+@Table(name = "product", indexes = {
+        @Index(name = "idx_product_user_id", columnList = "user_id"),
+        @Index(name = "idx_product_creation_date", columnList = "created_at"),
+        @Index(name = "idx_product_title", columnList = "title"),
+        @Index(name = "idx_product_price", columnList = "price"),
+        @Index(name = "idx_product_category_id", columnList = "category_id"),
+        @Index(name = "idx_product_popularity", columnList = "popularity")
+})
 public class Product {
 
     @Id

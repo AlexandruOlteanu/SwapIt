@@ -3,6 +3,7 @@ package com.swapit.product.service.impl;
 import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
 import com.swapit.product.api.domain.dto.ProductDTO;
+import com.swapit.product.api.domain.dto.ProductImageDTO;
 import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
 import com.swapit.product.api.domain.response.GetProductsByCategoryResponse;
@@ -11,6 +12,7 @@ import com.swapit.product.api.domain.response.GetProductsResponse;
 import com.swapit.product.domain.Product;
 import com.swapit.product.domain.ProductLike;
 import com.swapit.product.mappers.ProductMapper;
+import com.swapit.product.projections.ProductProjection;
 import com.swapit.product.repository.ProductLikeRepository;
 import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.service.GetProductsService;
@@ -24,12 +26,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.swapit.product.util.ProductLikeStatus.ACTIVE;
-import static com.swapit.product.util.ProductSortCriteria.*;
-
 
 @Service
 @RequiredArgsConstructor
@@ -43,23 +43,14 @@ public class GetProductsServiceImpl implements GetProductsService {
     @Override
     public GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
         if (sortCriteria == null) {
-            sortCriteria = NEWEST.name();
+            sortCriteria = ProductSortCriteria.NEWEST.name();
         }
         Pageable pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(getProductSortingCriteria(sortCriteria)).descending());
-        Page<Product> data = productRepository.findAllByUserId(userId, pageable);
-        List<Product> products = data.getContent();
-        List<ProductDTO> productDTOS = products.stream()
-                .map(ProductMapper::productToProductDto)
-                .toList();
-        return GetProductsResponse.builder()
-                .products(productDTOS)
-                .currentPage(data.getNumber())
-                .totalPages(data.getTotalPages())
-                .totalItems(data.getNumberOfElements())
-                .itemsPerPage(data.getSize())
-                .hasNextPage(data.hasNext())
-                .hasPreviousPage(data.hasPrevious())
-                .build();
+        Page<ProductProjection> data = productRepository.findAllByUserId(userId, pageable);
+        List<ProductDTO> productDTOS = data.getContent().stream()
+                .map(this::convertToProductDTO)
+                .collect(Collectors.toList());
+        return createGetProductsResponse(data, productDTOS);
     }
 
     @Override
@@ -69,33 +60,24 @@ public class GetProductsServiceImpl implements GetProductsService {
         }
         Pageable pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(getProductLikeSortingCriteria(sortCriteria)).descending());
         Page<ProductLike> data = productLikeRepository.findAllByUserIdAndStatus(userId, ACTIVE.name(), pageable);
-        List<ProductLike> productsLiked = data.getContent();
-        List<Integer> productsLikedByUserIds = productsLiked.stream()
+        List<Integer> productsLikedByUserIds = data.getContent().stream()
                 .map(ProductLike::getProductId)
-                .toList();
-        List<Product> products = productsLikedByUserIds.stream()
-                        .map(id -> productRepository.findById(id).orElse(null)).toList();
+                .collect(Collectors.toList());
+        List<Product> products = productRepository.findAllByProductIdIn(productsLikedByUserIds)
+                .orElse(List.of());
         List<ProductDTO> productDTOS = products.stream()
                 .map(ProductMapper::productToProductDto)
-                .toList();
-        return GetProductsResponse.builder()
-                .products(productDTOS)
-                .currentPage(data.getNumber())
-                .totalPages(data.getTotalPages())
-                .totalItems(data.getNumberOfElements())
-                .itemsPerPage(data.getSize())
-                .hasNextPage(data.hasNext())
-                .hasPreviousPage(data.hasPrevious())
-                .build();
+                .collect(Collectors.toList());
+        return createGetProductsResponse(data, productDTOS);
     }
 
     @Override
     public GetProductsByIdsResponse getProductsByIds(GetProductsByIdsRequest request) {
         List<Product> products = productRepository.findAllByProductIdIn(request.getProductIds())
-                .orElse(new ArrayList<>());
+                .orElse(List.of());
         List<ProductDTO> productDTOS = products.stream()
                 .map(ProductMapper::productToProductDto)
-                .toList();
+                .collect(Collectors.toList());
         return GetProductsByIdsResponse.builder()
                 .products(productDTOS)
                 .build();
@@ -111,57 +93,76 @@ public class GetProductsServiceImpl implements GetProductsService {
     @Override
     public GetProductsByCategoryResponse getProductsByCategory(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria, GetProductsByCategoryRequest request) {
         if (sortCriteria == null) {
-            sortCriteria = POPULARITY.name();
+            sortCriteria = ProductSortCriteria.POPULARITY.name();
         }
         Pageable pageable;
-        Page<Product> data;
-        if (sortCriteria.equalsIgnoreCase(RANDOM.name())) {
+        Page<ProductProjection> data;
+        if (sortCriteria.equalsIgnoreCase(ProductSortCriteria.RANDOM.name())) {
             pageable = PageRequest.of(chunkNumber, nrElementsPerChunk);
             data = productRepository.findAllRandomByCategoryIdIn(request.getCategoriesIds(), pageable);
-        }
-        else {
+        } else {
             pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(getProductSortingCriteria(sortCriteria)).descending());
             data = productRepository.findAllByCategoryIdIn(request.getCategoriesIds(), pageable);
         }
-        List<Product> products = data.getContent();
-        List<ProductDTO> productDTOS = products.stream()
-                .map(ProductMapper::productToProductDto)
-                .toList();
-        return GetProductsByCategoryResponse.builder()
+        List<ProductDTO> productDTOS = data.getContent().stream()
+                .map(this::convertToProductDTO)
+                .collect(Collectors.toList());
+        return createGetProductsByCategoryResponse(data, productDTOS);
+    }
+
+    @Override
+    public GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
+        if (sortCriteria == null) {
+            sortCriteria = ProductSortCriteria.POPULARITY.name();
+        }
+        Pageable pageable;
+        Page<ProductProjection> data;
+        if (sortCriteria.equalsIgnoreCase(ProductSortCriteria.RANDOM.name())) {
+            pageable = PageRequest.of(chunkNumber, nrElementsPerChunk);
+            data = productRepository.findAllRandom(pageable);
+        } else {
+            pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(getProductSortingCriteria(sortCriteria)).descending());
+            data = productRepository.findAllProd(pageable);
+        }
+        List<ProductDTO> productDTOS = data.getContent().stream()
+                .map(this::convertToProductDTO)
+                .collect(Collectors.toList());
+        return createGetProductsResponse(data, productDTOS);
+    }
+
+    private ProductDTO convertToProductDTO(ProductProjection projection) {
+        List<ProductImageDTO> images = projection.getProductImages().stream()
+                .map(imageProjection -> ProductImageDTO.builder()
+                        .imageUrl(imageProjection.getImageUrl())
+                        .build())
+                .collect(Collectors.toList());
+        return ProductDTO.builder()
+                .productId(projection.getProductId())
+                .title(projection.getTitle())
+                .price(projection.getPrice())
+                .popularity(projection.getPopularity())
+                .productImages(images)
+                .build();
+    }
+
+    private GetProductsResponse createGetProductsResponse(Page<?> data, List<ProductDTO> productDTOS) {
+        return GetProductsResponse.builder()
                 .products(productDTOS)
                 .currentPage(data.getNumber())
                 .totalPages(data.getTotalPages())
-                .totalItems(data.getNumberOfElements())
+                .totalItems((int) data.getTotalElements())
                 .itemsPerPage(data.getSize())
                 .hasNextPage(data.hasNext())
                 .hasPreviousPage(data.hasPrevious())
                 .build();
     }
 
-    @Override
-    public GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
-        if (sortCriteria == null) {
-            sortCriteria = POPULARITY.name();
-        }
-        Pageable pageable;
-        Page<Product> data;
-        if (sortCriteria.equalsIgnoreCase(RANDOM.name())) {
-            pageable = PageRequest.of(chunkNumber, nrElementsPerChunk);
-            data = productRepository.findAllRandom(pageable);
-        }
-        else {
-            pageable = PageRequest.of(chunkNumber, nrElementsPerChunk, Sort.by(getProductSortingCriteria(sortCriteria)).descending());
-            data = productRepository.findAll(pageable);
-        }
-        List<Product> products = data.getContent();
-        List<ProductDTO> productDTOS = products.stream()
-                .map(ProductMapper::productToProductDto)
-                .toList();
-        return GetProductsResponse.builder()
+    private GetProductsByCategoryResponse createGetProductsByCategoryResponse(Page<?> data, List<ProductDTO> productDTOS) {
+        return GetProductsByCategoryResponse.builder()
                 .products(productDTOS)
                 .currentPage(data.getNumber())
                 .totalPages(data.getTotalPages())
-                .totalItems(data.getNumberOfElements())
+                .totalItems((int) data.getTotalElements())
                 .itemsPerPage(data.getSize())
                 .hasNextPage(data.hasNext())
                 .hasPreviousPage(data.hasPrevious())
@@ -183,5 +184,4 @@ public class GetProductsServiceImpl implements GetProductsService {
             case NEWEST -> "lastUpdateAction";
         };
     }
-
 }

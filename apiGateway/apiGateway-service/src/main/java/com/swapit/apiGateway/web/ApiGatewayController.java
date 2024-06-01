@@ -20,7 +20,6 @@ import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeRespon
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
-import com.swapit.user.api.util.UserBasicDetailType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
