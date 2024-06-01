@@ -13,30 +13,21 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity, " +
-            "pi as productImages " +
-            "FROM Product p LEFT JOIN p.productImages pi WHERE p.categoryId IN :categoriesIds ORDER BY RANDOM()")
+    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity FROM Product p WHERE p.categoryId IN :categoriesIds ORDER BY RANDOM()")
     Page<ProductProjection> findAllRandomByCategoryIdIn(List<Integer> categoriesIds, Pageable pageable);
 
-    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity, " +
-            "pi as productImages " +
-            "FROM Product p LEFT JOIN p.productImages pi ORDER BY RANDOM()")
+    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity FROM Product p ORDER BY RANDOM()")
     @NotNull Page<ProductProjection> findAllRandom(Pageable pageable);
 
-    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity, " +
-            "pi as productImages " +
-            "FROM Product p LEFT JOIN p.productImages pi WHERE p.userId = :userId")
+    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity FROM Product p WHERE p.userId = :userId")
     Page<ProductProjection> findAllByUserId(Integer userId, Pageable pageable);
 
-    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity, " +
-            "pi as productImages " +
-            "FROM Product p LEFT JOIN p.productImages pi WHERE p.categoryId IN :categoriesIds")
+    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity FROM Product p WHERE p.categoryId IN :categoriesIds")
     Page<ProductProjection> findAllByCategoryIdIn(List<Integer> categoriesIds, Pageable pageable);
 
     Optional<List<Product>> findAllByProductIdIn(List<Integer> productIds);
 
-    @Query("SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity, " +
-            "pi as productImages " +
-            "FROM Product p LEFT JOIN p.productImages pi")
+    @Query(value = "SELECT p.productId as productId, p.title as title, p.price as price, p.popularity as popularity FROM Product p")
     @NotNull Page<ProductProjection> findAllProd(@NotNull Pageable pageable);
+
 }

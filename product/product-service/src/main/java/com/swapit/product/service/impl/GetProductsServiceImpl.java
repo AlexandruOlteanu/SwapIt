@@ -13,6 +13,7 @@ import com.swapit.product.domain.Product;
 import com.swapit.product.domain.ProductLike;
 import com.swapit.product.mappers.ProductMapper;
 import com.swapit.product.projections.ProductProjection;
+import com.swapit.product.repository.ProductImageRepository;
 import com.swapit.product.repository.ProductLikeRepository;
 import com.swapit.product.repository.ProductRepository;
 import com.swapit.product.service.GetProductsService;
@@ -26,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +41,7 @@ public class GetProductsServiceImpl implements GetProductsService {
     private final ProductRepository productRepository;
     private final ProductLikeRepository productLikeRepository;
     private final ExceptionFactory exceptionFactory;
+    private final ProductImageRepository productImageRepository;
 
     @Override
     public GetProductsResponse getProductsByUser(Integer userId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria) {
@@ -131,11 +134,11 @@ public class GetProductsServiceImpl implements GetProductsService {
     }
 
     private ProductDTO convertToProductDTO(ProductProjection projection) {
-        List<ProductImageDTO> images = projection.getProductImages().stream()
-                .map(imageProjection -> ProductImageDTO.builder()
-                        .imageUrl(imageProjection.getImageUrl())
-                        .build())
-                .collect(Collectors.toList());
+        List<ProductImageDTO> images = productImageRepository.findImagesByProductId(projection.getProductId())
+                .orElse(new ArrayList<>()).stream()
+                .map(productImage -> ProductImageDTO.builder()
+                        .imageUrl(productImage.getImageUrl())
+                        .build()).toList();
         return ProductDTO.builder()
                 .productId(projection.getProductId())
                 .title(projection.getTitle())
