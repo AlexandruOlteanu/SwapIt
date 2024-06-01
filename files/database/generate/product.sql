@@ -19,3 +19,21 @@ create table product
 alter table product
     owner to postgres;
 
+create index idx_product_user_id
+    on product (user_id);
+
+create index idx_product_creation_date
+    on product (created_at);
+
+create index idx_product_title
+    on product (title);
+
+create index idx_product_price
+    on product (price);
+
+create index idx_product_category_id
+    on product (category_id);
+
+create index idx_product_popularity
+    on product (popularity);
+
