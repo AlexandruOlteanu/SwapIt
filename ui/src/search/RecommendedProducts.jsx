@@ -127,6 +127,7 @@ const RecommendedProducts = () => {
                 nrElementsPerChunk: itemsPerPage,
             });
             const loggedIn = Common.isLoggedIn();
+            setTotalPages(response.totalPages);
             if (!loggedIn) {
                 setProducts(response.products.map(product => ({
                     ...product,
@@ -149,7 +150,6 @@ const RecommendedProducts = () => {
             }));
 
             setProducts(productsWithFavorites);
-            setTotalPages(response.totalPages);
         } catch (error) {
             console.log('Error fetching recommended products!');
             window.location.href = "/error";

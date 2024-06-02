@@ -145,6 +145,7 @@ const CategorySearch = () => {
             });
             setIsProductListEmpty(response.searchProducts.length === 0);
             const loggedIn = Common.isLoggedIn();
+            setTotalPages(response.totalPages);
             if (!loggedIn) {
                 setProducts(response.searchProducts.map(product => ({
                     ...product,
@@ -167,7 +168,6 @@ const CategorySearch = () => {
             }));
 
             setProducts(productsWithFavorites);
-            setTotalPages(response.totalPages);
         } catch (error) {
             console.log('Error fetching category products!');
             // window.location.href = "/error";

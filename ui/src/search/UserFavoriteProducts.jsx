@@ -134,6 +134,7 @@ const UserFavoriteProducts = ({ userId, columnItems, totalItems }) => {
                 });
                 setIsProductListEmpty(response.products.length === 0);
                 const loggedIn = Common.isLoggedIn();
+                setTotalPages(response.totalPages);
                 if (!loggedIn) {
                     setProducts(response.products.map(product => ({
                         ...product,
@@ -156,7 +157,6 @@ const UserFavoriteProducts = ({ userId, columnItems, totalItems }) => {
                 }));
 
                 setProducts(productsWithFavorites);
-                setTotalPages(response.totalPages);
             } catch (error) {
                 console.log('Error fetching recommended products!');
             }
