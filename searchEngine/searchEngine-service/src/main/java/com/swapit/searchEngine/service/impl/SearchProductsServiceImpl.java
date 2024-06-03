@@ -1,6 +1,5 @@
 package com.swapit.searchEngine.service.impl;
 
-import com.swapit.commons.utils.Pair;
 import com.swapit.product.api.domain.dto.ProductDTO;
 import com.swapit.product.api.domain.request.GetProductsByCategoryRequest;
 import com.swapit.product.api.domain.request.GetProductsByIdsRequest;
@@ -15,6 +14,7 @@ import com.swapit.searchEngine.service.ExternalOperationsService;
 import com.swapit.searchEngine.service.ProductCategorizeService;
 import com.swapit.searchEngine.service.SearchDictionaryService;
 import com.swapit.searchEngine.service.SearchProductsService;
+import com.swapit.searchEngine.util.SearchPagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.swapit.searchEngine.util.SearchSortCriteria.*;
 
@@ -39,46 +38,24 @@ public class SearchProductsServiceImpl implements SearchProductsService {
         if (sortCriteria == null) {
             sortCriteria = BEST_MATCH.name();
         }
-        List<Pair<Integer, Integer>> productsScore = searchDictionaryService.searchMatchingProductsScore(request.getQuery());
-        List<Integer> productIds = productsScore.stream()
-                .map(Pair::getFirst)
-                .toList();
+        SearchPagination productsData = searchDictionaryService.searchMatchingProducts(request.getQuery(), chunkNumber, nrElementsPerChunk, sortCriteria);
         GetProductsByIdsResponse response = Objects.requireNonNull(externalOperationsService.getProductsByIds(GetProductsByIdsRequest.builder()
-                .productIds(productIds)
+                .productIds(productsData.getProductIds())
                 .build()));
         Map<Integer, ProductDTO> mappedProducts = response.getProducts().stream()
                 .collect(Collectors.toMap(ProductDTO::getProductId, Function.identity()));
-        List<ProductDTO> orderedProducts = productIds.stream()
+        List<ProductDTO> orderedProducts = productsData.getProductIds().stream()
                 .map(mappedProducts::get)
                 .toList();
 
         List<SearchProductDTO> searchProductDTOS = new ArrayList<>(orderedProducts.stream()
                 .map(SearchProductMapper::prodDtoToSearchProdDto).toList());
-        if (sortCriteria.equalsIgnoreCase(NEWEST.name())) {
-            searchProductDTOS.sort(Comparator.comparing(SearchProductDTO::getCreationDate).reversed());
-        }
-        if (sortCriteria.equalsIgnoreCase(POPULARITY.name())) {
-            searchProductDTOS.sort(Comparator.comparing(SearchProductDTO::getPopularity).reversed());
-        }
-        if (sortCriteria.equalsIgnoreCase(RANDOM.name())) {
-            Collections.shuffle(searchProductDTOS);
-        }
-        int startIdx = chunkNumber * nrElementsPerChunk;
-        int endIdx = startIdx + nrElementsPerChunk;
-        int listSize = searchProductDTOS.size();
-        if (endIdx > listSize) endIdx = listSize;
-        List<SearchProductDTO> finalSearchResults = IntStream.range(startIdx, endIdx)
-                .mapToObj(searchProductDTOS::get)
-                .toList();
-        int totalPages = Math.ceilDiv(searchProductDTOS.size(), nrElementsPerChunk);
+
         return SearchProductsResponse.builder()
-                .searchProducts(finalSearchResults)
+                .searchProducts(searchProductDTOS)
                 .currentPage(chunkNumber)
-                .totalPages(totalPages)
-                .totalItems(searchProductDTOS.size())
+                .totalPages(productsData.getTotalNumberOfPages())
                 .itemsPerPage(nrElementsPerChunk)
-                .hasNextPage(chunkNumber != totalPages - 1)
-                .hasPreviousPage(chunkNumber != 0)
                 .build();
     }
 

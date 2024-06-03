@@ -183,7 +183,7 @@ const SearchProducts = () => {
 
     const toggleFavorite = async (productId, isFavorite) => {
         try {
-            await ApiBackendService.changeProductLikeStatus({}, { productId });
+            await ApiBackendService.changeProductLikeStatus({ productId }, {});
             setProducts(products.map(product =>
                 product.productId === productId ? {
                     ...product,

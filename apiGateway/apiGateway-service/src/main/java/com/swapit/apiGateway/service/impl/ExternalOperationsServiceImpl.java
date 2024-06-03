@@ -411,13 +411,15 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
+    public void changeProductLikeStatus(Integer userId, Integer productId) {
         String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.CHANGE_PRODUCT_LIKE_STATUS);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUri(URI.create(url))
-                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId));
+                .queryParamIfPresent(USER_ID_PARAM, Optional.ofNullable(userId))
+                .queryParamIfPresent(PRODUCT_ID_PARAM, Optional.ofNullable(productId));
         log.info(uriBuilder.toUriString());
         try {
-            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Void.class);
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, null, Void.class);
+            updateProductInSearchDictionary(productId);
         } catch (Exception e) {
             log.error("Exception in changing product like status {}", e.getMessage(), e);
             throw e;

@@ -3,7 +3,6 @@ package com.swapit.product.service.impl;
 import com.swapit.commons.exception.ExceptionFactory;
 import com.swapit.commons.exception.ExceptionType;
 import com.swapit.product.api.domain.dto.ProductLikeStatusDTO;
-import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
@@ -134,15 +133,15 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
 
     @Override
     @Transactional
-    public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
-        Product product = productRepository.findById(request.getProductId())
+    public void changeProductLikeStatus(Integer userId, Integer productId) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
-        ProductLike productLike = productLikeRepository.findProductLikeByUserIdAndProductId(userId, request.getProductId())
+        ProductLike productLike = productLikeRepository.findProductLikeByUserIdAndProductId(userId, productId)
                 .orElse(null);
         if (productLike == null) {
             ProductLike newProductLike = ProductLike.builder()
                     .userId(userId)
-                    .productId(request.getProductId())
+                    .productId(productId)
                     .status(ACTIVE.name())
                     .build();
             product.setPopularity(product.getPopularity() + 1);

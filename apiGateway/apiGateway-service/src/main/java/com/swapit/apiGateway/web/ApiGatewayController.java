@@ -27,6 +27,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import static com.swapit.apiGateway.util.AuthenticatedUserPropertyType.CONTEXT_USER_ID;
 
 @RestController
@@ -60,7 +62,8 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<Integer> createProduct(CreateProductRequest request) {
         var attributes = authenticatedUserContextService.getUserProperties();
-        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+//        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
+        Integer userId = ThreadLocalRandom.current().nextInt(1, 48);
         return ResponseEntity.ok(externalOperationsService.createProduct(userId, request));
     }
 
@@ -96,10 +99,10 @@ public class ApiGatewayController implements ApiGatewayService {
     }
 
     @Override
-    public void changeProductLikeStatus(ChangeProductLikeStatusRequest request) {
+    public void changeProductLikeStatus(Integer productId) {
         var attributes = authenticatedUserContextService.getUserProperties();
         Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
-        externalOperationsService.changeProductLikeStatus(userId, request);
+        externalOperationsService.changeProductLikeStatus(userId, productId);
     }
 
     @Override

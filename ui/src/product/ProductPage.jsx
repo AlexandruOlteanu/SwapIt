@@ -163,7 +163,7 @@ const ProductPage = () => {
 
     const handleFavouriteClick = async () => {
         try {
-            await ApiBackendService.changeProductLikeStatus({}, { productId });
+            await ApiBackendService.changeProductLikeStatus({ productId }, {});
             setIsFavourite(!isFavourite);
         } catch (error) {
             console.error('Error updating favourite status:', error);

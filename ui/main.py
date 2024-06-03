@@ -3,15 +3,15 @@ import subprocess
 import random
 
 # JWT Token
-jwt_token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3JvbGUiOiJBRE1JTklTVFJBVE9SIiwidXNlcl9pZCI6MSwiaWF0IjoxNzE3MTc5NDUyLCJleHAiOjE3MTcyNjU4NTJ9.EDfctEroZfmaws7ODwuAGWgRkDIwyH-iYwhS3K3gTPs"
+jwt_token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX3JvbGUiOiJBRE1JTklTVFJBVE9SIiwidXNlcl9pZCI6MSwiaWF0IjoxNzE3NDA2OTU3LCJleHAiOjE3MTc0OTMzNTd9.0zVJxSPCp8JAqZaPIxggsuAa-gWNLztPBvG9a-0zH7E"
 
 # URL
 url = "http://localhost:8001/api/v1/swapIt/apiGateway/createProduct"
 
 # Constants
-start_category_id = 81
+start_category_id = 82
 end_category_id = 430
-number_of_products_per_category = 300
+number_of_products = 100000
 
 # Sample data
 titles = [
@@ -243,10 +243,11 @@ def get_random_product(category_id, product_number, nr):
 
 # Generate products
 products = []
-for category_id in range(start_category_id, end_category_id + 1):
-    for i in range(1, number_of_products_per_category + 1):
-        nr = random.randint(0, 99)
-        products.append(get_random_product(category_id, i, nr))
+
+for i in range(1, number_of_products + 1):
+    nr = random.randint(0, 99)
+    category_id = random.randint(82, 430)
+    products.append(get_random_product(category_id, i, nr))
 
 def send_request(product):
     curl_command = [

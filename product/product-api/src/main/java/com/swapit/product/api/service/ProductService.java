@@ -45,8 +45,8 @@ public interface ProductService {
     @DeleteMapping(value = BASE_URL + DELETE_PRODUCT_ADMIN)
     void deleteProductAdmin(@RequestParam(value = "productId") Integer productId);
 
-    @PutMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void changeProductLikeStatus(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody ChangeProductLikeStatusRequest request);
+    @PutMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS)
+    void changeProductLikeStatus(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "productId") Integer productId);
 
     @PostMapping(value = BASE_URL + GET_PRODUCTS_LIKE_STATUS)
     ResponseEntity<GetProductsLikeStatusResponse> getProductsLikeStatus(@RequestParam(value = "userId") Integer userId, @Valid @RequestBody GetProductsLikeStatusRequest request);

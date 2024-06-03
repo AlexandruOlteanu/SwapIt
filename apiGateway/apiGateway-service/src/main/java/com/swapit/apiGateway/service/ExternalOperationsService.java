@@ -41,7 +41,7 @@ public interface ExternalOperationsService {
     ProductDTO getProductById(Integer productId);
     GetCategoryTreeResponse getCategoryTree(Integer categoryId);
     SearchProductsResponse searchProductsByCategory(Integer categoryId, Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
-    void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request);
+    void changeProductLikeStatus(Integer userId, Integer productId);
     GetProductsLikeStatusResponse getProductsLikeStatus(Integer userId, GetProductsLikeStatusRequest request);
     GetProductsResponse getRecommendedProducts(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
     void manualSecurityCodesExpire();

@@ -43,8 +43,8 @@ public class ProductController implements ProductService {
     }
 
     @Override
-    public void changeProductLikeStatus(Integer userId, ChangeProductLikeStatusRequest request) {
-        productOperationsService.changeProductLikeStatus(userId, request);
+    public void changeProductLikeStatus(Integer userId, Integer productId) {
+        productOperationsService.changeProductLikeStatus(userId, productId);
     }
 
     @Override

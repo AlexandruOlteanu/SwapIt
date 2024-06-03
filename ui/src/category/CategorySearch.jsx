@@ -185,7 +185,7 @@ const CategorySearch = () => {
 
     const toggleFavorite = async (productId, isFavorite, popularity) => {
         try {
-            await ApiBackendService.changeProductLikeStatus({}, { productId });
+            await ApiBackendService.changeProductLikeStatus({ productId }, {});
             setProducts(products.map(product =>
                 product.productId === productId ? {
                     ...product,

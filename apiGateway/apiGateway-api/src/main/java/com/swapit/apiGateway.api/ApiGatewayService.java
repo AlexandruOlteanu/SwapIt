@@ -192,8 +192,8 @@ public interface ApiGatewayService {
 
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
-    @PutMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void changeProductLikeStatus(@Valid @RequestBody ChangeProductLikeStatusRequest request);
+    @PutMapping(value = BASE_URL + CHANGE_PRODUCT_LIKE_STATUS)
+    void changeProductLikeStatus(@RequestParam(value = "productId") Integer productId);
 
     @Operation(security = { @SecurityRequirement(name = BEARER_AUTH) })
     @PostMapping(value = BASE_URL + GET_PRODUCTS_LIKE_STATUS)

@@ -180,7 +180,6 @@ class ApiService {
     return this.fetchWithAuth(process.env.REACT_APP_CHANGE_PRODUCT_LIKE_STATUS_URI, {
       method: 'PUT',
       credentials: 'include',
-      body: JSON.stringify(data),
       params: params
     }, false);
   }
