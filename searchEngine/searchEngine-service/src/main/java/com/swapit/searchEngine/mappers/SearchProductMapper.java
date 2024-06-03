@@ -14,6 +14,7 @@ public class SearchProductMapper {
                 .description(productDTO.getDescription())
                 .categoryId(productDTO.getCategoryId())
                 .popularity(productDTO.getPopularity())
+                .price(productDTO.getPrice())
                 .productImages(productDTO.getProductImages().stream().map(ProductImageDTO::getImageUrl).toList())
                 .build();
     }

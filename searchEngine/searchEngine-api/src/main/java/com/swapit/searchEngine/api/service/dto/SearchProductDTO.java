@@ -18,5 +18,6 @@ public class SearchProductDTO {
     private String description;
     private Integer categoryId;
     private Integer popularity;
+    private Double price;
     private List<String> productImages;
 }
