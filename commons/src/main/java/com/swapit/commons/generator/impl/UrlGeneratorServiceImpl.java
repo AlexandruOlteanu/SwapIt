@@ -20,7 +20,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
         GET_PRODUCTS_BY_USER, GET_LIKED_PRODUCTS_BY_USER, GET_RECOMMENDED_PRODUCTS, MANUAL_SECURITY_CODES_EXPIRE,
         DELETE_PRODUCT, DELETE_PRODUCT_FROM_SEARCH_DICTIONARY, BAN_USER, REMOVE_USER_BAN, MANUAL_REMOVE_USERS_BAN,
         GET_USER_DETAILS_BY_USERNAME, FORGOTTEN_PASSWORD_RESET, PASSWORD_RESET, USERNAME_RESET, EMAIL_RESET, DELETE_PRODUCT_ADMIN,
-        GET_USER_ACCOUNT_STATUS, POST_USER_ACTION, GET_USER_ACTIONS
+        GET_USER_ACCOUNT_STATUS, AUDIT_USER_ACTION, GET_USER_ACTIONS
     }
 
     // USER URI
@@ -46,8 +46,8 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
     private String getSpecificUsersDetailsUri;
     @Value("${user.forgottenPasswordReset.route}")
     private String forgottenPasswordResetUri;
-    @Value("${user.postUserAction.route}")
-    private String postUserActionUri;
+    @Value("${user.auditUserAction.route}")
+    private String auditUserActionUri;
     @Value("${user.getUserActions.route}")
     private String getUserActionsUri;
     @Value("${user.passwordReset.route}")
@@ -152,7 +152,7 @@ public class UrlGeneratorServiceImpl implements UrlGeneratorService {
             case EMAIL_RESET -> emailResetUri;
             case DELETE_PRODUCT_ADMIN -> deleteProductAdminUri;
             case GET_USER_ACCOUNT_STATUS -> getUserAccountStatusUri;
-            case POST_USER_ACTION -> postUserActionUri;
+            case AUDIT_USER_ACTION -> auditUserActionUri;
             case GET_USER_ACTIONS -> getUserActionsUri;
         };
     }

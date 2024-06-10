@@ -2,7 +2,8 @@ package com.swapit.user.service.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.swapit.user.api.domain.request.PostUserActionRequest;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.swapit.user.api.domain.request.AuditUserActionRequest;
 import com.swapit.user.api.domain.response.GetUserActionsResponse;
 import com.swapit.user.api.dto.ActionLogDTO;
 import com.swapit.user.api.util.ActionType;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class UserActionServiceImpl implements UserActionService {
     private final String PRODUCT_TITLE = "productTitle";
 
     @Override
-    public void postUserAction(PostUserActionRequest request) {
+    public void auditUserAction(AuditUserActionRequest request) {
         Map<String, Object> actionDetailsMap = new HashMap<>();
         if (request.getActionType().equals(ActionType.USER_ADD_PRODUCT)) {
             actionDetailsMap.put(PRODUCT_ID, request.getAddProductAction().getProductId());
@@ -91,6 +93,19 @@ public class UserActionServiceImpl implements UserActionService {
                     .actionDetails(actionDetailsNode)
                     .build();
             actionLogRepository.save(actionLog);
+        }
+
+        if (request.getActionType().equals(ActionType.UPDATE_USER_ADD_PRODUCT)) {
+
+            List<ActionLog> actionLogs = actionLogRepository.findActionLogByUserIdAndActionType(request.getUserId(), ActionType.USER_ADD_PRODUCT)
+                    .orElse(new ArrayList<>());
+            ActionLog actionLog = actionLogs.stream()
+                    .filter(actionLog1 -> request.getUpdateAddProductAction().getProductId().equals(actionLog1.getActionDetails().get(PRODUCT_ID).asInt()))
+                    .findFirst().orElse(null);
+            if (actionLog != null) {
+                ((ObjectNode) actionLog.getActionDetails()).put(PRODUCT_TITLE, request.getUpdateAddProductAction().getProductTitle());
+                actionLogRepository.save(actionLog);
+            }
         }
 
     }

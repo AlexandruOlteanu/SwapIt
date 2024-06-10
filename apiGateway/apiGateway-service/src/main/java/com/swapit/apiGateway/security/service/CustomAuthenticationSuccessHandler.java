@@ -1,8 +1,8 @@
 package com.swapit.apiGateway.security.service;
 
 import com.swapit.apiGateway.service.ExternalOperationsService;
+import com.swapit.user.api.domain.request.AuditUserActionRequest;
 import com.swapit.user.api.domain.request.Oauth2Request;
-import com.swapit.user.api.domain.request.PostUserActionRequest;
 import com.swapit.user.api.domain.response.Oauth2Response;
 import com.swapit.user.api.util.ActionType;
 import com.swapit.user.api.util.UserStatus;
@@ -51,7 +51,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                 .build();
         Oauth2Response loginResponse = externalOperationsService.oauth2login(oauth2Request);
         if (loginResponse.getRegisteredNow().equals(Boolean.TRUE)) {
-            externalOperationsService.postUserAction(PostUserActionRequest.builder()
+            externalOperationsService.auditUserAction(AuditUserActionRequest.builder()
                     .actionType(ActionType.USER_REGISTER)
                     .userId(loginResponse.getUserId())
                     .build());

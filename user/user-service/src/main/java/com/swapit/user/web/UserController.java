@@ -38,8 +38,8 @@ public class UserController implements UserService {
     }
 
     @Override
-    public void postUserAction(PostUserActionRequest request) {
-        userActionService.postUserAction(request);
+    public void auditUserAction(AuditUserActionRequest request) {
+        userActionService.auditUserAction(request);
     }
 
     @Override

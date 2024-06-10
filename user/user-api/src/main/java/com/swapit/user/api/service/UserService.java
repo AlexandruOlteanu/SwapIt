@@ -19,7 +19,7 @@ public interface UserService {
     String OAUTH2_LOGIN = "auth/oauth2login";
     String REGISTER = "auth/register";
     String FORGOTTEN_PASSWORD_RESET = "auth/forgottenPasswordReset";
-    String POST_USER_ACTION = "postUserAction";
+    String AUDIT_USER_ACTION = "auditUserAction";
     String GET_USER_ACTIONS = "getUserActions";
     String PASSWORD_RESET = "passwordReset";
     String USERNAME_RESET = "usernameReset";
@@ -43,8 +43,8 @@ public interface UserService {
     @PutMapping(value = BASE_URL + REGISTER, consumes = MEDIA_TYPE_APPLICATION_JSON, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request);
 
-    @PostMapping(value = BASE_URL + POST_USER_ACTION, consumes = MEDIA_TYPE_APPLICATION_JSON)
-    void postUserAction(@Valid @RequestBody PostUserActionRequest request);
+    @PostMapping(value = BASE_URL + AUDIT_USER_ACTION, consumes = MEDIA_TYPE_APPLICATION_JSON)
+    void auditUserAction(@Valid @RequestBody AuditUserActionRequest request);
 
     @GetMapping(value = BASE_URL + GET_USER_ACTIONS, produces = MEDIA_TYPE_APPLICATION_JSON)
     ResponseEntity<GetUserActionsResponse> getUserActions(@RequestParam(value = "chunkNumber", defaultValue = "0") Integer chunkNumber,

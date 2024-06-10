@@ -7,7 +7,6 @@ import com.swapit.chat.api.domain.response.ConversationsPreviewResponse;
 import com.swapit.commons.generator.UrlGeneratorService;
 import com.swapit.commons.generator.impl.UrlGeneratorServiceImpl;
 import com.swapit.product.api.domain.dto.ProductDTO;
-import com.swapit.product.api.domain.request.ChangeProductLikeStatusRequest;
 import com.swapit.product.api.domain.request.CreateProductRequest;
 import com.swapit.product.api.domain.request.GetProductsLikeStatusRequest;
 import com.swapit.product.api.domain.request.UpdateProductRequest;
@@ -20,10 +19,7 @@ import com.swapit.searchEngine.api.service.domain.response.GetCategoryTreeRespon
 import com.swapit.searchEngine.api.service.domain.response.SearchProductsResponse;
 import com.swapit.user.api.domain.request.*;
 import com.swapit.user.api.domain.response.*;
-import com.swapit.user.api.dto.userActions.AddProductActionDTO;
-import com.swapit.user.api.dto.userActions.AdminBanUserActionDTO;
-import com.swapit.user.api.dto.userActions.AdminDeleteProductDTO;
-import com.swapit.user.api.dto.userActions.AdminRemoveUserBanDTO;
+import com.swapit.user.api.dto.userActions.*;
 import com.swapit.user.api.util.ActionType;
 import com.swapit.user.api.util.RegisterProcessPhase;
 import com.swapit.user.api.util.UserBasicDetailType;
@@ -96,7 +92,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             RegisterResponse registerResponse = restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<>(request), RegisterResponse.class).getBody();
             assert registerResponse != null;
             if (request.getProcessPhase().equals(RegisterProcessPhase.FINALIZE)) {
-                postUserAction(PostUserActionRequest.builder()
+                auditUserAction(AuditUserActionRequest.builder()
                         .actionType(ActionType.USER_REGISTER)
                         .userId(registerResponse.getUserId())
                         .build());
@@ -119,7 +115,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             Integer productId = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Integer.class).getBody();
             addProductInSearchDictionary(productId);
             ProductDTO productDTO = getProductById(productId);
-            PostUserActionRequest postUserActionRequest = PostUserActionRequest.builder()
+            AuditUserActionRequest auditUserActionRequest = AuditUserActionRequest.builder()
                     .userId(userId)
                     .actionType(ActionType.USER_ADD_PRODUCT)
                     .addProductAction(AddProductActionDTO.builder()
@@ -127,7 +123,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
                             .productTitle(productDTO.getTitle())
                             .build())
                     .build();
-            postUserAction(postUserActionRequest);
+            auditUserAction(auditUserActionRequest);
             return productId;
         } catch (Exception e) {
             log.error("Exception in Product Creation {}", e.getMessage(), e);
@@ -145,6 +141,14 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, new HttpEntity<>(request), Integer.class);
             updateProductInSearchDictionary(request.getProductId());
+            auditUserAction(AuditUserActionRequest.builder()
+                    .userId(userId)
+                    .actionType(ActionType.UPDATE_USER_ADD_PRODUCT)
+                    .updateAddProductAction(UpdateAddProductActionDTO.builder()
+                            .productId(request.getProductId())
+                            .productTitle(request.getTitle())
+                            .build())
+                    .build());
         } catch (Exception e) {
             log.error("Exception in Product Update {}", e.getMessage(), e);
             throw e;
@@ -477,7 +481,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         log.info(uriBuilder.toUriString());
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST, null, Void.class);
-            postUserAction(PostUserActionRequest.builder()
+            auditUserAction(AuditUserActionRequest.builder()
                     .userId(adminUserId)
                     .actionType(ActionType.ADMIN_BAN_USER)
                     .adminBanUserAction(AdminBanUserActionDTO.builder()
@@ -513,7 +517,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
         log.info(uriBuilder.toUriString());
         try {
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
-            postUserAction(PostUserActionRequest.builder()
+            auditUserAction(AuditUserActionRequest.builder()
                     .actionType(ActionType.ADMIN_REMOVE_USER_BAN)
                     .userId(adminUserId)
                     .adminRemoveUserBan(AdminRemoveUserBanDTO.builder()
@@ -602,7 +606,7 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
             ProductDTO productDTO = getProductById(productId);
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.DELETE, null, Void.class);
             deleteProductFromSearchDictionary(productId);
-            postUserAction(PostUserActionRequest.builder()
+            auditUserAction(AuditUserActionRequest.builder()
                     .actionType(ActionType.ADMIN_DELETE_PRODUCT)
                     .userId(adminUserId)
                     .adminDeleteProduct(AdminDeleteProductDTO.builder()
@@ -616,8 +620,8 @@ public class ExternalOperationsServiceImpl implements ExternalOperationsService 
     }
 
     @Override
-    public void postUserAction(PostUserActionRequest request) {
-        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.POST_USER_ACTION);
+    public void auditUserAction(AuditUserActionRequest request) {
+        String url = urlGeneratorService.getServiceURL(UrlGeneratorServiceImpl.UrlIdentifier.AUDIT_USER_ACTION);
         log.info(url);
         try {
             restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(request), Void.class);

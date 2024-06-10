@@ -62,8 +62,7 @@ public class ApiGatewayController implements ApiGatewayService {
     @Override
     public ResponseEntity<Integer> createProduct(CreateProductRequest request) {
         var attributes = authenticatedUserContextService.getUserProperties();
-//        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
-        Integer userId = ThreadLocalRandom.current().nextInt(1, 48);
+        Integer userId = (Integer) attributes.get(CONTEXT_USER_ID.name());
         return ResponseEntity.ok(externalOperationsService.createProduct(userId, request));
     }
 

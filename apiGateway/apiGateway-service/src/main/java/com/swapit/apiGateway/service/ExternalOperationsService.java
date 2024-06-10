@@ -54,6 +54,6 @@ public interface ExternalOperationsService {
     void emailReset(Integer userId, EmailResetRequest request);
     void usernameReset(Integer userId, UsernameResetRequest request);
     void deleteProductAdmin(Integer adminUserId, Integer productId);
-    void postUserAction(PostUserActionRequest request);
+    void auditUserAction(AuditUserActionRequest request);
     GetUserActionsResponse getUserActions(Integer chunkNumber, Integer nrElementsPerChunk, String sortCriteria);
 }

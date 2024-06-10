@@ -57,6 +57,7 @@ const useStyles = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
+        maxWidth: '75%', // Adjust this percentage based on your layout needs
     },
     mediaContainer: {
         display: 'flex',
@@ -315,6 +316,7 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                                         </div>
                                                         <Typography
                                                             variant="body2"
+                                                            className={classes.title}
                                                             style={{ color: 'white', marginTop: '10px', cursor: 'default' }}
                                                         >
                                                             Product Title: {action.actionDetails.productTitle}
@@ -380,14 +382,6 @@ const WebsiteActionsLog = ({ columnItems, totalItems }) => {
                                             )}
 
                                             {action.actionType === 'ADMIN_REMOVE_USER_BAN' && userDetails[action.userId] && userDetails[action.actionDetails.unbannedUserId] && (
-                                                // <CardContent className={classes.cardContent}>
-                                                //     <Typography variant="h6" style={{ color: 'white' }}>
-                                                //         Admin {action.userId} removed ban from user {action.actionDetails.unbannedUserId}
-                                                //     </Typography>
-                                                //     <Typography variant="body2" className={classes.dateText}>
-                                                //         {formatDateTime(action.createdAt)}
-                                                //     </Typography>
-                                                // </CardContent>
                                                 <CardContent className={classes.cardContent}>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
                                                         <Avatar
