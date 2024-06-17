@@ -1,0 +1,364 @@
+<mxfile host="app.diagrams.net" modified="2024-06-17T12:46:57.440Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="Rk85aQZ5gkvVErnrtJs8" version="24.5.4" type="device">
+  <diagram name="Page-1" id="ryo9YyjD0pXjcuP6YvDG">
+    <mxGraphModel dx="1687" dy="925" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-1" target="64CNzasyr7HCSQz4ZmrI-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-1" target="64CNzasyr7HCSQz4ZmrI-10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-1" target="64CNzasyr7HCSQz4ZmrI-13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-1" target="64CNzasyr7HCSQz4ZmrI-17" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-122" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="64CNzasyr7HCSQz4ZmrI-1" target="64CNzasyr7HCSQz4ZmrI-121" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-1" value="Accesare Platformă" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="25" y="20" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-87" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-2" target="64CNzasyr7HCSQz4ZmrI-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="369.92" y="190" />
+              <mxPoint x="489.9200000000001" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-2" value="Vizualizare produse recomandate" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="329.58" y="90" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-3" target="64CNzasyr7HCSQz4ZmrI-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="64CNzasyr7HCSQz4ZmrI-3" target="64CNzasyr7HCSQz4ZmrI-119">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-3" value="Vizualizare produs" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="449.58000000000004" y="235" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-5" value="Vizualizare profil proprietar produs" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="518.74" y="360" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-88" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-10" target="64CNzasyr7HCSQz4ZmrI-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-97" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-10" target="64CNzasyr7HCSQz4ZmrI-19" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="489.9200000000001" y="190" />
+              <mxPoint x="389.9200000000001" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-10" value="Căutare produse" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="449.58000000000004" y="90" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-86" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-13" target="64CNzasyr7HCSQz4ZmrI-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="609.9200000000001" y="190" />
+              <mxPoint x="489.9200000000001" y="190" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-13" value="Filtrare produse după categorie" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="569.58" y="90" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-17" value="Contact echipa de suport prin ChatBot" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="689.58" y="130" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-98" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-19" target="64CNzasyr7HCSQz4ZmrI-3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-19" value="Aplicare criteriu de sortare produse" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="329.58000000000004" y="235" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="520" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="770" y="480" />
+              <mxPoint x="620" y="480" />
+              <mxPoint x="620" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-119" value="Ștergere produs" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="649.58" y="235" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-132" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-121" target="64CNzasyr7HCSQz4ZmrI-131" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-134" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-121" target="64CNzasyr7HCSQz4ZmrI-133" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-148" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-121" target="64CNzasyr7HCSQz4ZmrI-146" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-149" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-121" target="64CNzasyr7HCSQz4ZmrI-147" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-152" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-121" target="64CNzasyr7HCSQz4ZmrI-151" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="65" y="760" />
+              <mxPoint x="225" y="760" />
+              <mxPoint x="225" y="720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="64CNzasyr7HCSQz4ZmrI-121" target="9btRjWUb5lWt7FXnbwyb-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="65" y="340" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="64CNzasyr7HCSQz4ZmrI-121" target="9btRjWUb5lWt7FXnbwyb-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="65" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-121" value="Vizualizare profil utilizator" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="24.99999999999997" y="230" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-131" value="Actualizare informații de bază" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="104.99999999999997" y="570" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-136" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-133" target="64CNzasyr7HCSQz4ZmrI-135" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-133" value="Actualizare username" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="104.99999999999997" y="670" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-135" value="Introducere username nou și parolă" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="224.99999999999997" y="560" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-139" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-137" target="64CNzasyr7HCSQz4ZmrI-135" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="410" y="540" />
+              <mxPoint x="265" y="540" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-140" value="NU" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-139" vertex="1" connectable="0">
+          <mxGeometry x="-0.5784" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-143" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-137" target="64CNzasyr7HCSQz4ZmrI-141" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-144" value="DA" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-143" vertex="1" connectable="0">
+          <mxGeometry x="-0.2476" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-137" value="Username nou și parolă valide?" style="html=1;whiteSpace=wrap;aspect=fixed;shape=isoRectangle;" parent="1" vertex="1">
+          <mxGeometry x="345.42" y="560" width="129.16" height="77.5" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-138" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.035;entryY=0.516;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-135" target="64CNzasyr7HCSQz4ZmrI-137" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-145" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="64CNzasyr7HCSQz4ZmrI-141" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="65" y="570" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="565" y="530" />
+              <mxPoint x="205" y="530" />
+              <mxPoint x="205" y="560" />
+              <mxPoint x="65" y="560" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-141" value="Schimbare cu succes a username-ului" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="525" y="560" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-150" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="64CNzasyr7HCSQz4ZmrI-146" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="225" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-146" value="Resetare parolă" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="104.99999999999997" y="770" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-147" value="Deconectare" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="104.99999999999997" y="870" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-157" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-151" target="64CNzasyr7HCSQz4ZmrI-156" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-151" value="Resetare email" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="369.58" y="680" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-156" value="Introducere email nou și parolă" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="550" y="680" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-159" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-158" target="64CNzasyr7HCSQz4ZmrI-156" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="660" />
+              <mxPoint x="590" y="660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-160" value="NU" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-159" vertex="1" connectable="0">
+          <mxGeometry x="-0.8149" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-162" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-158" target="64CNzasyr7HCSQz4ZmrI-161" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-172" value="DA" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-162" vertex="1" connectable="0">
+          <mxGeometry x="0.222" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-158" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;Parola este corectă &lt;br&gt;și email-ul valid?&lt;/font&gt;" style="html=1;whiteSpace=wrap;aspect=fixed;shape=isoRectangle;" parent="1" vertex="1">
+          <mxGeometry x="665" y="690" width="118.74" height="71.25" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-163" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="64CNzasyr7HCSQz4ZmrI-161" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="729.5799999999997" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-161" value="Introducere cod de securitate trimis pe mail" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="689.58" y="790" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-169" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-164" target="64CNzasyr7HCSQz4ZmrI-167" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-170" value="DA" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-169" vertex="1" connectable="0">
+          <mxGeometry x="-0.2399" relative="1" as="geometry">
+            <mxPoint x="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-164" value="Codul este corect?" style="html=1;whiteSpace=wrap;aspect=fixed;shape=isoRectangle;" parent="1" vertex="1">
+          <mxGeometry x="665" y="900" width="129.16" height="77.5" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-165" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.995;entryY=0.365;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-164" target="64CNzasyr7HCSQz4ZmrI-161" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="815" y="939" />
+              <mxPoint x="815" y="819" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-166" value="NU" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-165" vertex="1" connectable="0">
+          <mxGeometry x="-0.7538" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-171" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="64CNzasyr7HCSQz4ZmrI-167" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="65" y="860" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="225" y="940" />
+              <mxPoint x="225" y="860" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-167" value="Schimbare cu succes a email-ului" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="535" y="900" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-173" value="Introducere parolă veche și cea nouă" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="225" y="770" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-174" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;Parola veche și nouă&lt;br&gt;&amp;nbsp;sunt valide?&lt;/span&gt;" style="html=1;whiteSpace=wrap;aspect=fixed;shape=isoRectangle;" parent="1" vertex="1">
+          <mxGeometry x="348" y="772.5" width="129.16" height="77.5" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-175" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.01;entryY=0.146;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-174" target="64CNzasyr7HCSQz4ZmrI-173" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="413" y="770" />
+              <mxPoint x="327" y="770" />
+              <mxPoint x="327" y="782" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-176" value="NU" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-175" vertex="1" connectable="0">
+          <mxGeometry x="-0.6128" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-177" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.035;entryY=0.495;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-173" target="64CNzasyr7HCSQz4ZmrI-174" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-181" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="64CNzasyr7HCSQz4ZmrI-178" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="65" y="860" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="185" y="860" />
+              <mxPoint x="185" y="860" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-178" value="Schimbare cu succes a parolei" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="545" y="780" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-179" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.021;entryY=0.396;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="64CNzasyr7HCSQz4ZmrI-174" target="64CNzasyr7HCSQz4ZmrI-178" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="64CNzasyr7HCSQz4ZmrI-180" value="DA" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="64CNzasyr7HCSQz4ZmrI-179" vertex="1" connectable="0">
+          <mxGeometry x="-0.4183" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-1" value="Schimbare fotografie de profil" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="124.99999999999997" y="280" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="9btRjWUb5lWt7FXnbwyb-4" target="9btRjWUb5lWt7FXnbwyb-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-4" value="Vizualizare acțiuni realizate pe platformă" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="124.99999999999997" y="400" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-6" value="Filtrare după acțiunile utilizatorilor sau adminilor" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="269.58" y="400" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-9" value="Restrictioneaza utilizator" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="745" y="505" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="9btRjWUb5lWt7FXnbwyb-10" target="9btRjWUb5lWt7FXnbwyb-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-14" value="DA" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9btRjWUb5lWt7FXnbwyb-13">
+          <mxGeometry x="-0.687" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="9btRjWUb5lWt7FXnbwyb-10" target="9btRjWUb5lWt7FXnbwyb-9">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="805" y="400" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-16" value="NU" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9btRjWUb5lWt7FXnbwyb-15">
+          <mxGeometry x="-0.172" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-10" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;Utilizatorul este restricționat?&lt;/font&gt;" style="html=1;whiteSpace=wrap;aspect=fixed;shape=isoRectangle;" vertex="1" parent="1">
+          <mxGeometry x="665" y="364.38" width="118.74" height="71.25" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-11" value="Revocă restricțiile" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="625" y="500" width="90" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="9btRjWUb5lWt7FXnbwyb-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.017;entryY=0.495;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="64CNzasyr7HCSQz4ZmrI-5" target="9btRjWUb5lWt7FXnbwyb-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

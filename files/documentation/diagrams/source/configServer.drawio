@@ -1,0 +1,59 @@
+<mxfile host="app.diagrams.net" modified="2024-06-17T08:23:13.513Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" etag="lHEoyKCDlh5OK3_7KgLJ" version="24.5.4" type="device">
+  <diagram name="Page-1" id="DwGIO6ofohosQTBx9cu-">
+    <mxGraphModel dx="1434" dy="786" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=16;" edge="1" parent="1" source="QYkEhrU3naZFC0B3dCoe-1" target="QYkEhrU3naZFC0B3dCoe-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-12" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="QYkEhrU3naZFC0B3dCoe-3">
+          <mxGeometry x="-0.0545" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QYkEhrU3naZFC0B3dCoe-1" target="QYkEhrU3naZFC0B3dCoe-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-15" value="2" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="QYkEhrU3naZFC0B3dCoe-6">
+          <mxGeometry x="-0.0267" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-1" value="Microserviciu" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="80" y="240" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-2" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;application.properties&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;&lt;pre style=&quot;font-family: &amp;quot;JetBrains Mono&amp;quot;, monospace; font-size: 9.8pt;&quot;&gt;&lt;span style=&quot;color: rgb(8, 48, 128);&quot;&gt;spring.application.name &lt;/span&gt;&lt;font color=&quot;#080808&quot;&gt;= numeMs&lt;/font&gt;&lt;span style=&quot;color: rgb(6, 125, 23);&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(8, 48, 128);&quot;&gt;spring.profiles.active &lt;/span&gt;&lt;font color=&quot;#080808&quot;&gt;= &lt;/font&gt;&lt;font color=&quot;#067d17&quot;&gt;profilMs&lt;/font&gt;&lt;/pre&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="35" y="530" width="250" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QYkEhrU3naZFC0B3dCoe-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-16" value="3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="QYkEhrU3naZFC0B3dCoe-7">
+          <mxGeometry x="-0.0277" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-4" value="Server de configurări" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="390" y="240" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QYkEhrU3naZFC0B3dCoe-8" target="QYkEhrU3naZFC0B3dCoe-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-17" value="4" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="QYkEhrU3naZFC0B3dCoe-11">
+          <mxGeometry x="-0.2333" y="2" relative="1" as="geometry">
+            <mxPoint x="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-8" value="Încarcă &lt;br&gt;application.properties" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="640" y="240" width="160" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="QYkEhrU3naZFC0B3dCoe-10" value="&lt;div&gt;Încarcă&lt;/div&gt;&lt;div&gt;numeMs-profilMs.properties&lt;/div&gt;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="640" y="460" width="160" height="160" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

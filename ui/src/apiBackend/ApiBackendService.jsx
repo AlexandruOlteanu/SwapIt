@@ -1,4 +1,5 @@
 import ErrorCodes from './ErrorCodes';
+import { jwtDecode } from 'jwt-decode';
 
 class ApiService {
   constructor() {
@@ -17,15 +18,23 @@ class ApiService {
   async fetchWithAuth(url, options, expectJson = true) {
     const headers = new Headers(this.defaultHeaders);
     const jwtToken = localStorage.getItem(process.env.REACT_APP_JWT_TOKEN);
-
+  
     if (jwtToken) {
-      headers.append('Authorization', `Bearer ${jwtToken}`);
+      const decodedToken = jwtDecode(jwtToken);
+      const currentTime = Math.floor(Date.now() / 1000);
+  
+      if (decodedToken.exp < currentTime) {
+        localStorage.removeItem(process.env.REACT_APP_JWT_TOKEN);
+        localStorage.setItem('isLoggedIn', 'false');
+      } else {
+        headers.append('Authorization', `Bearer ${jwtToken}`);
+      }
     }
-
+  
     options.headers = headers;
     const queryString = options.params ? `?${this.serializeParams(options.params)}` : '';
     const response = await fetch(`${this.apiBase}${url}${queryString}`, options);
-
+  
     if (!response.ok) {
       const errorCode = response.headers.get(process.env.REACT_APP_ERROR_CODE_HEADER);
       const errorMessage = ErrorCodes[errorCode] || 'An unknown error occurred';
