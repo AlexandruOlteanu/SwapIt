@@ -63,13 +63,7 @@ public class SearchDictionaryServiceImpl implements SearchDictionaryService {
 
     @Override
     public void updateProductInSearchDictionary(Integer productId) throws IOException {
-        IndexWriterConfig config = new IndexWriterConfig(standardAnalyzer);
-        try (IndexWriter indexWriter = new IndexWriter(directory, config)) {
-            String documentId = String.valueOf(productId);
-            Term term = new Term(PRODUCT_ID_KEY, documentId);
-            Query query = new TermQuery(term);
-            indexWriter.deleteDocuments(query);
-        }
+        deleteProductFromSearchDictionary(productId);
         addProductInSearchDictionary(productId);
     }
 
