@@ -120,6 +120,7 @@ const CategorySearch = () => {
     const classes = useStyles();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [authUserId, setAuthUserId] = useState(-1);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
@@ -130,9 +131,23 @@ const CategorySearch = () => {
 
     useEffect(() => {
         fetchProducts(page, filter);
-        setIsLoggedIn(Common.isLoggedIn());
+        const loggedIn = Common.isLoggedIn();
+        setIsLoggedIn(loggedIn);
+        if (loggedIn) {
+            fetchAuthUserDetails();
+        }
         setIsAdmin(Common.isUserAdmin());
     }, [page, filter, categoryName]);
+
+    const fetchAuthUserDetails = async () => {
+        try {
+            const userData = await ApiBackendService.getAuthenticatedUserDetails({})
+            setAuthUserId(userData.userId);
+        } catch (error) {
+            console.log('Error fetching authUserDetails!');
+            window.location.href = "/error";
+        }
+    };
 
     const fetchProducts = async (page, filter) => {
         try {
@@ -269,7 +284,7 @@ const CategorySearch = () => {
                                                         This product has {product.popularity} appreciation
                                                     </Typography>
                                                 )}
-                                                {(isLoggedIn && !isAdmin) && (
+                                                {(isLoggedIn && !isAdmin && authUserId !== product.userId) && (
                                                     <Button size="small" variant="outlined" className={classes.button}
                                                         onClick={() => toggleFavorite(product.productId, product.isFavorite)}
                                                         style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
