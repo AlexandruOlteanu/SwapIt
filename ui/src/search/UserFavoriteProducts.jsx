@@ -98,9 +98,16 @@ const useStyles = makeStyles({
     button: {
         color: 'white',
         borderColor: 'white',
+        width: '100%', // Set button width to 80%
         '&:hover': {
             backgroundColor: '#3C3E5A',
         },
+    },
+    buttonContainer: {
+        marginTop: 'auto',
+        paddingBottom: '2px', // Adjust the padding as needed
+        display: 'flex',
+        justifyContent: 'center', // Center the button horizontally
     },
     noResults: {
         display: 'flex',
@@ -248,13 +255,15 @@ const UserFavoriteProducts = ({ userId, columnItems, totalItems }) => {
                                                 </Typography>
                                             )}
                                             {(isLoggedIn && !isAdmin) && (
-                                                <Button size="small" variant="outlined" className={classes.button}
-                                                    onClick={() => toggleFavorite(product.productId, product.isFavorite)}
-                                                    style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                                                >
-                                                    <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
-                                                    {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
-                                                </Button>
+                                                <div className={classes.buttonContainer}>
+                                                    <Button size="small" variant="outlined" className={classes.button}
+                                                        onClick={() => toggleFavorite(product.productId, product.isFavorite)}
+                                                        style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
+                                                    >
+                                                        <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
+                                                        {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
+                                                    </Button>
+                                                </div>
                                             )}
                                         </CardContent>
                                     </Card>
