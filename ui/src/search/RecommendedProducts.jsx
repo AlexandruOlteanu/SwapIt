@@ -106,6 +106,7 @@ const RecommendedProducts = () => {
     const classes = useStyles();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [authUserId, setAuthUserId] = useState(-1);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
@@ -115,9 +116,23 @@ const RecommendedProducts = () => {
 
     useEffect(() => {
         fetchProducts(page, filter);
-        setIsLoggedIn(Common.isLoggedIn());
+        const loggedIn = Common.isLoggedIn();
+        setIsLoggedIn(loggedIn);
+        if (loggedIn) {
+            fetchAuthUserDetails();
+        }
         setIsAdmin(Common.isUserAdmin());
     }, [page, filter]);
+
+    const fetchAuthUserDetails = async () => {
+        try {
+            const userData = await ApiBackendService.getAuthenticatedUserDetails({})
+            setAuthUserId(userData.userId);
+        } catch (error) {
+            console.log('Error fetching authUserDetails!');
+            window.location.href = "/error";
+        }
+    };
 
     const fetchProducts = async (page, filter) => {
         try {
@@ -179,7 +194,6 @@ const RecommendedProducts = () => {
             console.log('Error updating favorite status!');
         }
     };
-
 
     return (
         <div className={classes.root}>
@@ -245,7 +259,7 @@ const RecommendedProducts = () => {
                                             This product has {product.popularity} appreciation
                                         </Typography>
                                     )}
-                                    {(isLoggedIn && !isAdmin) && (
+                                    {(isLoggedIn && !isAdmin && authUserId !== product.userId) && (
                                         <Button size="small" variant="outlined" className={classes.button}
                                             onClick={() => toggleFavorite(product.productId, product.isFavorite)}
                                             style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
