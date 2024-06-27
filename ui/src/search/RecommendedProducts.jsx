@@ -96,9 +96,16 @@ const useStyles = makeStyles({
     button: {
         color: 'white',
         borderColor: 'white',
+        width: '100%', // Set button width to 80%
         '&:hover': {
             backgroundColor: '#3C3E5A',
         },
+    },
+    buttonContainer: {
+        marginTop: 'auto',
+        paddingBottom: '2px', // Adjust the padding as needed
+        display: 'flex',
+        justifyContent: 'center', // Center the button horizontally
     },
 });
 
@@ -106,6 +113,7 @@ const RecommendedProducts = () => {
     const classes = useStyles();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
+    const [authUserId, setAuthUserId] = useState(-1);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [page, setPage] = useState(1);
@@ -115,9 +123,23 @@ const RecommendedProducts = () => {
 
     useEffect(() => {
         fetchProducts(page, filter);
-        setIsLoggedIn(Common.isLoggedIn());
+        const loggedIn = Common.isLoggedIn();
+        setIsLoggedIn(loggedIn);
+        if (loggedIn) {
+            fetchAuthUserDetails();
+        }
         setIsAdmin(Common.isUserAdmin());
     }, [page, filter]);
+
+    const fetchAuthUserDetails = async () => {
+        try {
+            const userData = await ApiBackendService.getAuthenticatedUserDetails({})
+            setAuthUserId(userData.userId);
+        } catch (error) {
+            console.log('Error fetching authUserDetails!');
+            window.location.href = "/error";
+        }
+    };
 
     const fetchProducts = async (page, filter) => {
         try {
@@ -179,7 +201,6 @@ const RecommendedProducts = () => {
             console.log('Error updating favorite status!');
         }
     };
-
 
     return (
         <div className={classes.root}>
@@ -245,14 +266,16 @@ const RecommendedProducts = () => {
                                             This product has {product.popularity} appreciation
                                         </Typography>
                                     )}
-                                    {(isLoggedIn && !isAdmin) && (
-                                        <Button size="small" variant="outlined" className={classes.button}
-                                            onClick={() => toggleFavorite(product.productId, product.isFavorite)}
-                                            style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                                        >
-                                            <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
-                                            {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
-                                        </Button>
+                                    {(isLoggedIn && !isAdmin && authUserId !== product.userId) && (
+                                        <div className={classes.buttonContainer}>
+                                            <Button size="small" variant="outlined" className={classes.button}
+                                                onClick={() => toggleFavorite(product.productId, product.isFavorite)}
+                                                style={{ color: 'var(--primary)', borderColor: 'var(--primary)' }}
+                                            >
+                                                <i className={`fa-${product.isFavorite ? 'solid' : 'regular'} fa-lg fa-heart`} style={{ marginRight: '3px' }}></i>
+                                                {product.isFavorite ? 'Remove from Favourites' : 'Add to Favourite'}
+                                            </Button>
+                                        </div>
                                     )}
                                 </CardContent>
                             </Card>

@@ -141,6 +141,7 @@ public class GetProductsServiceImpl implements GetProductsService {
                         .build()).toList();
         return ProductDTO.builder()
                 .productId(projection.getProductId())
+                .userId(projection.getUserId())
                 .title(projection.getTitle())
                 .price(projection.getPrice())
                 .popularity(projection.getPopularity())

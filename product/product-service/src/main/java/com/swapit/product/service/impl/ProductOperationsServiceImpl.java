@@ -136,6 +136,9 @@ public class ProductOperationsServiceImpl implements ProductOperationsService {
     public void changeProductLikeStatus(Integer userId, Integer productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> exceptionFactory.create(ExceptionType.PRODUCT_NOT_FOUND));
+        if (userId.equals(product.getUserId())) {
+            throw exceptionFactory.create(ExceptionType.UNAUTHORIZED_ACTION);
+        }
         ProductLike productLike = productLikeRepository.findProductLikeByUserIdAndProductId(userId, productId)
                 .orElse(null);
         if (productLike == null) {
