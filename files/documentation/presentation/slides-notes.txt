@@ -1,0 +1,25 @@
+Titlu lucrare, nume
+Contextul lucrarii
+Problema
+Obiective functionale
+Obiective tehnice
+Solutia propusa - tehnologii folosite
+Solutia propusa  - microservicii
+Solutia propusa  - diagrama aplicatiei
+Securitate - JWT Token
+Securitate - Oauth2
+Securitate - Roluri
+Securitate - criptarea datelor
+Securitate - Nu oferim incredere clientlui
+Implementare - Paginarea rezultatelor
+Implementare - Cautarea produselor
+Implementare - Operatii programate
+Implementare - Monitorizarea actiunilor
+Implementare - Tratarea erorilor
+Performanta & Testare - Caching
+Performanta & Testare - Lighthouse
+Performanta & Testare - Jmeter
+Concluzii si dezvolatari ulterioare
+Multumiri & Intrebari
+
+
