@@ -6,19 +6,16 @@ Obiective tehnice
 Solutia propusa - tehnologii folosite
 Solutia propusa  - microservicii
 Solutia propusa  - diagrama aplicatiei
-Securitate - JWT Token
-Securitate - Oauth2
-Securitate - Roluri
-Securitate - criptarea datelor
+Securitate - JWT Token & Oauth2
+Securitate - Roluri & criptarea datelor
 Securitate - Nu oferim incredere clientlui
 Implementare - Paginarea rezultatelor
 Implementare - Cautarea produselor
 Implementare - Operatii programate
 Implementare - Monitorizarea actiunilor
 Implementare - Tratarea erorilor
-Performanta & Testare - Caching
-Performanta & Testare - Lighthouse
-Performanta & Testare - Jmeter
+Performanta - Caching
+Testarea aplicatiei sub presiune - Jmeter
 Concluzii si dezvolatari ulterioare
 Multumiri & Intrebari
 
