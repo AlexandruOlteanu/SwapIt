@@ -1,18 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b26a5d27-0ef3-4c07-b17c-6457985e5923" name="Changes" comment="" />
+    <list default="true" id="b26a5d27-0ef3-4c07-b17c-6457985e5923" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ApiGateway.dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ConfigurationServer.dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/User.dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configuration-server/.run/ConfigurationServerApplication.run.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configuration-server/.run/configuration-server [clean,install,-U].run.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configuration-server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/.run/UserApplicationService.run.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user/.run/user [clean,install,-U].run.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiGateway/apiGateway-service/src/main/java/com/swapit/apiGateway/web/ApiGatewayController.java" beforeDir="false" afterPath="$PROJECT_DIR$/apiGateway/apiGateway-service/src/main/java/com/swapit/apiGateway/web/ApiGatewayController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiGateway/apiGateway-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/apiGateway/apiGateway-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiGateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/apiGateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commons/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commons/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration-data/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration-data/.idea/configuration-data.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration-data/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration-data/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration-data/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/configuration-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configuration-server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/configuration-server/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/user/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/user-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/user/user-service/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dockerfile" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider"><![CDATA[{
+  "isMigrated": true
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 5
+}]]></component>
   <component name="ProjectId" id="2doEG2D8yMDSRuHxd5RHTN29XwV" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,10 +64,34 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/ALEX PROGRAMARE/SwapIt/apiGateway",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/ALEX PROGRAMARE/SwapIt",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\ALEX PROGRAMARE\SwapIt" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\ALEX PROGRAMARE\SwapIt" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.ConfigurationServerApplication" />
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
+        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -35,6 +101,7 @@
       <option name="presentableId" value="Default" />
       <updated>1710665931883</updated>
       <workItem from="1710665932907" duration="52000" />
+      <workItem from="1737970725752" duration="8548000" />
     </task>
     <servers />
   </component>

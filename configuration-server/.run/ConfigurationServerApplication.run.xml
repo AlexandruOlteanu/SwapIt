@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ConfigurationServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <module name="configuration-server" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="com.swapit.configurationserver.ConfigurationServerApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

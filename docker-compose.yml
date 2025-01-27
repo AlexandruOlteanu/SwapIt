@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  configuration-server:
+    container_name: configuration-server
+    image: configuration-server
+    ports:
+      - "8888:8888"
+    networks:
+      - swapIt-custom-network
+    environment:
+      SPRING_PROFILES_ACTIVE: native
+      SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCHLOCATIONS: file:/app/configuration-data
+
+
+  api-gateway:
+    container_name: api-gateway
+    image: api-gateway
+    ports:
+      - "8001:8001"
+    networks:
+      - swapIt-custom-network
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      CONFIG_SERVER_URI: http://configuration-server:8888
+
+  user:
+    container_name: user
+    image: user
+    ports:
+      - "8002:8002"
+    networks:
+      - swapIt-custom-network
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      CONFIG_SERVER_URI: http://configuration-server:8888
+
+networks:
+  swapIt-custom-network:
+    name: swapIt-network
+    driver: bridge
