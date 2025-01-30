@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static com.swapit.commons.cache.CacheConstants.CACHE_PRODUCT_CATEGORIES;
 
@@ -33,18 +34,26 @@ public class ProductCategorizeServiceImpl implements ProductCategorizeService {
     @Override
     public void addNewProductCategory(AddNewProductCategoryRequest request) {
 
-        ProductCategory parent = null;
-        if (request.getParentId() != null) {
-            parent = productCategoryRepository.findById(request.getParentId())
-                    .orElseThrow(() -> exceptionFactory.create(ExceptionType.PARENT_CATEGORY_NOT_FOUND));
-        }
-        Optional<ProductCategory> existingCategory = productCategoryRepository.findFirstByValue(request.getCategory());
+        CompletableFuture<ProductCategory> parentFuture = CompletableFuture.supplyAsync(() ->
+                request.getParentId() == null ? null :
+                        productCategoryRepository.findById(request.getParentId())
+                                .orElseThrow(() -> exceptionFactory.create(ExceptionType.PARENT_CATEGORY_NOT_FOUND))
+        );
+
+        CompletableFuture<Optional<ProductCategory>> existingCategoryFuture = CompletableFuture.supplyAsync(() ->
+                productCategoryRepository.findFirstByValue(request.getCategory())
+        );
+
+        ProductCategory parentCategory = parentFuture.join();
+        Optional<ProductCategory> existingCategory = existingCategoryFuture.join();
+
         if (existingCategory.isPresent()) {
             throw exceptionFactory.create(ExceptionType.PRODUCT_CATEGORY_ALREADY_EXISTS);
         }
+
         ProductCategory newProductCategory = ProductCategory.builder()
                 .value(request.getCategory())
-                .parent(parent)
+                .parent(parentCategory)
                 .build();
         productCategoryRepository.save(newProductCategory);
         cacheInvalidateService.invalidateAllCacheWithValue(CACHE_PRODUCT_CATEGORIES);
